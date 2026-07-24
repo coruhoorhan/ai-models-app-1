@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Trophy, Medal, Sparkles } from 'lucide-react';
 import { Card } from '../../../shared/ui/Card';
+import { LaserEffect } from '../../../shared/ui/LaserEffect';
 import { PodiumModel } from './RankingsPodium';
 
 interface PodiumCardProps {
@@ -50,6 +51,7 @@ export function PodiumCard({ model, place, itemVariants }: PodiumCardProps) {
             style={{ backgroundSize: "200% 200%" }}
           />
           <Card className="w-full flex flex-col items-center justify-center gap-xs border-chart-orange border bg-canvas shadow-xl p-xl text-center pb-xxl relative overflow-hidden group">
+            <LaserEffect color="var(--color-chart-orange)" glowColor="rgba(235, 93, 28, 0.5)" />
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-chart-orange/10 via-transparent to-transparent opacity-50" />
             
             <motion.span 
