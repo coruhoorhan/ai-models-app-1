@@ -63,7 +63,7 @@ Catalog of AI models available in the system.
 | `category` | Enum | Nullable | Maps to `badge-category`. Enum: `Coding`, `Chat`, `Character`. |
 | `created_at` | DateTime | Default: NOW() | Creation timestamp. |
 
-### 5. `usage_logs` (or `requests`)
+### 5. `usage_logs`
 Records every API invocation.
 
 | Field Name | Type | Modifiers | Description |
