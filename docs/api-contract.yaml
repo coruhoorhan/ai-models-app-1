@@ -25,6 +25,16 @@ components:
           description: User-friendly error message. Technical details are logged on the server.
           example: "Invalid credentials provided."
 
+
+    Provider:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+
     User:
       type: object
       properties:
@@ -85,6 +95,13 @@ components:
         category:
           type: string
           enum: [Coding, Chat, Character]
+      popularity_score:
+        type: integer
+        description: Pre-calculated score for sorting by 'Popular'. Updated via cron.
+      release_tag:
+        type: string
+        nullable: true
+        description: Badge label like 'New Weights' or '1-Tier'.
 
     UsageLog:
       type: object
@@ -302,6 +319,22 @@ paths:
                     value:
                       type: number
 
+
+  /providers:
+    get:
+      summary: List all model providers
+      description: Used to dynamically populate provider filter dropdowns on the Models page.
+      tags: [Models]
+      responses:
+        '200':
+          description: List of providers.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Provider'
+
   /models:
     get:
       summary: List and filter models
@@ -334,6 +367,61 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Model'
+
+
+  /models/{id}:
+    get:
+      summary: Get detailed information for a specific model
+      tags: [Models]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Model details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Model'
+        '404':
+          description: Model not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+
+  /models/{id}/performance:
+    get:
+      summary: Get performance time-series data for a model
+      description: Returns historical data (e.g., speed, score) for the last 30 days. Used for the mini sparkline/bar graphs in the Rankings table.
+      tags: [Models]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Time-series performance data.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    date:
+                      type: string
+                      format: date
+                    speed_tok_s:
+                      type: integer
 
   /rankings:
     get:

@@ -9,6 +9,7 @@ This document details the database schema for the application, aligning with the
 *   **Performance Pattern:** Materialized fields are used for frequently accessed computed data.
     *   `users.current_balance`: Updated via a database transaction whenever a new record is added to `billing_transactions` or `usage_logs` to avoid expensive aggregations on reads.
     *   `rankings.weekly_change`: Updated via a background cron job.
+    *   `models.popularity_score`: Updated via a background cron job summarizing `usage_logs` to avoid heavy `COUNT` queries during 'Popular' sort.
 
 ## Entity Definitions
 
@@ -61,6 +62,8 @@ Catalog of AI models available in the system.
 | `speed_tok_s` | Int | Not Null | Average processing speed in tokens per second. |
 | `is_free` | Boolean | Default: false | Indicates if the model is available on the free tier. |
 | `category` | Enum | Nullable | Maps to `badge-category`. Enum: `Coding`, `Chat`, `Character`. |
+| `release_tag` | String | Nullable | Badge text for UI (e.g., 'New Weights', '1-Tier'). |
+| `popularity_score` | Int | Default: 0 | Materialized metric for sorting by 'Popular'. Updated via cron. |
 | `created_at` | DateTime | Default: NOW() | Creation timestamp. |
 
 ### 5. `usage_logs`
