@@ -1,0 +1,55 @@
+:root {
+  /* Colors: Base */
+  --color-ink: #111111;
+  --color-canvas: #FFFFFF;
+  --color-sidebar: #111111;
+  --color-muted: #6B7280;
+  --color-subtle: #9CA3AF;
+  --color-label: #71717A;
+  
+  /* Colors: Borders & Surfaces */
+  --color-hairline: #E5E7EB;
+  --color-surface: #FAFAFA;
+  --color-surface-sunken: #F3F4F6;
+  
+  /* Colors: Semantic & Data */
+  --color-live: #10B981;
+  --color-live-bg: #ECFDF5;
+  --color-error: #EF4444;
+  --color-chart-teal: #2DD4BF;
+  --color-chart-blue: #3B82F6;
+  --color-chart-pink: #EC4899;
+  --color-chart-purple: #8B5CF6;
+  --color-chart-orange: #F97316;
+  --color-chart-green: #22C55E;
+
+  /* Spacing */
+  --spacing-xxs: 4px;
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+  --spacing-section: 96px;
+
+  /* Radius */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Typography */
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+.dark {
+  --color-ink: #F5F5F5;
+  --color-canvas: #0A0A0A;
+  --color-hairline: #262626;
+  --color-surface: #141414;
+  --color-surface-sunken: #111111; 
+  --color-live-bg: #064E3B;
+}

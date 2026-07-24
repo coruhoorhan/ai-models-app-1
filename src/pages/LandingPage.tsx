@@ -1,0 +1,26 @@
+import React from 'react';
+import { TopNav } from '../features/landing/components/TopNav';
+import { HeroSection } from '../features/landing/components/HeroSection';
+import { PopularPaths } from '../features/landing/components/PopularPaths';
+import { ThreeSteps } from '../features/landing/components/ThreeSteps';
+import { ChatClientShowcase } from '../features/landing/components/ChatClientShowcase';
+import { Footer } from '../shared/ui/Footer';
+import { BackgroundGrid } from '../shared/ui/BackgroundGrid';
+
+export function LandingPage() {
+  return (
+    <div className="w-full flex flex-col items-center bg-canvas min-h-screen relative overflow-hidden">
+      <BackgroundGrid />
+      <div className="relative z-10 w-full flex flex-col items-center">
+        <TopNav />
+        <div className="w-full max-w-[1440px] flex flex-col">
+          <HeroSection />
+          <PopularPaths />
+          <ThreeSteps />
+          <ChatClientShowcase />
+        </div>
+        <Footer />
+      </div>
+    </div>
+  );
+}
