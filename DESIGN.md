@@ -319,19 +319,6 @@ Her liste, tablo veya kart grid'i şu üç durumu **standart component'lerle** k
 - Ortalanmış blok: `{colors.error}` renkli uyarı ikonu (24px) + `{typography.body-sm}` kullanıcı dostu hata mesajı + `button-secondary` "Tekrar Dene" CTA.
 - Ham hata mesajı (stack trace, API error code) asla doğrudan UI'a basılmaz; loglanır, kullanıcıya sade mesaj gösterilir.
 
-## Layout & Wrapper Components
-
-**`footer-region`** — Global site footer.
-- Background `{colors.surface}` (light) / `{colors.canvas-dark}` (dark), width `w-full` ALWAYS — never `max-w-*` or `mx-auto`. Horizontal padding `{spacing.xl}` mobile → `{spacing.xxl}` desktop → `{spacing.section}` wide (≥1440px), matching the Wide breakpoint rule above.
-- Internal content grid: logo/tagline column (`max-w-[320px]`, NOT `w-80` — fixed-width flex children get crushed when siblings demand space, `max-w` allows the column to shrink gracefully instead of forcing text to wrap letter-by-letter) + 3-4 link columns (Product / Developers / Company / Legal), each column `min-w-[140px]` to prevent column-crush at narrow viewports.
-- Column gap: `{spacing.xxl}` (32px) minimum — this is the value that was missing when `max-w-[1200px]` was stripped without a replacement; removing a width constraint does NOT remove the need for explicit gap/padding.
-- Top border `1px solid {colors.hairline}` separating footer from page content above it.
-- Bottom row (below link columns): copyright text (`{typography.caption}`, muted) + social icon row (16-20px icons, `{colors.muted}`).
-
-**`page-wrapper`** — Every top-level page container.
-- ALWAYS `w-full`, never constrained. Standard shell: `<div className="w-full p-4 2xl:p-6 flex flex-col gap-6">` per AGENTS.md Section 13.
-- NEVER carries its own `h-screen`, `h-[calc(100vh-Npx)]`, or `overflow-y-auto` — vertical scroll ownership belongs exclusively to the Shell/root layout component. A page wrapper that manages its own height/scroll will fight the shell and produce compressed, clipped content — this exact bug has occurred in this project and must not recur.
-
 ## Do's and Don'ts
 
 ### Do
@@ -357,7 +344,7 @@ Her liste, tablo veya kart grid'i şu üç durumu **standart component'lerle** k
 | Mobile | < 480px | Single column everywhere. Hero drops to 36px. Stat rows go 2×2 then 1-column. Sidebar becomes bottom drawer/hamburger. |
 | Tablet | 480 – 1023px | 2-column card grids. Top nav collapses to hamburger. Dashboard sidebar collapses to icon-only 64px rail. |
 | Desktop | 1024 – 1439px | Full 4-column stat rows and card grids. Sidebar full 260px. |
-| Wide | ≥ 1440px | Content remains full-width (`w-full`) regardless of viewport size. `max-width` containers and `mx-auto` centering are NEVER used, per AGENTS.md Section 13. Only horizontal padding increases (`{spacing.xl}` → `{spacing.xxl}`) to keep edge content from touching the viewport edge. |
+| Wide | ≥ 1440px | Max-width container centers content; extra gutter space, no new column counts. |
 
 ### Touch Targets
 - Buttons: 40px height desktop → 44px mobile (padding increases, radius stays 6px).
@@ -385,3 +372,21 @@ Her liste, tablo veya kart grid'i şu üç durumu **standart component'lerle** k
 - Animation/transition timing not yet defined — recommend 150ms ease-out for hover/focus, 200ms ease-in-out for sidebar collapse.
 - Empty states (e.g. "NO API INFORMATION") need a formal component — currently ad hoc centered gray text; consider standardizing as `empty-state-block`.
 - Mobile chat client layout (sidebar + thread + input, currently designed for split-desktop view) needs explicit mobile stacking rules.
+
+### Ranking Components
+
+- **`chart-card-scatter`**
+  - **Function:** `card-chart`'ın scatter/radar varyantı.
+  - **Structure:** Aynı chrome (border, radius, padding), farklı olarak `segmented-tab` ile 2 görselleştirme modu arasında geçiş yapabiliyor. Chart data-accent paletini kullanır, eksen etiketleri `{typography.caption}`.
+
+- **`highlight-list-item`**
+  - **Function:** Tek satırlık liste öğesi.
+  - **Structure:** Sol: iki satırlı model bilgisi (isim + context). Sağ: delta badge (yeşil pozitif / kırmızı negatif, `{typography.caption-bold}`, `rounded-xs`) + fiyat metni (monospace, muted). Border yok, sadece satır arası `{colors.hairline-soft}` ayraç.
+
+- **`cost-simulator-card`**
+  - **Function:** API Maliyet Simülasyonu.
+  - **Structure:** `card-chart` benzeri chrome, ama tab yerine 4'lü segmented-selector (token hacmi seçimi) kullanıyor. Liste öğeleri `highlight-list-item`'a benzer ama delta yerine sabit fiyat gösteriyor.
+
+- **`methodology-tile`**
+  - **Function:** Değerlendirme Metodolojisi ve Standartlar.
+  - **Structure:** `ai-product-tile`/`feature-tile` mantığına benzer, ama bordersiz/daha sade. İkon + başlık + açıklama düzeni.

@@ -1,0 +1,4 @@
+# Mark auto-generated files so GitHub collapses them in Pull Request diffs
+package-lock.json linguist-generated=true
+bun.lock linguist-generated=true
+dist/** linguist-generated=true
