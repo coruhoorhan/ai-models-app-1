@@ -1,5 +1,6 @@
 import React from 'react';
 import { Search } from 'lucide-react';
+import { useFetchProviders } from '../hooks/useFetchProviders';
 
 interface ModelsFilterBarProps {
   searchQuery: string;
@@ -8,6 +9,8 @@ interface ModelsFilterBarProps {
   setProviderFilter: (provider: string) => void;
   tierFilter: string;
   setTierFilter: (tier: string) => void;
+  sortFilter: string;
+  setSortFilter: (sort: string) => void;
 }
 
 export function ModelsFilterBar({
@@ -17,7 +20,12 @@ export function ModelsFilterBar({
   setProviderFilter,
   tierFilter,
   setTierFilter,
+  sortFilter,
+  setSortFilter,
 }: ModelsFilterBarProps) {
+
+  const { providers } = useFetchProviders();
+
   return (
     <div className="flex flex-col md:flex-row items-center gap-md">
       <div className="relative flex-1 w-full">
@@ -39,11 +47,9 @@ export function ModelsFilterBar({
           onChange={(e) => setProviderFilter(e.target.value)}
         >
           <option value="All">All Providers</option>
-          <option value="OpenAI">OpenAI</option>
-          <option value="Anthropic">Anthropic</option>
-          <option value="Google">Google</option>
-          <option value="Meta">Meta</option>
-          <option value="Mistral">Mistral</option>
+          {providers.map(p => (
+            <option key={p.id} value={p.id}>{p.name}</option>
+          ))}
         </select>
         <select 
           className="bg-surface-sunken border border-hairline rounded-sm py-[6px] px-sm text-body-sm text-ink outline-none"
@@ -54,7 +60,11 @@ export function ModelsFilterBar({
           <option value="Free">Free</option>
           <option value="Paid">Paid</option>
         </select>
-        <select className="bg-surface-sunken border border-hairline rounded-sm py-[6px] px-sm text-body-sm text-ink outline-none">
+        <select
+          className="bg-surface-sunken border border-hairline rounded-sm py-[6px] px-sm text-body-sm text-ink outline-none"
+          value={sortFilter}
+          onChange={(e) => setSortFilter(e.target.value)}
+        >
           <option value="popular">Popular</option>
           <option value="newest">Newest</option>
           <option value="price">Price</option>

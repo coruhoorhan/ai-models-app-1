@@ -1,37 +1,38 @@
 import React from 'react';
-import { cn } from '../../../shared/lib/cn';
 
 interface HighlightListItemProps {
-  modelName: string;
-  developerInfo: string;
-  delta?: number;
-  price?: string;
-  className?: string;
+  name: string;
+  provider: string;
+  contextLength: number;
+  weeklyChange: number;
+  pricePer1M: number;
 }
 
-export function HighlightListItem({ modelName, developerInfo, delta, price, className }: HighlightListItemProps) {
+export function HighlightListItem({ name, provider, contextLength, weeklyChange, pricePer1M }: HighlightListItemProps) {
+  const isPositive = weeklyChange > 0;
+  const isNegative = weeklyChange < 0;
+
   return (
-    <div className={cn("w-full flex items-center justify-between py-md border-b border-hairline last:border-0", className)}>
-      <div className="flex flex-col gap-xs">
-        <span className="text-body-md-bold text-ink">{modelName}</span>
-        <span className="text-body-sm text-muted">{developerInfo}</span>
+    <div className="flex items-center justify-between py-sm border-b border-hairline-soft last:border-0">
+      <div className="flex flex-col">
+        <span className="text-body-sm-bold text-ink truncate max-w-[180px]">{name}</span>
+        <span className="text-caption text-subtle truncate max-w-[180px]">
+          {provider} · {contextLength >= 1000 ? `${contextLength/1000}k` : contextLength}
+        </span>
       </div>
-      <div className="flex flex-col items-end gap-xs">
-        {delta !== undefined && (
-          <span
-            className={cn(
-              "text-caption-bold rounded-xs px-2 py-[2px]",
-              delta >= 0
-                ? "bg-live-bg text-live"
-                : "bg-error/10 text-error"
-            )}
-          >
-            {delta >= 0 ? `+${delta}` : delta}
+      <div className="flex flex-col items-end gap-[2px]">
+        {weeklyChange === 0 ? (
+          <span className="text-caption-bold text-muted bg-surface-sunken px-[6px] py-[2px] rounded-xs">
+            -
+          </span>
+        ) : (
+          <span className={`text-caption-bold px-[6px] py-[2px] rounded-xs ${
+            isPositive ? 'text-live bg-live/10' : 'text-error bg-error/10'
+          }`}>
+            {isPositive ? '+' : ''}{weeklyChange}
           </span>
         )}
-        {price && (
-          <span className="text-body-sm text-muted font-mono">{price}</span>
-        )}
+        <span className="text-caption text-muted font-mono">${pricePer1M.toFixed(2)} /1M</span>
       </div>
     </div>
   );

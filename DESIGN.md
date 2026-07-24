@@ -390,3 +390,9 @@ Her liste, tablo veya kart grid'i şu üç durumu **standart component'lerle** k
 - **`methodology-tile`**
   - **Function:** Değerlendirme Metodolojisi ve Standartlar.
   - **Structure:** `ai-product-tile`/`feature-tile` mantığına benzer, ama bordersiz/daha sade. İkon + başlık + açıklama düzeni.
+
+### Ranking Page Components
+- `chart-card-scatter`: Scatter/radar varyantı grafik kartı. Segmented-tab ile farklı veri görünümleri arasında geçiş sağlar. Data-accent paletini kullanır.
+- `highlight-list-item`: Tek satırlık liste öğesi. Sol tarafta çift satırlı model bilgisi (isim + context), sağ tarafta delta rozeti (artış/azalış) ve fiyat bilgisini gösterir.
+- `cost-simulator-card`: Token hacmini baz alarak fiyat/maliyet simülasyonu sunan özel kart.
+- `methodology-tile`: Değerlendirme metodolojisi adımlarını gösteren ikonlu bilgi bloğu.

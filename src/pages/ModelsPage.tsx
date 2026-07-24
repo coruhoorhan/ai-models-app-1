@@ -2,8 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { TopNav } from '../features/landing/components/TopNav';
 import { DataTable, ColumnDef } from '../shared/ui/DataTable';
 import { Badge } from '../shared/ui/Badge';
-import { useModels } from '../features/models/hooks/useModels';
-import { ModelConfig } from '../shared/api/models.api';
+import { useFetchModels, ModelType } from '../features/models/hooks/useFetchModels';
 import { ChevronRight, Zap } from 'lucide-react';
 import { Footer } from '../shared/ui/Footer';
 import { BackgroundGrid } from '../shared/ui/BackgroundGrid';
@@ -11,23 +10,22 @@ import { ModelsStatsRow } from '../features/models/components/ModelsStatsRow';
 import { ModelsFilterBar } from '../features/models/components/ModelsFilterBar';
 
 export function ModelsPage() {
-  const { data, isLoading } = useModels();
-
   const [providerFilter, setProviderFilter] = useState('All');
   const [tierFilter, setTierFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [sortFilter, setSortFilter] = useState('popular');
+  const [page, setPage] = useState(1);
 
-  const filteredData = useMemo(() => {
-    return data.filter(model => {
-      const matchSearch = model.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          model.provider.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchProvider = providerFilter === 'All' || model.provider === providerFilter;
-      const matchTier = tierFilter === 'All' || (tierFilter === 'Free' ? model.isFree : !model.isFree);
-      return matchSearch && matchProvider && matchTier;
-    });
-  }, [data, searchQuery, providerFilter, tierFilter]);
+  const { data, loading } = useFetchModels({
+    search: searchQuery,
+    provider: providerFilter,
+    tier: tierFilter,
+    sort: sortFilter,
+    page: page,
+    pageSize: 20
+  });
 
-  const columns = useMemo<ColumnDef<ModelConfig>[]>(() => [
+  const columns = useMemo<ColumnDef<ModelType>[]>(() => [
     {
       key: 'model',
       header: 'MODEL',
@@ -35,18 +33,19 @@ export function ModelsPage() {
         <div className="flex flex-col">
           <div className="flex items-center gap-sm">
             <span className="font-bold text-ink">{row.name}</span>
-            {row.category.map(c => (
+            {row.category && (
               <Badge 
-                key={c} 
                 variant="category" 
-                label={c} 
+                label={row.category}
                 categoryColor={
-                  c === 'Chat' ? 'chart-blue' : 
-                  c === 'Coding' ? 'chart-teal' : 
-                  c === 'Vision' ? 'chart-pink' : 'chart-orange'
+                  row.category === 'Chat' ? 'chart-blue' :
+                  row.category === 'Coding' ? 'chart-teal' : 'chart-orange'
                 } 
               />
-            ))}
+            )}
+            {row.release_tag && (
+              <Badge variant="status-live" label={row.release_tag} />
+            )}
           </div>
           <span className="text-body-sm text-subtle mt-1">{row.provider}</span>
         </div>
@@ -55,12 +54,12 @@ export function ModelsPage() {
     {
       key: 'context',
       header: 'CONTEXT',
-      cell: (row) => <span className="font-mono">{row.context}</span>
+      cell: (row) => <span className="font-mono">{row.context_length >= 1000 ? `${row.context_length / 1000}k` : row.context_length}</span>
     },
     {
       key: 'price',
       header: 'PRICE',
-      cell: (row) => row.isFree ? <Badge variant="status-live" label="FREE" /> : <span className="font-mono">{row.price}</span>
+      cell: (row) => row.is_free ? <Badge variant="status-live" label="FREE" /> : <span className="font-mono">${row.price_per_1m.toFixed(2)} / 1M</span>
     },
     {
       key: 'speed',
@@ -68,7 +67,7 @@ export function ModelsPage() {
       cell: (row) => (
         <div className="flex items-center gap-xs font-mono">
           <Zap className="w-3 h-3 text-chart-teal" />
-          <span>{row.speed}</span>
+          <span>{row.speed} tok/s</span>
         </div>
       )
     },
@@ -94,7 +93,7 @@ export function ModelsPage() {
                 </div>
                 <h1 className="text-hero text-ink tracking-tight">Browse all models</h1>
                 <p className="text-body-lg text-muted max-w-2xl">
-                  217 models across 36+ providers, routed through one unified API key. 
+                  {data?.total || '...'} models across providers, routed through one unified API key.
                   Experience seamless integration and high-speed inference without the vendor lock-in.
                 </p>
               </div>
@@ -110,9 +109,11 @@ export function ModelsPage() {
               setProviderFilter={setProviderFilter}
               tierFilter={tierFilter}
               setTierFilter={setTierFilter}
+              sortFilter={sortFilter}
+              setSortFilter={setSortFilter}
             />
 
-            {isLoading ? (
+            {loading ? (
               <div className="w-full flex flex-col gap-2">
                 <div className="h-12 bg-surface-sunken rounded-sm animate-pulse" />
                 <div className="h-12 bg-surface-sunken rounded-sm animate-pulse" />
@@ -120,13 +121,13 @@ export function ModelsPage() {
                 <div className="h-12 bg-surface-sunken rounded-sm animate-pulse" />
                 <div className="h-12 bg-surface-sunken rounded-sm animate-pulse" />
               </div>
-            ) : filteredData.length === 0 ? (
+            ) : !data || data.data.length === 0 ? (
               <div className="py-xl text-center border border-hairline rounded-sm bg-surface">
                 <p className="text-body text-muted">No models match your filters</p>
               </div>
             ) : (
               <DataTable 
-                data={filteredData} 
+                data={data.data}
                 columns={columns} 
                 pageSize={20} 
                 hideSearch={true}

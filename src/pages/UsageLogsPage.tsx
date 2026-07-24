@@ -1,37 +1,23 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { DashboardLayout } from '../features/dashboard/components/DashboardLayout';
 import { DataTable, ColumnDef } from '../shared/ui/DataTable';
 import { Badge } from '../shared/ui/Badge';
-
-interface LogEntry {
-  id: string;
-  time: string;
-  model: string;
-  tokens: string;
-  cost: string;
-  status: 'success' | 'error';
-}
-
-const mockLogs: LogEntry[] = Array.from({ length: 45 }).map((_, i) => ({
-  id: `req_${Math.random().toString(36).substring(7)}`,
-  time: new Date(Date.now() - i * 60000 * 15).toLocaleString(),
-  model: i % 3 === 0 ? 'gpt-4o' : i % 2 === 0 ? 'claude-3-opus' : 'gemini-1.5-pro',
-  tokens: Math.floor(Math.random() * 5000 + 100).toLocaleString(),
-  cost: `$${(Math.random() * 0.05).toFixed(4)}`,
-  status: Math.random() > 0.1 ? 'success' : 'error',
-}));
+import { useUsageLogs, UsageLogType } from '../features/dashboard/hooks/useUsageLogs';
 
 export function UsageLogsPage() {
-  const columns = useMemo<ColumnDef<LogEntry>[]>(() => [
+  const [page, setPage] = useState(1);
+  const { data, loading } = useUsageLogs(page);
+
+  const columns = useMemo<ColumnDef<UsageLogType>[]>(() => [
     {
       key: 'id',
       header: 'REQUEST ID',
-      cell: (row) => <span className="text-mono-inline text-subtle">{row.id}</span>
+      cell: (row) => <span className="text-mono-inline text-subtle">{row.id.split('-')[0]}...</span>
     },
     {
       key: 'time',
       header: 'TIMESTAMP',
-      cell: (row) => row.time
+      cell: (row) => new Date(row.timestamp).toLocaleString()
     },
     {
       key: 'model',
@@ -39,8 +25,8 @@ export function UsageLogsPage() {
       cell: (row) => (
         <div className="flex items-center gap-xs">
           <div className={`w-2 h-2 rounded-xs ${
-            row.model.includes('gpt') ? 'bg-chart-teal' : 
-            row.model.includes('claude') ? 'bg-chart-pink' : 'bg-chart-blue'
+            row.model.toLowerCase().includes('gpt') ? 'bg-chart-teal' :
+            row.model.toLowerCase().includes('claude') ? 'bg-chart-pink' : 'bg-chart-blue'
           }`} />
           <span className="font-medium">{row.model}</span>
         </div>
@@ -49,22 +35,17 @@ export function UsageLogsPage() {
     {
       key: 'tokens',
       header: 'TOKENS',
-      cell: (row) => row.tokens
+      cell: (row) => `${row.tokens_in} / ${row.tokens_out}`
+    },
+    {
+      key: 'duration',
+      header: 'DURATION',
+      cell: (row) => <span className="font-mono">{row.duration}</span>
     },
     {
       key: 'cost',
       header: 'COST',
       cell: (row) => <span className="font-mono">{row.cost}</span>
-    },
-    {
-      key: 'status',
-      header: 'STATUS',
-      cell: (row) => (
-        <Badge 
-          variant={row.status === 'success' ? 'status-live' : 'error'} 
-          label={row.status.toUpperCase()} 
-        />
-      )
     }
   ], []);
 
@@ -76,7 +57,15 @@ export function UsageLogsPage() {
           <p className="text-body-sm text-muted">View detailed request logs and usage.</p>
         </div>
         
-        <DataTable data={mockLogs} columns={columns} pageSize={15} />
+        {loading ? (
+           <div className="w-full flex flex-col gap-2">
+             <div className="h-12 bg-surface-sunken rounded-sm animate-pulse" />
+             <div className="h-12 bg-surface-sunken rounded-sm animate-pulse" />
+             <div className="h-12 bg-surface-sunken rounded-sm animate-pulse" />
+           </div>
+        ) : (
+          <DataTable data={data.data} columns={columns} pageSize={20} />
+        )}
       </div>
     </DashboardLayout>
   );
