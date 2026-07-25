@@ -26,7 +26,7 @@ export function DataTable<T>({ data, columns, pageSize = 10, className, hideSear
     const lowerSearch = searchTerm.toLowerCase();
     return data.filter((item) => {
       // Basic text search across object values
-      return Object.values(item as any).some(
+      return Object.values(item as Record<string, unknown>).some(
         (val) => typeof val === 'string' && val.toLowerCase().includes(lowerSearch)
       );
     });
