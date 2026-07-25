@@ -18,9 +18,10 @@ export function ModelsPage() {
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredData = useMemo(() => {
+    const normalizedSearchQuery = (searchQuery || '').toLowerCase();
     return data.filter(model => {
-      const matchSearch = model.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          model.provider.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchSearch = model.name.toLowerCase().includes(normalizedSearchQuery) ||
+                          model.provider.toLowerCase().includes(normalizedSearchQuery);
       const matchProvider = providerFilter === 'All' || model.provider === providerFilter;
       const matchTier = tierFilter === 'All' || (tierFilter === 'Free' ? model.isFree : !model.isFree);
       return matchSearch && matchProvider && matchTier;
