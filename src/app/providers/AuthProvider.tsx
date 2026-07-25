@@ -26,7 +26,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check local storage for token on mount
     // For demo purposes, we auto-login
     setTimeout(() => {
       setUser({
@@ -40,7 +39,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = (token: string) => {
-    localStorage.setItem('unorouter_token', token);
     setUser({
       id: 'usr_1',
       email: 'admin@unorouter.com',
@@ -50,7 +48,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = () => {
-    localStorage.removeItem('unorouter_token');
     setUser(null);
   };
 
