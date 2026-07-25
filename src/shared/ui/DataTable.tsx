@@ -25,10 +25,16 @@ export function DataTable<T>({ data, columns, pageSize = 10, className, hideSear
     if (!searchTerm) return data;
     const lowerSearch = searchTerm.toLowerCase();
     return data.filter((item) => {
-      // Basic text search across object values
-      return Object.values(item as any).some(
-        (val) => typeof val === 'string' && val.toLowerCase().includes(lowerSearch)
-      );
+      // Optimized: avoiding Object.values array allocation and early returning via for...in
+      for (const key in item) {
+        if (Object.prototype.hasOwnProperty.call(item, key)) {
+          const val = (item as any)[key];
+          if (typeof val === 'string' && val.toLowerCase().includes(lowerSearch)) {
+            return true;
+          }
+        }
+      }
+      return false;
     });
   }, [data, searchTerm]);
 
