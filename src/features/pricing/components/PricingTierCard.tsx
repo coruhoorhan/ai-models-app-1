@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { motion, type Variants } from 'motion/react';
 import { Check, ArrowRight, LucideIcon } from 'lucide-react';
 import { Card } from '../../../shared/ui/Card';
 import { Button } from '../../../shared/ui/Button';
@@ -19,7 +19,7 @@ export interface PricingTier {
 interface PricingTierCardProps {
   tier: PricingTier;
   isAnnual: boolean;
-  itemVariants: any;
+  itemVariants: Variants;
 }
 
 export function PricingTierCard({ tier, isAnnual, itemVariants }: PricingTierCardProps) {
