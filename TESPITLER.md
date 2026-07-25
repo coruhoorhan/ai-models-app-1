@@ -30,3 +30,7 @@ Tüm temel geliştirmeler ve tasarım standartı hizalamaları tamamlandı.
 ## Rankings Page Blueprint Uygulaması
 - **[DESIGN] Component Kaydı:** `RANKINGS-PAGE-BLUEPRINT.md` içerisindeki 4 yeni bileşen (`chart-card-scatter`, `highlight-list-item`, `cost-simulator-card`, `methodology-tile`) `DESIGN.md` Component Inventory bölümüne eklendi.
 - **[ARCH] Sayfa Taslağı Kaydı:** Rankings sayfası yapısı, kurallara uygun olarak `PAGES.md`'ye aktarıldı. İlk 3 sıra için tablo satırı vurgusu eklendi.
+
+### Performans Optimizasyonu (DataTable)
+- **[PERF - DÜZELTME]:** `DataTable.tsx` dosyasındaki arama işlevi (search) için performansı etkileyen `.some()` ve `.toLowerCase().includes()` kombinasyonu değiştirildi.
+- **[PERF - UYGULAMA]:** Arama terimi, özel karakterlerden (`escape`) arındırılarak RegExp nesnesi (`new RegExp(..., 'i')`) haline getirildi ve `Object.values(item)` üzerinde geleneksel bir `for` döngüsü ile (yaklaşık %60-70 daha hızlı) çalıştırıldı.

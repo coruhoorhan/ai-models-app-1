@@ -1,7 +1,7 @@
-import React, { useState, useMemo } from 'react';
-import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
-import { cn } from '../lib/cn';
-import { Button } from './Button';
+import React, { useState, useMemo } from "react";
+import { ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { cn } from "../lib/cn";
+import { Button } from "./Button";
 
 export interface ColumnDef<T> {
   key: keyof T | string;
@@ -17,18 +17,36 @@ interface DataTableProps<T> {
   hideSearch?: boolean;
 }
 
-export function DataTable<T>({ data, columns, pageSize = 10, className, hideSearch = false }: DataTableProps<T>) {
+export function DataTable<T>({
+  data,
+  columns,
+  pageSize = 10,
+  className,
+  hideSearch = false,
+}: DataTableProps<T>) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   const filteredData = useMemo(() => {
     if (!searchTerm) return data;
-    const lowerSearch = searchTerm.toLowerCase();
+
+    // Yüksek performans için RegExp kullanımı
+    // searchTerm içindeki regex özel karakterlerini escape ediyoruz
+    const escapedSearch = searchTerm.replace(/[.*+?^$\{}()|[\]\\]/g, "\\$&");
+    const searchRegex = new RegExp(escapedSearch, "i");
+
     return data.filter((item) => {
-      // Basic text search across object values
-      return Object.values(item as any).some(
-        (val) => typeof val === 'string' && val.toLowerCase().includes(lowerSearch)
-      );
+      const vals = Object.values(item as any);
+      const len = vals.length;
+
+      for (let i = 0; i < len; i++) {
+        const val = vals[i];
+        if (typeof val === "string" && searchRegex.test(val)) {
+          return true;
+        }
+      }
+
+      return false;
     });
   }, [data, searchTerm]);
 
@@ -37,7 +55,7 @@ export function DataTable<T>({ data, columns, pageSize = 10, className, hideSear
   const paginatedData = filteredData.slice(startIndex, startIndex + pageSize);
 
   return (
-    <div className={cn('w-full flex flex-col', className)}>
+    <div className={cn("w-full flex flex-col", className)}>
       {/* Table Header Controls */}
       {!hideSearch && (
         <div className="flex items-center justify-between mb-md">
@@ -65,7 +83,10 @@ export function DataTable<T>({ data, columns, pageSize = 10, className, hideSear
           <thead>
             <tr className="border-b border-hairline bg-surface">
               {columns.map((col, index) => (
-                <th key={String(col.key) + index} className="py-sm px-md text-label text-subtle font-medium whitespace-nowrap">
+                <th
+                  key={String(col.key) + index}
+                  className="py-sm px-md text-label text-subtle font-medium whitespace-nowrap"
+                >
                   {col.header}
                 </th>
               ))}
@@ -74,9 +95,15 @@ export function DataTable<T>({ data, columns, pageSize = 10, className, hideSear
           <tbody>
             {paginatedData.length > 0 ? (
               paginatedData.map((row, rowIndex) => (
-                <tr key={rowIndex} className="border-b border-hairline last:border-b-0 hover:bg-surface-sunken transition-colors">
+                <tr
+                  key={rowIndex}
+                  className="border-b border-hairline last:border-b-0 hover:bg-surface-sunken transition-colors"
+                >
                   {columns.map((col, colIndex) => (
-                    <td key={colIndex} className="py-sm px-md text-body-sm text-ink whitespace-nowrap">
+                    <td
+                      key={colIndex}
+                      className="py-sm px-md text-body-sm text-ink whitespace-nowrap"
+                    >
                       {col.cell(row)}
                     </td>
                   ))}
@@ -84,7 +111,10 @@ export function DataTable<T>({ data, columns, pageSize = 10, className, hideSear
               ))
             ) : (
               <tr>
-                <td colSpan={columns.length} className="py-xl text-center text-body-sm text-muted">
+                <td
+                  colSpan={columns.length}
+                  className="py-xl text-center text-body-sm text-muted"
+                >
                   No results found.
                 </td>
               </tr>
@@ -97,7 +127,9 @@ export function DataTable<T>({ data, columns, pageSize = 10, className, hideSear
       {totalPages > 1 && (
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-md gap-sm">
           <span className="text-body-sm text-muted">
-            Showing {startIndex + 1} to {Math.min(startIndex + pageSize, filteredData.length)} of {filteredData.length} entries
+            Showing {startIndex + 1} to{" "}
+            {Math.min(startIndex + pageSize, filteredData.length)} of{" "}
+            {filteredData.length} entries
           </span>
           <div className="flex items-center gap-xs">
             <Button
