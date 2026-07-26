@@ -26,7 +26,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check local storage for token on mount
+    // SECURITY 🛡️: Authentication relies on HTTP-Only Cookies managed by the backend.
+    // Client-side code should not handle or store sensitive tokens directly.
     // For demo purposes, we auto-login
     setTimeout(() => {
       setUser({
@@ -40,7 +41,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = (token: string) => {
-    localStorage.setItem('unorouter_token', token);
+    // SECURITY 🛡️: Never store auth tokens in localStorage to prevent XSS attacks.
+    // Instead, the backend should set an HTTP-Only cookie during the login response.
+    // The client only needs to manage local user state.
     setUser({
       id: 'usr_1',
       email: 'admin@unorouter.com',
@@ -50,7 +53,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = () => {
-    localStorage.removeItem('unorouter_token');
+    // SECURITY 🛡️: Backend should clear the HTTP-Only cookie on the logout endpoint.
+    // The client only needs to clear local user state.
     setUser(null);
   };
 
