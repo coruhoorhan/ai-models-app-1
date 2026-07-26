@@ -2,7 +2,7 @@ import React from 'react';
 import { LucideIcon } from 'lucide-react';
 import { cn } from '../lib/cn';
 
-export interface ButtonProps {
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant: 'primary' | 'secondary' | 'tertiary' | 'icon-circular';
   icon?: LucideIcon;
   iconPosition?: 'leading' | 'trailing';
@@ -22,6 +22,7 @@ export function Button({
   onClick,
   disabled = false,
   className,
+  ...props
 }: ButtonProps) {
   const isCircular = variant === 'icon-circular';
   
@@ -29,6 +30,7 @@ export function Button({
     <button
       onClick={onClick}
       disabled={disabled}
+      {...props}
       className={cn(
         'inline-flex items-center justify-center transition-colors',
         !isCircular && 'text-button',

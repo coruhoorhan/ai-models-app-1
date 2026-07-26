@@ -11,16 +11,16 @@ export function DashboardTopBar({ onMenuClick }: { onMenuClick?: () => void }) {
       </div>
 
       <div className="flex items-center gap-md">
-        <button className="text-muted hover:text-ink transition-colors">
+        <button className="text-muted hover:text-ink transition-colors" aria-label="Notifications">
           <Bell className="w-5 h-5" />
         </button>
-        <button className="text-muted hover:text-ink transition-colors">
+        <button className="text-muted hover:text-ink transition-colors" aria-label="Language">
           <Globe className="w-5 h-5" />
         </button>
         <ThemeToggle />
-        <div className="w-8 h-8 rounded-full bg-surface border border-hairline flex items-center justify-center text-ink cursor-pointer hover:bg-surface-sunken transition-colors">
+        <button className="w-8 h-8 rounded-full bg-surface border border-hairline flex items-center justify-center text-ink cursor-pointer hover:bg-surface-sunken transition-colors" aria-label="User profile">
           <User className="w-4 h-4" />
-        </div>
+        </button>
       </div>
     </header>
   );
