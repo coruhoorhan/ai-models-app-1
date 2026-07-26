@@ -10,6 +10,7 @@ import { CostSimulatorCard } from '../features/rankings/components/CostSimulator
 import { Card } from '../shared/ui/Card';
 import { RankingsTable, RankingEntry } from '../features/rankings/components/RankingsTable';
 import { RankingsPodium } from '../features/rankings/components/RankingsPodium';
+import { ArenaBattleSimulator } from '../features/rankings/components/ArenaBattleSimulator';
 
 const MOCK_DATA: RankingEntry[] = [
   { id: '1', rank: 1, name: 'GPT-4o (2024-08-06)', developer: 'OpenAI', context: '128k Context', score: 1287, speed: 300, releaseTag: '1-Tier' },
@@ -65,6 +66,9 @@ export function RankingsPage() {
           
           {/* Podium */}
           <RankingsPodium topModels={top3} />
+
+          {/* Interactive Arena Battle Simulator */}
+          <ArenaBattleSimulator />
 
           <div className="w-full flex flex-col md:flex-row items-start gap-xl">
             {/* Left Column: Data Table */}

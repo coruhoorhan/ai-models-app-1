@@ -5,6 +5,8 @@ import { UsageLogsPage } from '../../pages/UsageLogsPage';
 import { ModelsPage } from '../../pages/ModelsPage';
 import { RankingsPage } from '../../pages/RankingsPage';
 import { PricingPage } from '../../pages/PricingPage';
+import { ChatPage } from '../../pages/ChatPage';
+import { DocsPage } from '../../pages/DocsPage';
 import { ProtectedRoute } from './ProtectedRoute';
 
 export const router = createBrowserRouter([
@@ -19,6 +21,14 @@ export const router = createBrowserRouter([
   {
     path: '/pricing',
     element: <PricingPage />,
+  },
+  {
+    path: '/chat',
+    element: <ChatPage />,
+  },
+  {
+    path: '/docs',
+    element: <DocsPage />,
   },
   {
     element: <ProtectedRoute />,

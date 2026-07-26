@@ -7,6 +7,8 @@ import { CostSimulatorCard } from '../features/rankings/components/CostSimulator
 import { BackgroundGrid } from '../shared/ui/BackgroundGrid';
 import { PricingTierCard } from '../features/pricing/components/PricingTierCard';
 import { PayAsYouGoTable } from '../features/pricing/components/PayAsYouGoTable';
+import { ProviderSavingsCalculator } from '../features/pricing/components/ProviderSavingsCalculator';
+import { EnterpriseCustomQuoteSection } from '../features/pricing/components/EnterpriseCustomQuoteSection';
 import { TIERS, PAYG_MODELS } from '../features/pricing/data/pricingData';
 
 const containerVariants = {
@@ -83,6 +85,12 @@ export function PricingPage() {
                 <PricingTierCard key={tier.name} tier={tier} isAnnual={isAnnual} itemVariants={itemVariants} />
               ))}
             </motion.div>
+
+            {/* Interactive Router Savings Calculator */}
+            <ProviderSavingsCalculator />
+
+            {/* Custom Enterprise Quote Builder */}
+            <EnterpriseCustomQuoteSection />
 
             {/* Bottom Section: Pay-as-you-go & Simulator */}
             <motion.div

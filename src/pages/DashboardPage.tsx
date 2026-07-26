@@ -9,6 +9,8 @@ import { DashboardChart } from '../features/dashboard/components/DashboardChart'
 import { useDashboardStats, useDashboardChart } from '../features/dashboard/hooks/useDashboardData';
 import { DashboardApiInfoCard } from '../features/dashboard/components/DashboardApiInfoCard';
 import { DashboardQuickLinks } from '../features/dashboard/components/DashboardQuickLinks';
+import { DashboardRouterInspector } from '../features/dashboard/components/DashboardRouterInspector';
+import { ApiKeyQuotaManager } from '../features/dashboard/components/ApiKeyQuotaManager';
 
 export function DashboardPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -133,6 +135,12 @@ export function DashboardPage() {
 
           <DashboardApiInfoCard />
         </div>
+
+        {/* Live Router & Code Generator Inspector */}
+        <DashboardRouterInspector />
+
+        {/* API Key & Scoped Quota Manager */}
+        <ApiKeyQuotaManager />
 
         <DashboardQuickLinks />
       </div>
