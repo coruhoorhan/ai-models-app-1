@@ -73,7 +73,11 @@ const COLUMNS: ColumnDef<RankingEntry>[] = [
     key: 'actions',
     header: '',
     cell: () => (
-      <div className="w-5 h-5 rounded-sm border border-hairline bg-canvas flex-shrink-0 cursor-pointer hover:border-chart-teal transition-colors" />
+      <div className="w-5 h-5 flex items-center justify-center flex-shrink-0 cursor-pointer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-muted hover:text-ink transition-colors">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </div>
     )
   }
 ];
@@ -89,7 +93,7 @@ export function RankingsTable({ data }: RankingsTableProps) {
         data={data} 
         columns={COLUMNS} 
         pageSize={11}
-        hideSearch={false}
+        hideSearch={true}
       />
       <div className="w-full flex justify-center mt-sm">
         <Button variant="tertiary" className="w-full lg:w-auto">Load More</Button>
