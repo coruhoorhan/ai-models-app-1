@@ -8,33 +8,18 @@ import { ChartCardScatter } from '../features/rankings/components/ChartCardScatt
 import { HighlightListItem } from '../features/rankings/components/HighlightListItem';
 import { CostSimulatorCard } from '../features/rankings/components/CostSimulatorCard';
 import { Card } from '../shared/ui/Card';
-import { RankingsTable, RankingEntry } from '../features/rankings/components/RankingsTable';
+import { RankingsTable } from '../features/rankings/components/RankingsTable';
 import { RankingsPodium } from '../features/rankings/components/RankingsPodium';
-
-const MOCK_DATA: RankingEntry[] = [
-  { id: '1', rank: 1, name: 'GPT-4o (2024-08-06)', developer: 'OpenAI', context: '128k Context', score: 1287, speed: 300, releaseTag: '1-Tier' },
-  { id: '2', rank: 2, name: 'Claude 3.5 Sonnet', developer: 'Anthropic', context: '200k Context', score: 1279, speed: 49 },
-  { id: '3', rank: 3, name: 'Gemini 1.5 Pro (002)', developer: 'Google', context: '1M Context', score: 1261, speed: 44 },
-  { id: '4', rank: 4, name: 'Llama 3.1 405B Instruct', developer: 'Meta', context: '128k Context', score: 1258, speed: 28, releaseTag: 'New' },
-  { id: '5', rank: 5, name: 'GPT-4 Turbo', developer: 'OpenAI', context: '128k Context', score: 1253, speed: 45 },
-  { id: '6', rank: 6, name: 'Claude 3 Opus', developer: 'Anthropic', context: '200k Context', score: 1248, speed: 35 },
-  { id: '7', rank: 7, name: 'Mistral Large 2', developer: 'Mistral', context: '128k Context', score: 1240, speed: 65 },
-  { id: '8', rank: 8, name: 'Gemini 1.5 Flash', developer: 'Google', context: '1M Context', score: 1225, speed: 180 },
-  { id: '9', rank: 9, name: 'Llama 3 70B Instruct', developer: 'Meta', context: '8k Context', score: 1210, speed: 110 },
-  { id: '10', rank: 10, name: 'Mixtral 8x22B', developer: 'Mistral', context: '64k Context', score: 1205, speed: 90 },
-  { id: '11', rank: 11, name: 'Command R+', developer: 'Cohere', context: '128k Context', score: 1198, speed: 40 },
-];
-
-const MOCK_SCATTER_DATA = [
-  { id: '1', name: 'GPT-4o', x: 5, y: 300, color: 'var(--color-chart-teal)' },
-  { id: '2', name: 'Claude 3.5 Sonnet', x: 3, y: 49, color: 'var(--color-chart-blue)' },
-  { id: '3', name: 'Gemini 1.5 Pro', x: 3.5, y: 44, color: 'var(--color-chart-pink)' },
-  { id: '4', name: 'Llama 3.1 405B', x: 0.9, y: 28, color: 'var(--color-chart-orange)' },
-  { id: '5', name: 'Claude 3 Haiku', x: 0.25, y: 200, color: 'var(--color-chart-purple)' },
-];
+import { useRankingsData, useRankingsHighlights, useScatterData } from '../features/rankings/hooks/useRankingsData';
+import { SkeletonLoader } from '../shared/ui/SkeletonLoader';
+import { ErrorStateBlock } from '../shared/ui/ErrorStateBlock';
 
 export function RankingsPage() {
-  const top3 = MOCK_DATA.slice(0, 3);
+  const { data: rankingsData, isLoading: isRankingsLoading, error: rankingsError } = useRankingsData();
+  const { data: highlightsData, isLoading: isHighlightsLoading, error: highlightsError } = useRankingsHighlights();
+  const { data: scatterData, isLoading: isScatterLoading, error: scatterError } = useScatterData();
+
+  const top3 = rankingsData.slice(0, 3);
 
   return (
     <div className="w-full flex flex-col items-center bg-canvas min-h-screen relative overflow-hidden">
@@ -64,46 +49,63 @@ export function RankingsPage() {
         <div className="w-full max-w-[1440px] px-md lg:px-xl py-xl flex flex-col items-start gap-xl flex-1">
           
           {/* Podium */}
-          <RankingsPodium topModels={top3} />
+          {isRankingsLoading ? (
+             <div className="w-full flex justify-center py-xl"><SkeletonLoader className="w-full max-w-2xl h-[300px]" /></div>
+          ) : rankingsError ? (
+             <ErrorStateBlock message="Failed to load rankings podium" />
+          ) : (
+            <RankingsPodium topModels={top3} />
+          )}
 
           <div className="w-full flex flex-col md:flex-row items-start gap-xl">
             {/* Left Column: Data Table */}
             <div className="w-full md:w-2/3">
-              <RankingsTable data={MOCK_DATA} />
+              {isRankingsLoading ? (
+                 <SkeletonLoader className="w-full h-[600px]" />
+              ) : rankingsError ? (
+                 <ErrorStateBlock message="Failed to load rankings table" />
+              ) : (
+                <RankingsTable data={rankingsData} />
+              )}
             </div>
 
             {/* Right Column: Cards Stack */}
             <div className="w-full md:w-1/3 flex flex-col gap-lg sticky top-[100px]">
-              <ChartCardScatter 
-                title="Intelligence Hub 2030"
-                subtitle="AKILLI ANALİZ & KIYAS"
-                isLive={true}
-                data={MOCK_SCATTER_DATA}
-              />
+              {isScatterLoading ? (
+                <SkeletonLoader className="w-full h-[350px]" />
+              ) : scatterError ? (
+                <ErrorStateBlock message="Failed to load scatter data" />
+              ) : (
+                <ChartCardScatter
+                  title="Intelligence Hub 2030"
+                  subtitle="AKILLI ANALİZ & KIYAS"
+                  isLive={true}
+                  data={scatterData}
+                />
+              )}
               
               <Card className="w-full p-lg flex flex-col">
                 <div className="flex flex-col gap-xs mb-sm">
                   <span className="text-label text-ink">EN ÇOK YÜKSELEN VE DÜŞEN MODELLER</span>
                   <h3 className="text-heading-sm text-ink">Haftalık Yükseklikler</h3>
                 </div>
-                <HighlightListItem 
-                  modelName="Gemini 1.5 Flash"
-                  developerInfo="Google · 1M Context"
-                  delta={24}
-                  price="$0.35 /1M"
-                />
-                <HighlightListItem 
-                  modelName="Mistral Large 2"
-                  developerInfo="Mistral · 128k Context"
-                  delta={11}
-                  price="$3.00 /1M"
-                />
-                <HighlightListItem 
-                  modelName="Claude 3 Opus"
-                  developerInfo="Anthropic · 200k Context"
-                  delta={-4}
-                  price="$15.00 /1M"
-                />
+                {isHighlightsLoading ? (
+                  <SkeletonLoader className="w-full h-[200px]" />
+                ) : highlightsError ? (
+                  <ErrorStateBlock message="Failed to load highlights" />
+                ) : highlightsData.length === 0 ? (
+                  <div className="py-md text-center text-body-sm text-muted">Haftalık veri bulunamadı.</div>
+                ) : (
+                  highlightsData.map(highlight => (
+                    <HighlightListItem
+                      key={highlight.id}
+                      modelName={highlight.modelName}
+                      developerInfo={highlight.developerInfo}
+                      delta={highlight.delta}
+                      price={highlight.price}
+                    />
+                  ))
+                )}
               </Card>
 
               <CostSimulatorCard />
