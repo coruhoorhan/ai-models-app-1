@@ -70,14 +70,14 @@ export function RankingsPage() {
           {/* Interactive Arena Battle Simulator */}
           <ArenaBattleSimulator />
 
-          <div className="w-full flex flex-col md:flex-row items-start gap-xl">
+          <div className="w-full flex flex-col lg:flex-row items-start gap-xl">
             {/* Left Column: Data Table */}
-            <div className="w-full md:w-2/3">
+            <div className="w-full lg:w-2/3 overflow-x-auto">
               <RankingsTable data={MOCK_DATA} />
             </div>
 
             {/* Right Column: Cards Stack */}
-            <div className="w-full md:w-1/3 flex flex-col gap-lg sticky top-[100px]">
+            <div className="w-full lg:w-1/3 flex flex-col gap-lg sticky top-[100px]">
               <ChartCardScatter 
                 title="Intelligence Hub 2030"
                 subtitle="AKILLI ANALİZ & KIYAS"
@@ -117,7 +117,7 @@ export function RankingsPage() {
 
         {/* Bottom Section: Methodology */}
         <div className="w-full border-t border-hairline bg-surface flex justify-center mt-xl">
-          <div className="w-full max-w-[1440px] px-md lg:px-xl py-xl flex flex-col md:flex-row gap-xl justify-between">
+          <div className="w-full max-w-[1440px] px-md lg:px-xl py-xl flex flex-col lg:flex-row gap-xl justify-between">
             <MethodologyTile 
               icon={BarChart2}
               title="QA Kör Arena Testleri"

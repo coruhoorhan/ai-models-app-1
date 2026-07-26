@@ -79,7 +79,7 @@ Estimated Monthly Investment: $${totalMonthlyEstimate.toLocaleString()}/mo`;
           {/* SLA Options */}
           <div className="flex flex-col gap-xs">
             <span className="text-body-sm text-ink font-medium">Uptime SLA Guarantee</span>
-            <div className="grid grid-cols-3 gap-xs">
+            <div className="flex flex-col lg:flex-row gap-xs">
               {[
                 { tier: '99.9', label: '99.9% SLA', desc: 'Standard Edge' },
                 { tier: '99.99', label: '99.99% SLA', desc: 'Dual-Region Failover' },
@@ -88,7 +88,7 @@ Estimated Monthly Investment: $${totalMonthlyEstimate.toLocaleString()}/mo`;
                 <button
                   key={item.tier}
                   onClick={() => setSlaTier(item.tier as any)}
-                  className={`p-sm rounded-sm border text-left flex flex-col gap-[2px] transition-colors ${
+                  className={`flex-1 p-sm rounded-sm border text-left flex flex-col gap-[2px] transition-colors ${
                     slaTier === item.tier ? 'border-ink bg-canvas font-bold' : 'border-hairline bg-surface hover:bg-canvas'
                   }`}
                 >

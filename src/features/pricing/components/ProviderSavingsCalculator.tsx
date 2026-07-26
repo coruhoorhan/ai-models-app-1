@@ -41,7 +41,7 @@ export function ProviderSavingsCalculator() {
         </div>
 
         {/* Model Switcher Buttons */}
-        <div className="flex items-center gap-xs bg-canvas p-[3px] border border-hairline rounded-sm">
+        <div className="flex items-center gap-xs bg-canvas p-[3px] border border-hairline rounded-sm overflow-x-auto">
           {(Object.keys(modelRates) as Array<keyof typeof modelRates>).map((key) => (
             <button
               key={key}
@@ -80,7 +80,7 @@ export function ProviderSavingsCalculator() {
             <span>200M tokens</span>
           </div>
 
-          <div className="grid grid-cols-2 gap-sm pt-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-sm pt-sm">
             <div className="p-sm rounded-sm bg-canvas border border-hairline flex items-center justify-between">
               <span className="text-body-sm text-muted">Input Split (70%)</span>
               <span className="text-body-sm font-mono text-ink font-bold">{(tokensM * 0.7).toFixed(1)}M tok</span>

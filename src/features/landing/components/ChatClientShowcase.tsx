@@ -41,7 +41,7 @@ export function ChatClientShowcase() {
   };
 
   return (
-    <section className="w-full flex flex-col lg:flex-row gap-xl py-section px-lg lg:px-xl">
+    <section className="w-full flex flex-col lg:flex-row gap-xl py-xl px-md lg:px-xl max-w-[1440px] mx-auto">
       {/* Left: Interactive Chat Mockup */}
       <div className="flex-1 flex justify-center lg:justify-end">
         <div className="w-full max-w-[600px] bg-canvas border border-hairline rounded-lg overflow-hidden flex h-[460px] shadow-sm">

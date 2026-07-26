@@ -46,7 +46,7 @@ export function DocsHeaderInspector() {
         <span className="text-label text-subtle font-mono">X-OPENROUTER-* METRICS</span>
       </div>
 
-      <div className="border border-hairline rounded-sm overflow-hidden">
+      <div className="border border-hairline rounded-sm overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-canvas border-b border-hairline text-label text-subtle font-mono">

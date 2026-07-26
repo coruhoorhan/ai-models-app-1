@@ -40,7 +40,7 @@ export function DocsContentArea({ article }: DocsContentAreaProps) {
       {article.paramTable && article.paramTable.length > 0 && (
         <div className="flex flex-col gap-xs my-sm">
           <span className="text-heading-sm text-ink font-bold mb-xs">Request Body Parameters</span>
-          <div className="border border-hairline rounded-sm overflow-hidden">
+          <div className="border border-hairline rounded-sm overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-surface border-b border-hairline text-label text-subtle font-mono">

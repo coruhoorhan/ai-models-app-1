@@ -38,7 +38,7 @@ export function ModelBenchmarkComparison() {
   );
 
   return (
-    <section className="w-full flex flex-col gap-lg py-section px-lg lg:px-xl border-t border-hairline">
+    <section className="w-full flex flex-col gap-lg py-xl px-md lg:px-xl border-t border-hairline max-w-[1440px] mx-auto">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-md">
         <div>
           <span className="text-label text-subtle mb-xs block">REAL-TIME BENCHMARKS</span>

@@ -48,7 +48,7 @@ export function DashboardPage() {
             iconColor="chart-green"
             label="CURRENT BALANCE"
             value={isStatsLoading ? '...' : statsData?.balance || '0'}
-            className="border-b md:border-b-0 md:border-r border-hairline rounded-none border-t-0 border-l-0"
+            className="border-b lg:border-b-0 md:border-r border-hairline rounded-none border-t-0 border-l-0"
             secondaryStat={{ label: 'CONSUMPTION', value: isStatsLoading ? '...' : statsData?.consumption || '0' }}
           />
           <StatCard

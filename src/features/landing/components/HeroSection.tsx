@@ -21,7 +21,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="w-full flex flex-col xl:flex-row gap-xl pt-section pb-xl px-lg lg:px-xl">
+    <section className="w-full flex flex-col xl:flex-row gap-xl pt-xl pb-xl px-md lg:px-xl">
       {/* Left Column */}
       <div className="flex-1 flex flex-col items-start gap-lg">
         <Badge variant="status-live" label="ROUTER ONLINE" />
@@ -48,13 +48,13 @@ export function HeroSection() {
         </div>
         
         {/* Stat Row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-0 border border-hairline rounded-md mt-lg bg-canvas w-full max-w-[560px]">
-          <div className="p-md flex flex-col border-r border-b md:border-b-0 border-hairline">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-0 border border-hairline rounded-md mt-lg bg-canvas w-full max-w-[560px]">
+          <div className="p-md flex flex-col border-r border-b lg:border-b-0 border-hairline">
             <span className="text-label text-subtle mb-xs">MODELS</span>
             <span className="text-stat-number text-ink mb-1">217</span>
             <span className="text-body-sm text-muted">Routable</span>
           </div>
-          <div className="p-md flex flex-col border-r md:border-b-0 border-b border-hairline">
+          <div className="p-md flex flex-col lg:border-r border-b lg:border-b-0 border-hairline">
             <span className="text-label text-subtle mb-xs">PROVIDERS</span>
             <span className="text-stat-number text-ink mb-1">36+</span>
             <span className="text-body-sm text-muted">Upstreams</span>

@@ -45,8 +45,8 @@ export function PopularPaths() {
   };
 
   return (
-    <section className="w-full flex flex-col gap-xl py-section relative">
-      <div className="flex flex-col items-center text-center px-lg">
+    <section className="w-full flex flex-col gap-xl py-xl relative max-w-[1440px] mx-auto">
+      <div className="flex flex-col items-center text-center px-md lg:px-xl">
         <span className="text-label text-subtle mb-md">POPULAR PATHS</span>
         <h2 className="text-heading-lg text-ink mb-sm">Integrate anywhere.</h2>
         <p className="text-body text-muted max-w-2xl">
@@ -54,7 +54,7 @@ export function PopularPaths() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-md px-lg lg:px-xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-md px-md lg:px-xl">
         <FeatureCard
           icon={Code2}
           accentColor="chart-green"

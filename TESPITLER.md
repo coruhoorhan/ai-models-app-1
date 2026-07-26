@@ -39,3 +39,12 @@ Tüm temel geliştirmeler ve tasarım standartı hizalamaları tamamlandı.
 ## Rankings Page Blueprint Uygulaması
 - **[DESIGN] Component Kaydı:** `RANKINGS-PAGE-BLUEPRINT.md` içerisindeki 4 yeni bileşen (`chart-card-scatter`, `highlight-list-item`, `cost-simulator-card`, `methodology-tile`) `DESIGN.md` Component Inventory bölümüne eklendi.
 - **[ARCH] Sayfa Taslağı Kaydı:** Rankings sayfası yapısı, kurallara uygun olarak `PAGES.md`'ye aktarıldı. İlk 3 sıra için tablo satırı vurgusu eklendi.
+
+### 3. Mobil ve Tablet (Responsive) Hata Tespitleri ve Eylem Planı (26.07.2026)
+- **Tespit:** `LandingPage`, `RankingsPage`, `DocsPage` ve diğer sayfalarda mobil/tablet ekranlarda (md) çoklu kolonların (`grid-cols-4`, `grid-cols-3` vs.) içeriği ezdiği, flex öğelerin yan yana taştığı (`flex-wrap` eksikliği) ve padding değerlerinin mobilde orantısız olduğu belirlendi.
+- **Kural Güncellemesi:** `AGENTS.md` ve `DESIGN.md` dosyalarına ZORUNLU KURAL olarak "Tablet (md) ekranlarda 3 veya 4 kolonlu grid YASAKTIR, maksimum 2 kolon olabilir. Flex alanlarda flex-wrap zorunludur" kuralı (Kural 14) eklendi.
+- **Eylem Planı:** Sırasıyla şu sayfa ve bileşenlere müdahale edilecek:
+  1. `LandingPage` bileşenleri (`HeroSection`, `PopularPaths`, `GlobalEdgeLatencyMap`, `ThreeSteps`, vb.) — Gridleri `grid-cols-1 md:grid-cols-2 lg:grid-cols-X` olarak yeniden yapılandırılacak.
+  2. `RankingsPage` — Podyum ve Arena bileşenleri mobilde alt alta geçecek şekilde düzeltilecek.
+  3. `DocsPage` — Sidebar mobilde tam genişlik alıp üstte görünecek, ana içerik (tablolar vs.) scroll eklenecek.
+  4. `PricingPage`, `ModelsPage` ve `DashboardPage` — Benzer responsive flex ve grid onarımları yapılacak.

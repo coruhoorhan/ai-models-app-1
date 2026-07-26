@@ -6,7 +6,7 @@ import { KeyDisplayField } from '../../../shared/ui/KeyDisplayField';
 
 export function ThreeSteps() {
   return (
-    <section className="w-full flex flex-col items-center gap-xl py-section px-lg lg:px-xl">
+    <section className="w-full flex flex-col items-center gap-xl py-xl px-md lg:px-xl max-w-[1440px] mx-auto">
       <div className="flex flex-col items-center text-center">
         <div className="flex items-center gap-xs px-sm py-[4px] bg-canvas border border-chart-purple text-chart-purple rounded-full mb-md">
           <Zap className="w-3 h-3" />
@@ -18,7 +18,7 @@ export function ThreeSteps() {
         </h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-md w-full max-w-[1200px]">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-md w-full max-w-[1200px]">
         {/* Step 1 */}
         <Card className="p-xl flex flex-col">
           <h3 className="text-heading-sm text-ink mb-md">Sign up</h3>

@@ -42,7 +42,7 @@ export function RankingsPodium({ topModels, className }: RankingsPodiumProps) {
       variants={container}
       initial="hidden"
       animate="show"
-      className={cn("w-full flex flex-col md:flex-row items-end justify-center gap-md py-xl", className)}
+      className={cn("w-full flex flex-col lg:flex-row items-center lg:items-end justify-center gap-md py-xl", className)}
     >
       <PodiumCard model={second} place={2} itemVariants={item} />
       <PodiumCard model={first} place={1} itemVariants={item} />
