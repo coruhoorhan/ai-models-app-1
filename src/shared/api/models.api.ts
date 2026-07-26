@@ -22,3 +22,30 @@ export const fetchModels = async (): Promise<ModelConfig[]> => {
   await new Promise((resolve) => setTimeout(resolve, 600));
   return mockModels;
 };
+
+export interface ModelsStats {
+  totalModels: number;
+  totalProviders: number;
+  freeModels: number;
+  paidModels: number;
+}
+
+export const fetchModelsStats = async (): Promise<ModelsStats> => {
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  const providers = new Set(mockModels.map(m => m.provider));
+  const freeModels = mockModels.filter(m => m.isFree).length;
+  const paidModels = mockModels.filter(m => !m.isFree).length;
+
+  return {
+    totalModels: mockModels.length,
+    totalProviders: providers.size,
+    freeModels,
+    paidModels,
+  };
+};
+
+export const fetchProviders = async (): Promise<string[]> => {
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  const providers = new Set(mockModels.map(m => m.provider));
+  return Array.from(providers);
+};

@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
-import { fetchModels, ModelConfig } from '../../../shared/api/models.api';
+import { fetchModels, ModelConfig, fetchModelsStats, ModelsStats, fetchProviders } from '../../../shared/api/models.api';
 import { logError } from '../../../shared/lib/logError';
 
 export function useModels() {
   const [data, setData] = useState<ModelConfig[]>([]);
+  const [stats, setStats] = useState<ModelsStats | null>(null);
+  const [providers, setProviders] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -13,8 +15,17 @@ export function useModels() {
     async function loadData() {
       try {
         setIsLoading(true);
-        const models = await fetchModels();
-        if (isMounted) setData(models);
+        const [models, modelsStats, providersList] = await Promise.all([
+          fetchModels(),
+          fetchModelsStats(),
+          fetchProviders()
+        ]);
+
+        if (isMounted) {
+          setData(models);
+          setStats(modelsStats);
+          setProviders(providersList);
+        }
       } catch (err) {
         if (isMounted) setError(err instanceof Error ? err : new Error('Unknown error'));
         logError(err);
@@ -27,5 +38,5 @@ export function useModels() {
     return () => { isMounted = false; };
   }, []);
 
-  return { data, isLoading, error };
+  return { data, stats, providers, isLoading, error };
 }

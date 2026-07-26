@@ -15,17 +15,28 @@ export function ModelsPage() {
 
   const [providerFilter, setProviderFilter] = useState('All');
   const [tierFilter, setTierFilter] = useState('All');
+  const [sortFilter, setSortFilter] = useState('popular');
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredData = useMemo(() => {
-    return data.filter(model => {
+    let filtered = data.filter(model => {
       const matchSearch = model.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           model.provider.toLowerCase().includes(searchQuery.toLowerCase());
       const matchProvider = providerFilter === 'All' || model.provider === providerFilter;
       const matchTier = tierFilter === 'All' || (tierFilter === 'Free' ? model.isFree : !model.isFree);
       return matchSearch && matchProvider && matchTier;
     });
-  }, [data, searchQuery, providerFilter, tierFilter]);
+
+    if (sortFilter === 'price') {
+      filtered = filtered.sort((a, b) => {
+        if (a.isFree && !b.isFree) return -1;
+        if (!a.isFree && b.isFree) return 1;
+        return a.price.localeCompare(b.price);
+      });
+    }
+
+    return filtered;
+  }, [data, searchQuery, providerFilter, tierFilter, sortFilter]);
 
   const columns = useMemo<ColumnDef<ModelConfig>[]>(() => [
     {
@@ -92,10 +103,9 @@ export function ModelsPage() {
                   <span className="w-2 h-2 rounded-full bg-live animate-pulse" />
                   <span className="text-label text-subtle">MODELS</span>
                 </div>
-                <h1 className="text-hero text-ink tracking-tight">Browse all models</h1>
+                <h1 className="text-heading-md text-ink tracking-tight">Browse all models</h1>
                 <p className="text-body-lg text-muted max-w-2xl">
-                  217 models across 36+ providers, routed through one unified API key. 
-                  Experience seamless integration and high-speed inference without the vendor lock-in.
+                  {isLoading ? 'Loading...' : `${data.length} models across ${new Set(data.map(m => m.provider)).size} providers, routed through one API key.`}
                 </p>
               </div>
               <ModelsStatsRow />
@@ -110,6 +120,8 @@ export function ModelsPage() {
               setProviderFilter={setProviderFilter}
               tierFilter={tierFilter}
               setTierFilter={setTierFilter}
+              sortFilter={sortFilter}
+              setSortFilter={setSortFilter}
             />
 
             {isLoading ? (
