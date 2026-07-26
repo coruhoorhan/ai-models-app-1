@@ -9,13 +9,15 @@ import { DashboardChart } from '../features/dashboard/components/DashboardChart'
 import { useDashboardStats, useDashboardChart } from '../features/dashboard/hooks/useDashboardData';
 import { DashboardApiInfoCard } from '../features/dashboard/components/DashboardApiInfoCard';
 import { DashboardQuickLinks } from '../features/dashboard/components/DashboardQuickLinks';
+import { SkeletonLoader } from '../shared/ui/SkeletonLoader';
+import { ErrorStateBlock } from '../shared/ui/ErrorStateBlock';
 
 export function DashboardPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentRange = searchParams.get('range') || '7d';
 
-  const { data: statsData, isLoading: isStatsLoading } = useDashboardStats();
-  const { data: chartData, isLoading: isChartLoading } = useDashboardChart(currentRange);
+  const { data: statsData, isLoading: isStatsLoading, error: statsError } = useDashboardStats();
+  const { data: chartData, isLoading: isChartLoading, error: chartError } = useDashboardChart(currentRange);
 
   const handleRangeChange = (range: string) => {
     setSearchParams({ range });
@@ -40,40 +42,46 @@ export function DashboardPage() {
         </div>
 
         {/* Stat Cards Row */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 border border-hairline rounded-md bg-canvas">
-          <StatCard
-            icon={Wallet}
-            iconColor="chart-green"
-            label="CURRENT BALANCE"
-            value={isStatsLoading ? '...' : statsData?.balance || '0'}
-            className="border-b md:border-b-0 md:border-r border-hairline rounded-none border-t-0 border-l-0"
-            secondaryStat={{ label: 'CONSUMPTION', value: isStatsLoading ? '...' : statsData?.consumption || '0' }}
-          />
-          <StatCard
-            icon={Send}
-            iconColor="chart-blue"
-            label="NUMBER OF REQUESTS"
-            value={isStatsLoading ? '...' : statsData?.requests || '0'}
-            className="border-b lg:border-b-0 lg:border-r border-hairline rounded-none border-t-0 border-l-0 md:border-r-0"
-            secondaryStat={{ label: 'STATISTICAL COUNT', value: isStatsLoading ? '...' : statsData?.statisticalCount || '0' }}
-          />
-          <StatCard
-            icon={DollarSign}
-            iconColor="error"
-            label="STATISTICAL QUOTA"
-            value={isStatsLoading ? '...' : statsData?.quota || '0'}
-            className="border-b md:border-b-0 md:border-r border-hairline rounded-none border-t-0 border-l-0"
-            secondaryStat={{ label: 'STATISTICAL TOKENS', value: isStatsLoading ? '...' : statsData?.tokens || '0' }}
-          />
-          <StatCard
-            icon={Gauge}
-            iconColor="chart-green"
-            label="AVERAGE RPM"
-            value={isStatsLoading ? '...' : statsData?.averageRpm || '0'}
-            className="rounded-none border-t-0 border-l-0 border-r-0 border-b-0"
-            secondaryStat={{ label: 'AVERAGE TPM', value: isStatsLoading ? '...' : statsData?.averageTpm || '0' }}
-          />
-        </div>
+        {isStatsLoading ? (
+          <SkeletonLoader className="w-full h-[120px]" />
+        ) : statsError ? (
+          <ErrorStateBlock message="Failed to load dashboard stats" />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 border border-hairline rounded-md bg-canvas">
+            <StatCard
+              icon={Wallet}
+              iconColor="chart-green"
+              label="CURRENT BALANCE"
+              value={statsData?.balance || '0'}
+              className="border-b md:border-b-0 md:border-r border-hairline rounded-none border-t-0 border-l-0"
+              secondaryStat={{ label: 'CONSUMPTION', value: statsData?.consumption || '0' }}
+            />
+            <StatCard
+              icon={Send}
+              iconColor="chart-blue"
+              label="NUMBER OF REQUESTS"
+              value={statsData?.requests || '0'}
+              className="border-b lg:border-b-0 lg:border-r border-hairline rounded-none border-t-0 border-l-0 md:border-r-0"
+              secondaryStat={{ label: 'STATISTICAL COUNT', value: statsData?.statisticalCount || '0' }}
+            />
+            <StatCard
+              icon={DollarSign}
+              iconColor="error"
+              label="STATISTICAL QUOTA"
+              value={statsData?.quota || '0'}
+              className="border-b md:border-b-0 md:border-r border-hairline rounded-none border-t-0 border-l-0"
+              secondaryStat={{ label: 'STATISTICAL TOKENS', value: statsData?.tokens || '0' }}
+            />
+            <StatCard
+              icon={Gauge}
+              iconColor="chart-green"
+              label="AVERAGE RPM"
+              value={statsData?.averageRpm || '0'}
+              className="rounded-none border-t-0 border-l-0 border-r-0 border-b-0"
+              secondaryStat={{ label: 'AVERAGE TPM', value: statsData?.averageTpm || '0' }}
+            />
+          </div>
+        )}
 
         {/* Chart & Side Card */}
         <div className="flex flex-col xl:flex-row gap-md">
@@ -109,7 +117,9 @@ export function DashboardPage() {
             
             <div className="flex-1 bg-canvas flex items-center justify-center">
               {isChartLoading ? (
-                <div className="text-body-sm text-subtle">Loading chart data...</div>
+                <SkeletonLoader className="w-full h-full min-h-[300px]" />
+              ) : chartError ? (
+                <ErrorStateBlock message="Failed to load chart data" />
               ) : (
                 <DashboardChart data={chartData} />
               )}
