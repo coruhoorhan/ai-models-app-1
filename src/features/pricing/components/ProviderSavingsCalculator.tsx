@@ -41,7 +41,7 @@ export function ProviderSavingsCalculator() {
         </div>
 
         {/* Model Switcher Buttons */}
-        <div className="flex items-center gap-xs bg-canvas p-[3px] border border-hairline rounded-sm overflow-x-auto">
+        <div className="flex items-center gap-xs bg-canvas p-xxs border border-hairline rounded-sm overflow-x-auto">
           {(Object.keys(modelRates) as Array<keyof typeof modelRates>).map((key) => (
             <button
               key={key}

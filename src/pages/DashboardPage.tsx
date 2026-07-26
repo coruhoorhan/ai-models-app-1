@@ -35,7 +35,7 @@ export function DashboardPage() {
             </div>
             <h1 className="text-heading-md text-ink">Good afternoon, admin</h1>
           </div>
-          <div className="flex items-center gap-sm px-sm py-[6px] border border-hairline rounded-sm bg-surface">
+          <div className="flex items-center gap-sm px-sm py-xs border border-hairline rounded-sm bg-surface">
             <Calendar className="w-4 h-4 text-muted" />
             <span className="text-body-sm text-ink">Apr 23, 2024</span>
           </div>
@@ -89,7 +89,7 @@ export function DashboardPage() {
                 <select 
                   value={currentRange}
                   onChange={(e) => handleRangeChange(e.target.value)}
-                  className="px-sm py-[4px] border border-hairline rounded-sm text-body-sm text-ink bg-surface outline-none cursor-pointer"
+                  className="px-sm py-xxs border border-hairline rounded-sm text-body-sm text-ink bg-surface outline-none cursor-pointer"
                 >
                   <option value="24h">Last 24 hours</option>
                   <option value="7d">Last 7 days</option>

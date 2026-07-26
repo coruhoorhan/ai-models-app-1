@@ -20,7 +20,7 @@ export function HighlightListItem({ modelName, developerInfo, delta, price, clas
         {delta !== undefined && (
           <span
             className={cn(
-              "text-caption-bold rounded-xs px-2 py-[2px]",
+              "text-caption-bold rounded-xs px-2 py-xxs",
               delta >= 0
                 ? "bg-live-bg text-live"
                 : "bg-error/10 text-error"

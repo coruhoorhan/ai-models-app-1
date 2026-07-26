@@ -88,7 +88,7 @@ print(completion.choices[0].message.content)`,
     'meta-llama/llama-3.3-70b-instruct'
   ],
   messages: [{ role: 'user', content: 'Generate a TypeScript GraphQL schema for a blog.' }]
-} as any);`,
+} as unknown as object);`,
           python: `completion = client.chat.completions.create(
   extra_body={
     "models": [

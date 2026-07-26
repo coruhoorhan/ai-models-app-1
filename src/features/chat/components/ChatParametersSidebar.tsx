@@ -26,7 +26,7 @@ export function ChatParametersSidebar({ params, onChange, onReset }: ChatParamet
         </div>
         <button 
           onClick={onReset}
-          className="text-[11px] font-mono text-muted hover:text-ink flex items-center gap-[2px]"
+          className="text-label font-mono text-muted hover:text-ink flex items-center gap-xxs"
           title="Reset Parameters"
         >
           <RotateCcw className="w-3 h-3" /> Reset
@@ -43,13 +43,13 @@ export function ChatParametersSidebar({ params, onChange, onReset }: ChatParamet
           placeholder="System prompt..."
           className="bg-surface border border-hairline rounded-sm p-sm text-body-sm text-ink outline-none focus:border-ink resize-none font-sans"
         />
-        <div className="flex flex-col gap-[3px] mt-xs">
-          <span className="text-[10px] text-subtle uppercase font-mono">Quick Presets</span>
+        <div className="flex flex-col gap-xxs mt-xs">
+          <span className="text-label text-subtle uppercase font-mono">Quick Presets</span>
           {systemPresets.map((p, idx) => (
             <button
               key={idx}
               onClick={() => onChange({ ...params, systemPrompt: p.prompt })}
-              className="text-left text-[11px] px-xs py-[3px] rounded-xs bg-surface hover:bg-surface-sunken text-ink border border-hairline truncate transition-colors"
+              className="text-left text-label px-xs py-xxs rounded-xs bg-surface hover:bg-surface-sunken text-ink border border-hairline truncate transition-colors"
             >
               {p.label}
             </button>
@@ -72,7 +72,7 @@ export function ChatParametersSidebar({ params, onChange, onReset }: ChatParamet
           onChange={(e) => onChange({ ...params, temperature: Number(e.target.value) })}
           className="w-full accent-ink cursor-pointer h-2 bg-surface-sunken rounded-lg"
         />
-        <div className="flex justify-between text-[10px] text-subtle font-mono">
+        <div className="flex justify-between text-label text-subtle font-mono">
           <span>Precise (0.0)</span>
           <span>Balanced (0.7)</span>
           <span>Creative (1.5)</span>
@@ -106,7 +106,7 @@ export function ChatParametersSidebar({ params, onChange, onReset }: ChatParamet
         >
           <div className="flex flex-col">
             <span className="text-body-sm font-bold text-ink">Auto-Fallback Chain</span>
-            <span className="text-[11px] text-muted">Reroute on primary timeout</span>
+            <span className="text-label text-muted">Reroute on primary timeout</span>
           </div>
           <Shield className={`w-4 h-4 ${params.autoFallback ? 'text-live' : 'text-subtle'}`} />
         </div>
@@ -115,7 +115,7 @@ export function ChatParametersSidebar({ params, onChange, onReset }: ChatParamet
           <select
             value={params.fallbackModelId}
             onChange={(e) => onChange({ ...params, fallbackModelId: e.target.value })}
-            className="bg-surface border border-hairline rounded-sm p-xs text-[11px] font-mono text-ink outline-none mt-xs cursor-pointer"
+            className="bg-surface border border-hairline rounded-sm p-xs text-label font-mono text-ink outline-none mt-xs cursor-pointer"
           >
             <option value="openai/gpt-4o">Fallback: openai/gpt-4o</option>
             <option value="meta-llama/llama-3.3-70b-instruct">Fallback: llama-3.3-70b-instruct</option>

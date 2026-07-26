@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Sparkles, Zap, DollarSign, Clock, ArrowRight, Check } from 'lucide-react';
 import { Card } from '../../../shared/ui/Card';
 import { Badge } from '../../../shared/ui/Badge';
-import { Button } from '../../../shared/ui/Button';
 import { useNavigate } from 'react-router-dom';
+import { ModelBenchmarkCard } from './ModelBenchmarkCard';
 
 interface ModelData {
   id: string;
@@ -32,7 +31,6 @@ export function ModelBenchmarkComparison() {
   const [selectedModel, setSelectedModel] = useState<ModelData>(MODELS[0]);
 
   const categories = ['All', 'Coding', 'Reasoning', 'Speed', 'Vision'];
-
   const filteredModels = MODELS.filter(m => 
     activeCategory === 'All' || m.category === activeCategory
   );
@@ -44,9 +42,9 @@ export function ModelBenchmarkComparison() {
           <span className="text-label text-subtle mb-xs block">REAL-TIME BENCHMARKS</span>
           <h2 className="text-heading-lg text-ink">Compare performance & cost.</h2>
         </div>
-
+        
         {/* Category Tabs */}
-        <div className="flex items-center gap-xs bg-surface border border-hairline p-[3px] rounded-sm overflow-x-auto">
+        <div className="flex items-center gap-xs bg-surface border border-hairline p-xxs rounded-sm overflow-x-auto">
           {categories.map((cat) => (
             <button
               key={cat}
@@ -88,7 +86,7 @@ export function ModelBenchmarkComparison() {
                     <span className="text-body-sm text-muted">{model.provider} • {model.category}</span>
                   </div>
                 </div>
-
+                
                 <div className="flex items-center gap-lg">
                   <div className="flex flex-col text-right">
                     <span className="text-label text-subtle">SPEED</span>
@@ -109,44 +107,10 @@ export function ModelBenchmarkComparison() {
         </div>
 
         {/* Detailed Benchmark Card */}
-        <Card className="p-xl flex flex-col justify-between border-hairline bg-surface">
-          <div>
-            <div className="flex items-center justify-between mb-md">
-              <span className="text-label text-subtle">BENCHMARK BREAKDOWN</span>
-              <Sparkles className="w-4 h-4 text-chart-teal" />
-            </div>
-
-            <h3 className="text-heading-sm text-ink mb-xs">{selectedModel.name}</h3>
-            <p className="text-body-sm text-muted mb-lg">Optimized router latency via lowest-cost active edge nodes.</p>
-
-            <div className="flex flex-col gap-md mb-lg">
-              <div>
-                <div className="flex justify-between text-body-sm mb-xs">
-                  <span className="text-muted">Intelligence Score</span>
-                  <span className="font-mono text-ink font-bold">{selectedModel.score}/100</span>
-                </div>
-                <div className="w-full h-2 rounded-full bg-surface-sunken overflow-hidden">
-                  <div className="h-full bg-chart-blue rounded-full transition-all duration-500" style={{ width: `${selectedModel.score}%` }} />
-                </div>
-              </div>
-
-              <div>
-                <div className="flex justify-between text-body-sm mb-xs">
-                  <span className="text-muted">Throughput (Tokens/sec)</span>
-                  <span className="font-mono text-ink font-bold">{selectedModel.tokensPerSec} t/s</span>
-                </div>
-                <div className="w-full h-2 rounded-full bg-surface-sunken overflow-hidden">
-                  <div className="h-full bg-chart-teal rounded-full transition-all duration-500" style={{ width: `${Math.min(100, (selectedModel.tokensPerSec / 300) * 100)}%` }} />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <Button variant="primary" className="w-full justify-between" onClick={() => navigate('/models')}>
-            <span>TEST {selectedModel.name.toUpperCase()}</span>
-            <ArrowRight className="w-4 h-4" />
-          </Button>
-        </Card>
+        <ModelBenchmarkCard 
+          model={selectedModel} 
+          onTestModel={() => navigate('/models')} 
+        />
       </div>
     </section>
   );

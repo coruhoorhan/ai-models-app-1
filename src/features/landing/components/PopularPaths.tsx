@@ -109,11 +109,11 @@ export function PopularPaths() {
             
             <p className="text-body-sm text-muted">{activeGuide.desc}</p>
             
-            <div className="relative bg-surface-sunken border border-hairline rounded-sm p-md font-mono text-[13px] text-ink overflow-x-auto">
+            <div className="relative bg-surface-sunken border border-hairline rounded-sm p-md font-mono text-mono-inline text-ink overflow-x-auto">
               <pre className="whitespace-pre">{activeGuide.code}</pre>
               <button
                 onClick={() => handleCopy(activeGuide.code)}
-                className="absolute top-2 right-2 p-xs bg-surface border border-hairline rounded-sm hover:bg-surface-sunken text-muted hover:text-ink flex items-center gap-xs text-[11px]"
+                className="absolute top-2 right-2 p-xs bg-surface border border-hairline rounded-sm hover:bg-surface-sunken text-muted hover:text-ink flex items-center gap-xs text-label"
               >
                 {copied ? <Check className="w-3.5 h-3.5 text-live" /> : <Copy className="w-3.5 h-3.5" />}
                 {copied ? 'Copied!' : 'Copy'}

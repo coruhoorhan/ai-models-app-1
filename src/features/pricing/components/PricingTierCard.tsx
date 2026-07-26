@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { Variants } from 'motion/react';
 import { Check, ArrowRight, LucideIcon } from 'lucide-react';
 import { Card } from '../../../shared/ui/Card';
 import { Button } from '../../../shared/ui/Button';
@@ -19,7 +20,7 @@ export interface PricingTier {
 interface PricingTierCardProps {
   tier: PricingTier;
   isAnnual: boolean;
-  itemVariants: any;
+  itemVariants: Variants;
 }
 
 export function PricingTierCard({ tier, isAnnual, itemVariants }: PricingTierCardProps) {
@@ -34,7 +35,7 @@ export function PricingTierCard({ tier, isAnnual, itemVariants }: PricingTierCar
           <Icon className="w-5 h-5 text-muted group-hover:text-ink transition-colors" />
         </div>
         <div className="flex items-baseline gap-xs">
-          <span className="text-[44px] font-bold tracking-tight font-mono text-ink">
+          <span className="text-display font-bold tracking-tight font-mono text-ink">
             {displayPrice}
           </span>
           {tier.period && (

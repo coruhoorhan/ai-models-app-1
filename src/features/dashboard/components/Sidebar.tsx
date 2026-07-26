@@ -84,7 +84,7 @@ export function Sidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () =>
 
       {/* Bottom */}
       <div className="p-md border-t border-white/10">
-        <div className="flex items-center justify-between px-sm py-[6px] rounded-sm hover:bg-white/5 cursor-pointer">
+        <div className="flex items-center justify-between px-sm py-xs rounded-sm hover:bg-white/5 cursor-pointer">
           <div className="flex items-center gap-xs">
             <span className="w-2 h-2 rounded-full bg-live" />
             <span className="text-body-sm text-subtle">Status</span>

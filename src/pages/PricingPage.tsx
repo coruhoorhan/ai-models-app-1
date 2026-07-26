@@ -42,7 +42,7 @@ export function PricingPage() {
                 className="flex flex-col items-center gap-md"
               >
                 <span className="text-label text-ink">PRICING PLANS</span>
-                <h1 className="text-[64px] lg:text-[72px] leading-[1.05] font-extrabold tracking-tight text-ink max-w-[800px]">
+                <h1 className="text-hero lg:text-hero leading-[1.05] font-extrabold tracking-tight text-ink max-w-[800px]">
                   Pay only for what you use.
                 </h1>
                 <p className="text-body-lg text-muted max-w-[600px] mt-sm">
@@ -68,7 +68,7 @@ export function PricingPage() {
                     className={cn("px-md py-xs text-body-sm font-medium rounded-sm transition-all flex items-center gap-2", isAnnual ? "bg-canvas border border-hairline shadow-sm text-ink" : "text-muted hover:text-ink border border-transparent")}
                   >
                     Annually
-                    <span className="text-[10px] uppercase px-1.5 py-[1px] rounded-xs bg-live/10 text-live border border-live/20 leading-none">SAVE 20%</span>
+                    <span className="text-label uppercase px-1.5 py-xxs rounded-xs bg-live/10 text-live border border-live/20 leading-none">SAVE 20%</span>
                   </button>
                 </div>
               </motion.div>

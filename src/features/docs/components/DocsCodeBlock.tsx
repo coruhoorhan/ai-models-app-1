@@ -27,7 +27,7 @@ export function DocsCodeBlock({ snippets }: DocsCodeBlockProps) {
       <div className="h-[40px] bg-canvas border-b border-hairline px-md flex items-center justify-between">
         <div className="flex items-center gap-xs">
           <Code className="w-4 h-4 text-muted" />
-          <div className="flex items-center gap-[2px]">
+          <div className="flex items-center gap-xxs">
             {[
               { id: 'ts', label: 'TypeScript / Node' },
               { id: 'python', label: 'Python SDK' },
@@ -35,7 +35,7 @@ export function DocsCodeBlock({ snippets }: DocsCodeBlockProps) {
             ].map((item) => (
               <button
                 key={item.id}
-                onClick={() => setLang(item.id as any)}
+                onClick={() => setLang(item.id as 'ts' | 'python' | 'curl')}
                 className={`px-sm py-xs text-label rounded-xs font-mono transition-colors ${
                   lang === item.id
                     ? 'bg-ink text-canvas font-bold'
@@ -50,7 +50,7 @@ export function DocsCodeBlock({ snippets }: DocsCodeBlockProps) {
 
         <button
           onClick={handleCopy}
-          className="flex items-center gap-xs text-label font-mono text-muted hover:text-ink px-xs py-[2px] rounded-xs border border-hairline bg-surface"
+          className="flex items-center gap-xs text-label font-mono text-muted hover:text-ink px-xs py-xxs rounded-xs border border-hairline bg-surface"
         >
           {copied ? <Check className="w-3.5 h-3.5 text-live" /> : <Copy className="w-3.5 h-3.5" />}
           <span>{copied ? 'Copied' : 'Copy'}</span>

@@ -96,13 +96,13 @@ export function DocsApiExplorer() {
             <div className="flex items-center justify-between border-b border-hairline pb-xs mb-xs">
               <span className="text-label text-subtle font-mono">RESPONSE PAYLOAD</span>
               {latency && (
-                <span className="text-label font-mono text-chart-teal flex items-center gap-[2px]">
+                <span className="text-label font-mono text-chart-teal flex items-center gap-xxs">
                   <Clock className="w-3 h-3" /> {latency}ms
                 </span>
               )}
             </div>
 
-            <pre className="text-[12px] font-mono text-ink whitespace-pre-wrap overflow-x-auto max-h-[180px]">
+            <pre className="text-body-sm font-mono text-ink whitespace-pre-wrap overflow-x-auto max-h-[180px]">
               {response || '// Click "Send API Test Payload" to trigger real-time endpoint execution.'}
             </pre>
           </div>

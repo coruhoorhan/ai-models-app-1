@@ -23,7 +23,7 @@ export function ChatMessageItem({ message }: ChatMessageItemProps) {
       <div className="flex items-center gap-xs px-xs">
         {isUser ? (
           <>
-            <span className="text-[11px] font-medium text-muted">You</span>
+            <span className="text-label font-medium text-muted">You</span>
             <div className="w-4 h-4 rounded-full bg-ink text-canvas flex items-center justify-center text-[9px] font-bold">
               U
             </div>
@@ -33,14 +33,14 @@ export function ChatMessageItem({ message }: ChatMessageItemProps) {
             <div className="w-4 h-4 rounded-full bg-live text-canvas flex items-center justify-center text-[9px] font-bold">
               <Sparkles className="w-2.5 h-2.5" />
             </div>
-            <span className="text-[11px] font-bold text-ink">{message.modelName || 'OpenRouter LLM'}</span>
+            <span className="text-label font-bold text-ink">{message.modelName || 'OpenRouter LLM'}</span>
             {message.tokensPerSec && (
-              <span className="text-[10px] font-mono text-chart-teal flex items-center gap-[2px]">
+              <span className="text-label font-mono text-chart-teal flex items-center gap-xxs">
                 <Zap className="w-2.5 h-2.5" /> {message.tokensPerSec} t/s
               </span>
             )}
             {message.latencyMs && (
-              <span className="text-[10px] font-mono text-muted flex items-center gap-[2px]">
+              <span className="text-label font-mono text-muted flex items-center gap-xxs">
                 <Clock className="w-2.5 h-2.5" /> {message.latencyMs}ms
               </span>
             )}
@@ -71,7 +71,7 @@ export function ChatMessageItem({ message }: ChatMessageItemProps) {
 
         {/* Token Footer */}
         {!isUser && message.tokensUsed && (
-          <div className="mt-xs pt-xs border-t border-hairline/50 flex justify-between items-center text-[10px] font-mono text-subtle">
+          <div className="mt-xs pt-xs border-t border-hairline/50 flex justify-between items-center text-label font-mono text-subtle">
             <span>Tokens: {message.tokensUsed}</span>
             <span>{message.timestamp}</span>
           </div>

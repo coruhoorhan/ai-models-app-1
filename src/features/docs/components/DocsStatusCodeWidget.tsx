@@ -79,7 +79,7 @@ export function DocsStatusCodeWidget() {
 
       <div className="p-md bg-canvas border border-hairline rounded-sm flex flex-col gap-xs">
         <div className="flex items-center gap-xs">
-          <span className={`px-xs py-[2px] rounded-xs border text-label font-mono font-bold ${activeStatus.badgeClass}`}>
+          <span className={`px-xs py-xxs rounded-xs border text-label font-mono font-bold ${activeStatus.badgeClass}`}>
             HTTP {activeStatus.label}
           </span>
         </div>

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Swords, Sparkles, CheckCircle2, RotateCcw, Zap, Trophy } from 'lucide-react';
+import { Swords, RotateCcw, Trophy } from 'lucide-react';
 import { Card } from '../../../shared/ui/Card';
 import { Button } from '../../../shared/ui/Button';
 import { Badge } from '../../../shared/ui/Badge';
+import { ModelArenaCard } from './ModelArenaCard';
 
 export function ArenaBattleSimulator() {
   const [prompt, setPrompt] = useState('Write a concise Python function to calculate the Fibonacci sequence with memoization.');
@@ -28,17 +29,15 @@ export function ArenaBattleSimulator() {
 
     const fullA = `def fib(n, memo={}):\n    if n in memo: return memo[n]\n    if n <= 1: return n\n    memo[n] = fib(n-1, memo) + fib(n-2, memo)\n    return memo[n]`;
     const fullB = `from functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef fibonacci(n: int) -> int:\n    return n if n < 2 else fibonacci(n - 1) + fibonacci(n - 2)`;
-
+    
     let indexA = 0;
     let indexB = 0;
-
     const interval = setInterval(() => {
       indexA += 4;
       indexB += 3;
-
       if (indexA <= fullA.length) setOutputA(fullA.slice(0, indexA));
       if (indexB <= fullB.length) setOutputB(fullB.slice(0, indexB));
-
+      
       if (indexA >= fullA.length && indexB >= fullB.length) {
         clearInterval(interval);
         setIsBattling(false);
@@ -66,13 +65,13 @@ export function ArenaBattleSimulator() {
             <p className="text-body-sm text-muted">Test 2 anonymous models side-by-side and vote on response quality.</p>
           </div>
         </div>
-
+        
         <div className="flex items-center gap-xs flex-wrap">
           {samplePrompts.map((p, idx) => (
             <button
               key={idx}
               onClick={() => setPrompt(p)}
-              className="text-[11px] font-medium px-sm py-xs rounded-full border border-hairline bg-canvas hover:bg-surface-sunken text-ink transition-colors truncate max-w-[180px]"
+              className="text-label font-medium px-sm py-xs rounded-full border border-hairline bg-canvas hover:bg-surface-sunken text-ink transition-colors truncate max-w-[180px]"
             >
               Prompt #{idx + 1}
             </button>
@@ -103,59 +102,28 @@ export function ArenaBattleSimulator() {
       {/* Outputs Side-by-Side */}
       {(outputA || outputB || isBattling) && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-md animate-in fade-in duration-200">
-          {/* Model A */}
-          <div className={`p-md rounded-sm border flex flex-col justify-between min-h-[160px] ${
-            isRevealed && userVote === 'A' ? 'border-live bg-live/5' : 'border-hairline bg-canvas'
-          }`}>
-            <div>
-              <div className="flex items-center justify-between mb-xs pb-xs border-b border-hairline">
-                <span className="text-label text-subtle font-mono">
-                  {isRevealed ? 'Claude 3.5 Sonnet (Elo: 1279)' : 'MODEL A (Anonymous)'}
-                </span>
-                <span className="text-label text-chart-teal flex items-center gap-xs font-mono">
-                  <Zap className="w-3 h-3" /> 112 tok/s
-                </span>
-              </div>
-              <pre className="text-body-sm font-mono text-ink whitespace-pre-wrap">{outputA}</pre>
-            </div>
-
-            {!isRevealed && !isBattling && outputA && (
-              <Button 
-                variant="secondary" 
-                className="mt-md w-full justify-center text-body-sm"
-                onClick={() => handleVote('A')}
-              >
-                Vote Model A as Winner
-              </Button>
-            )}
-          </div>
-
-          {/* Model B */}
-          <div className={`p-md rounded-sm border flex flex-col justify-between min-h-[160px] ${
-            isRevealed && userVote === 'B' ? 'border-live bg-live/5' : 'border-hairline bg-canvas'
-          }`}>
-            <div>
-              <div className="flex items-center justify-between mb-xs pb-xs border-b border-hairline">
-                <span className="text-label text-subtle font-mono">
-                  {isRevealed ? 'GPT-4o (Elo: 1287)' : 'MODEL B (Anonymous)'}
-                </span>
-                <span className="text-label text-chart-blue flex items-center gap-xs font-mono">
-                  <Zap className="w-3 h-3" /> 135 tok/s
-                </span>
-              </div>
-              <pre className="text-body-sm font-mono text-ink whitespace-pre-wrap">{outputB}</pre>
-            </div>
-
-            {!isRevealed && !isBattling && outputB && (
-              <Button 
-                variant="secondary" 
-                className="mt-md w-full justify-center text-body-sm"
-                onClick={() => handleVote('B')}
-              >
-                Vote Model B as Winner
-              </Button>
-            )}
-          </div>
+          <ModelArenaCard
+            labelUnrevealed="MODEL A (Anonymous)"
+            labelRevealed="Claude 3.5 Sonnet (Elo: 1279)"
+            output={outputA}
+            isRevealed={isRevealed}
+            isBattling={isBattling}
+            isSelected={userVote === 'A'}
+            speed="112 tok/s"
+            speedColorClass="text-chart-teal"
+            onVote={() => handleVote('A')}
+          />
+          <ModelArenaCard
+            labelUnrevealed="MODEL B (Anonymous)"
+            labelRevealed="GPT-4o (Elo: 1287)"
+            output={outputB}
+            isRevealed={isRevealed}
+            isBattling={isBattling}
+            isSelected={userVote === 'B'}
+            speed="135 tok/s"
+            speedColorClass="text-chart-blue"
+            onVote={() => handleVote('B')}
+          />
         </div>
       )}
 
@@ -168,7 +136,7 @@ export function ArenaBattleSimulator() {
               <span className="text-body-sm font-bold text-ink">
                 Identity Revealed! You voted: {userVote === 'A' ? 'Model A (Claude 3.5 Sonnet)' : userVote === 'B' ? 'Model B (GPT-4o)' : 'Tie'}
               </span>
-              <p className="text-[12px] text-muted">Your vote was aggregated into our global blind arena Elo ratings.</p>
+              <p className="text-body-sm text-muted">Your vote was aggregated into our global blind arena Elo ratings.</p>
             </div>
           </div>
           <Button variant="secondary" icon={RotateCcw} onClick={handleStartBattle}>

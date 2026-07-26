@@ -52,12 +52,12 @@ export function DocsSidebar({
 
           return (
             <div key={cat.id} className="flex flex-col gap-xs">
-              <div className="flex items-center gap-xs px-xs py-[2px] font-bold text-body-sm text-ink border-b border-hairline pb-xs">
+              <div className="flex items-center gap-xs px-xs py-xxs font-bold text-body-sm text-ink border-b border-hairline pb-xs">
                 {getIcon(cat.iconName)}
                 <span>{cat.title}</span>
               </div>
 
-              <div className="flex flex-col gap-[2px] pl-xs">
+              <div className="flex flex-col gap-xxs pl-xs">
                 {filteredArticles.map((art) => {
                   const isActive = art.id === activeArticleId;
                   return (

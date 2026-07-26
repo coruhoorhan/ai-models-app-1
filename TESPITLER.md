@@ -48,3 +48,18 @@ Tüm temel geliştirmeler ve tasarım standartı hizalamaları tamamlandı.
   2. `RankingsPage` — Podyum ve Arena bileşenleri mobilde alt alta geçecek şekilde düzeltilecek.
   3. `DocsPage` — Sidebar mobilde tam genişlik alıp üstte görünecek, ana içerik (tablolar vs.) scroll eklenecek.
   4. `PricingPage`, `ModelsPage` ve `DashboardPage` — Benzer responsive flex ve grid onarımları yapılacak.
+
+### 4. Mimari İhlaller ve Proaktif İyileştirme Planı (Kural 3, Kural 9 ve Kural 12.6 - 26.07.2026)
+- **[ARCH - İHLAL 1] Route-Level Code Splitting Eksikliği:** `src/app/router/index.tsx` dosyasında tüm sayfalar (Dashboard, Landing, Models vb.) statik olarak doğrudan import ediliyor. Bu durum `ENGINEERING-STANDARDS.md`'deki performans bütçesi (bundle boyutunun 200KB'ı aşmaması) kuralını doğrudan ihlal ediyor. Uygulama büyüdükçe ilk yükleme (First Load) süresi felç olacaktır.
+- **[ARCH - İHLAL 2] ZORUNLU URL State (Kural 3) İhlali:** `ModelsPage.tsx` sayfasındaki arama metni (`searchQuery`) ve filtreler (`providerFilter`, `tierFilter`) kesin bir dille belirtilmiş olmasına rağmen `useSearchParams` yerine `useState` ile tutulmuş. Bu, kullanıcının filtreli bir sayfanın linkini kopyalayıp paylaşmasını imkansız kılıyor ve Kural 3'ün doğrudan çiğnenmesidir.
+- **[ARCH - TESPİT 3] API Server State & Caching Zayıflığı:** `useModels.ts` ve diğer veri çeken hook'larda herhangi bir önbellekleme (cache) mekanizması yok. Kullanıcı Models sayfası ile Landing arasında her gidip geldiğinde gereksiz yere tekrar yükleme tetikleniyor. SWR/React Query mantığını simüle eden basit bir global cache veya `stale-while-revalidate` yapısı kurulmalı.
+- **[UI/UX - TESPİT 4] Global Suspense Fallback Eksikliği:** Route-level code splitting yapıldığında, chunk'lar yüklenirken ekranın boş kalmaması için `DESIGN.md` standartlarına (merkezi, şık bir yükleme animasyonu veya Skeleton) uygun global bir `PageLoader` sarmalayıcısına ihtiyaç var.
+- **Özelleştiri:** Sistem, Kural 9 (Sahiplenme ve Proaktif Mimari) gereği bunları kullanıcının uyarısına gerek kalmadan tespit edip uygulamalıydı. Bu pasiflik "Senior Staff Engineer" rolüyle çelişmektedir. Mevcut görevden sonra tüm bu mimari borçlar sırasıyla temizlenecektir.
+
+### 5. Kapsamlı Sistem Taraması Sonuçları (AGENTS.md İhlalleri - 26.07.2026)
+- **[ARCH - İHLAL 3] Tip Güvenliği (Kural 4):** Sistem genelinde yapılan taramada 8 farklı dosyada (`DataTable.tsx`, `ChatWorkspace.tsx`, `EnterpriseCustomQuoteSection.tsx`, `DocsCodeBlock.tsx` vb.) `as any` tip zorlaması tespit edildi. `any` kullanımı kesinlikle yasaktır, `unknown` ve type-guard ile değiştirilmelidir.
+- **[ARCH - İHLAL 4] Magic Number / Arbitrary Değerler (Kural 7):** Onlarca bileşende `w-[200px]`, `h-[460px]`, `text-[13px]`, `max-w-[500px]` gibi hardcoded Tailwind sınıfları kullanılmış. Sadece DESIGN.md token'ları kullanılmalı kuralı ihlal edilmiştir.
+- **[ARCH - İHLAL 5] Dosya Uzunluğu (Kural 1):** Sistemde 11 dosya (ör. `ChatWorkspace.tsx` 250 satır, `DashboardRouterInspector.tsx` 202 satır) 150 satır sınırını aşmaktadır. Bu dosyalar acilen daha küçük sub-component'lere (presentational) ayrıştırılmalıdır.
+- **[ARCH - İHLAL 6] Kalan URL State Eksikleri (Kural 3):** `DocsPage.tsx` sayfasındaki arama durumu ve muhtemelen `ChatWorkspace`'teki bazı kalıcı filtreler hala `useState` ile yönetilmektedir.
+
+**Eylem Planı:** ONAY alındığı takdirde bu mimari ihlaller sırasıyla (önce any temizliği, sonra magic number temizliği, ardından dosya bölme) düzeltilecektir.

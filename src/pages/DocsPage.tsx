@@ -11,7 +11,18 @@ import { DocsContentArea } from '../features/docs/components/DocsContentArea';
 export function DocsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeArticleId = searchParams.get('article') || 'overview';
-  const [searchQuery, setSearchQuery] = useState('');
+  const searchQuery = searchParams.get('search') || '';
+
+  const setSearchQuery = (query: string) => {
+    setSearchParams(prev => {
+      if (query) {
+        prev.set('search', query);
+      } else {
+        prev.delete('search');
+      }
+      return prev;
+    }, { replace: true });
+  };
 
   // Find article by id, fallback to first article
   const allArticles = DOCS_DATA.flatMap((cat) => cat.articles);

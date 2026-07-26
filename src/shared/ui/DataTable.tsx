@@ -26,7 +26,7 @@ export function DataTable<T>({ data, columns, pageSize = 10, className, hideSear
     const lowerSearch = searchTerm.toLowerCase();
     return data.filter((item) => {
       // Basic text search across object values
-      return Object.values(item as any).some(
+      return Object.values(item as Record<string, unknown>).some(
         (val) => typeof val === 'string' && val.toLowerCase().includes(lowerSearch)
       );
     });
@@ -47,7 +47,7 @@ export function DataTable<T>({ data, columns, pageSize = 10, className, hideSear
             </div>
             <input
               type="text"
-              className="w-full bg-surface-sunken border border-hairline rounded-sm py-[6px] pl-[32px] pr-sm text-body-sm text-ink outline-none focus:border-chart-teal transition-colors"
+              className="w-full bg-surface-sunken border border-hairline rounded-sm py-xs pl-[32px] pr-sm text-body-sm text-ink outline-none focus:border-chart-teal transition-colors"
               placeholder="Search..."
               value={searchTerm}
               onChange={(e) => {

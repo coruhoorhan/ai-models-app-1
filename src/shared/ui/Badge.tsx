@@ -14,11 +14,11 @@ export function Badge({ variant, label, showDot, categoryColor, className }: Bad
     <div
       className={cn(
         'inline-flex items-center justify-center',
-        variant === 'status-live' && 'px-[12px] py-[6px] border border-hairline rounded-full bg-canvas',
-        variant === 'free' && 'px-xs py-[2px] bg-live-bg text-live rounded-xs text-label normal-case',
+        variant === 'status-live' && 'px-[12px] py-xs border border-hairline rounded-full bg-canvas',
+        variant === 'free' && 'px-xs py-xxs bg-live-bg text-live rounded-xs text-label normal-case',
         variant === 'category' && 'text-label', 
-        (variant === 'beta' || variant === 'new') && 'px-xs py-[2px] bg-surface text-muted border border-hairline rounded-xs text-label',
-        variant === 'error' && 'px-xs py-[2px] bg-red-50 text-error rounded-xs text-label normal-case',
+        (variant === 'beta' || variant === 'new') && 'px-xs py-xxs bg-surface text-muted border border-hairline rounded-xs text-label',
+        variant === 'error' && 'px-xs py-xxs bg-red-50 text-error rounded-xs text-label normal-case',
         className
       )}
     >

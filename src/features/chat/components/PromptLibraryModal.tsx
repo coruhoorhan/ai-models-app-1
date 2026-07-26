@@ -92,7 +92,7 @@ export function PromptLibraryModal({ isOpen, onClose, onSelectPrompt }: PromptLi
                 <Badge variant="free" label={item.category} />
               </div>
               <p className="text-body-sm text-muted">{item.description}</p>
-              <div className="p-xs bg-surface-sunken border border-hairline rounded-xs text-[11px] font-mono text-subtle truncate mt-xs">
+              <div className="p-xs bg-surface-sunken border border-hairline rounded-xs text-label font-mono text-subtle truncate mt-xs">
                 "{item.prompt}"
               </div>
             </div>

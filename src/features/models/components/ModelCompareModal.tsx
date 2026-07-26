@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { X, Check, ArrowRightLeft, Zap, DollarSign, ShieldCheck, Sparkles } from 'lucide-react';
+import { X, ArrowRightLeft, Zap } from 'lucide-react';
 import { ModelConfig } from '../../../shared/api/models.api';
 import { Button } from '../../../shared/ui/Button';
 import { Badge } from '../../../shared/ui/Badge';
+import { ModelCompareRow } from './ModelCompareRow';
 
 interface ModelCompareModalProps {
   models: ModelConfig[];
@@ -55,7 +56,6 @@ export function ModelCompareModal({ models, isOpen, onClose }: ModelCompareModal
               ))}
             </select>
           </div>
-
           <div className="flex flex-col gap-xs">
             <label className="text-label text-subtle">MODEL B</label>
             <select
@@ -84,65 +84,30 @@ export function ModelCompareModal({ models, isOpen, onClose }: ModelCompareModal
             </div>
           </div>
 
-          {/* Row 2: Pricing */}
-          <div className="grid grid-cols-2 divide-x divide-hairline border-b border-hairline p-md">
-            <div>
-              <span className="text-label text-subtle block mb-xs">PRICE TIER</span>
-              <span className="text-body font-mono text-ink font-bold">
-                {modelA.isFree ? <Badge variant="status-live" label="FREE" /> : modelA.price}
-              </span>
-            </div>
-            <div className="pl-md">
-              <span className="text-label text-subtle block mb-xs">PRICE TIER</span>
-              <span className="text-body font-mono text-ink font-bold">
-                {modelB.isFree ? <Badge variant="status-live" label="FREE" /> : modelB.price}
-              </span>
-            </div>
-          </div>
+          <ModelCompareRow 
+            label="PRICE TIER"
+            valueA={<span className="text-body font-mono text-ink font-bold">{modelA.isFree ? <Badge variant="status-live" label="FREE" /> : modelA.price}</span>}
+            valueB={<span className="text-body font-mono text-ink font-bold">{modelB.isFree ? <Badge variant="status-live" label="FREE" /> : modelB.price}</span>}
+          />
+          
+          <ModelCompareRow 
+            label="CONTEXT WINDOW"
+            valueA={<span className="text-body font-mono text-ink font-bold">{modelA.context}</span>}
+            valueB={<span className="text-body font-mono text-ink font-bold">{modelB.context}</span>}
+          />
+          
+          <ModelCompareRow 
+            label="SPEED RATING"
+            valueA={<span className="text-body font-mono text-chart-teal font-bold flex items-center gap-xs"><Zap className="w-4 h-4" /> {modelA.speed}</span>}
+            valueB={<span className="text-body font-mono text-chart-teal font-bold flex items-center gap-xs"><Zap className="w-4 h-4" /> {modelB.speed}</span>}
+          />
 
-          {/* Row 3: Context Window */}
-          <div className="grid grid-cols-2 divide-x divide-hairline border-b border-hairline p-md">
-            <div>
-              <span className="text-label text-subtle block mb-xs">CONTEXT WINDOW</span>
-              <span className="text-body font-mono text-ink font-bold">{modelA.context}</span>
-            </div>
-            <div className="pl-md">
-              <span className="text-label text-subtle block mb-xs">CONTEXT WINDOW</span>
-              <span className="text-body font-mono text-ink font-bold">{modelB.context}</span>
-            </div>
-          </div>
-
-          {/* Row 4: Speed / Latency */}
-          <div className="grid grid-cols-2 divide-x divide-hairline border-b border-hairline p-md">
-            <div>
-              <span className="text-label text-subtle block mb-xs">SPEED RATING</span>
-              <span className="text-body font-mono text-chart-teal font-bold flex items-center gap-xs">
-                <Zap className="w-4 h-4" /> {modelA.speed}
-              </span>
-            </div>
-            <div className="pl-md">
-              <span className="text-label text-subtle block mb-xs">SPEED RATING</span>
-              <span className="text-body font-mono text-chart-teal font-bold flex items-center gap-xs">
-                <Zap className="w-4 h-4" /> {modelB.speed}
-              </span>
-            </div>
-          </div>
-
-          {/* Row 5: Categories */}
-          <div className="grid grid-cols-2 divide-x divide-hairline p-md">
-            <div>
-              <span className="text-label text-subtle block mb-xs">TAGS & CAPABILITIES</span>
-              <div className="flex flex-wrap gap-xs">
-                {modelA.category.map(c => <Badge key={c} variant="free" label={c} />)}
-              </div>
-            </div>
-            <div className="pl-md">
-              <span className="text-label text-subtle block mb-xs">TAGS & CAPABILITIES</span>
-              <div className="flex flex-wrap gap-xs">
-                {modelB.category.map(c => <Badge key={c} variant="free" label={c} />)}
-              </div>
-            </div>
-          </div>
+          <ModelCompareRow 
+            label="TAGS & CAPABILITIES"
+            valueA={<div className="flex flex-wrap gap-xs">{modelA.category.map(c => <Badge key={c} variant="free" label={c} />)}</div>}
+            valueB={<div className="flex flex-wrap gap-xs">{modelB.category.map(c => <Badge key={c} variant="free" label={c} />)}</div>}
+            isLast={true}
+          />
         </div>
 
         {/* Footer */}

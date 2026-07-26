@@ -8,7 +8,7 @@ export function ThreeSteps() {
   return (
     <section className="w-full flex flex-col items-center gap-xl py-xl px-md lg:px-xl max-w-[1440px] mx-auto">
       <div className="flex flex-col items-center text-center">
-        <div className="flex items-center gap-xs px-sm py-[4px] bg-canvas border border-chart-purple text-chart-purple rounded-full mb-md">
+        <div className="flex items-center gap-xs px-sm py-xxs bg-canvas border border-chart-purple text-chart-purple rounded-full mb-md">
           <Zap className="w-3 h-3" />
           <span className="text-label text-chart-purple">GET STARTED</span>
         </div>
