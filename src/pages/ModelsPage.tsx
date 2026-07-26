@@ -11,21 +11,16 @@ import { ModelsStatsRow } from '../features/models/components/ModelsStatsRow';
 import { ModelsFilterBar } from '../features/models/components/ModelsFilterBar';
 
 export function ModelsPage() {
-  const { data, isLoading } = useModels();
-
   const [providerFilter, setProviderFilter] = useState('All');
   const [tierFilter, setTierFilter] = useState('All');
+  const [sortFilter, setSortFilter] = useState('Newest');
   const [searchQuery, setSearchQuery] = useState('');
+  // API supports pagination, for now we will just request page 1.
+  const [page] = useState(1);
 
-  const filteredData = useMemo(() => {
-    return data.filter(model => {
-      const matchSearch = model.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          model.provider.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchProvider = providerFilter === 'All' || model.provider === providerFilter;
-      const matchTier = tierFilter === 'All' || (tierFilter === 'Free' ? model.isFree : !model.isFree);
-      return matchSearch && matchProvider && matchTier;
-    });
-  }, [data, searchQuery, providerFilter, tierFilter]);
+  // useModels hooku artık parametreleri doğrudan alıp API'ye iletiyor
+  // ve client tarafı filtreleme/arama işlemlerine gerek kalmıyor.
+  const { data, isLoading } = useModels(searchQuery, providerFilter, tierFilter, sortFilter, page);
 
   const columns = useMemo<ColumnDef<ModelConfig>[]>(() => [
     {
@@ -110,6 +105,8 @@ export function ModelsPage() {
               setProviderFilter={setProviderFilter}
               tierFilter={tierFilter}
               setTierFilter={setTierFilter}
+              sortFilter={sortFilter}
+              setSortFilter={setSortFilter}
             />
 
             {isLoading ? (
@@ -120,13 +117,13 @@ export function ModelsPage() {
                 <div className="h-12 bg-surface-sunken rounded-sm animate-pulse" />
                 <div className="h-12 bg-surface-sunken rounded-sm animate-pulse" />
               </div>
-            ) : filteredData.length === 0 ? (
+            ) : data.length === 0 ? (
               <div className="py-xl text-center border border-hairline rounded-sm bg-surface">
                 <p className="text-body text-muted">No models match your filters</p>
               </div>
             ) : (
               <DataTable 
-                data={filteredData} 
+                data={data}
                 columns={columns} 
                 pageSize={20} 
                 hideSearch={true}
