@@ -30,7 +30,10 @@ export function ApiKeyQuotaManager() {
   const [createdKeySecret, setCreatedKeySecret] = useState<string | null>(null);
 
   const handleKeyCreated = (name: string, limit: number, rpm: number) => {
-    const rawSecret = `sk-or-v1-${Math.random().toString(36).substring(2, 12)}${Math.random().toString(36).substring(2, 12)}`;
+    const array = new Uint8Array(10);
+    crypto.getRandomValues(array);
+    const randomHex = Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+    const rawSecret = `sk-or-v1-${randomHex}`;
     const masked = `${rawSecret.slice(0, 12)}...${rawSecret.slice(-4)}`;
     
     const newKey: ApiKeyItem = {
