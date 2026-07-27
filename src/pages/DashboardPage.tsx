@@ -96,7 +96,7 @@ export function DashboardPage() {
                   <option value="30d">Last 30 days</option>
                   <option value="all">All time</option>
                 </select>
-                <Button variant="icon-circular" icon={RefreshCw} />
+                <Button variant="icon-circular" icon={RefreshCw} aria-label="Refresh dashboard data" />
               </div>
             </div>
             
