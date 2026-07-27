@@ -11,6 +11,8 @@ const RankingsPage = lazy(() => import('../../pages/RankingsPage').then(m => ({ 
 const PricingPage = lazy(() => import('../../pages/PricingPage').then(m => ({ default: m.PricingPage })));
 const ChatPage = lazy(() => import('../../pages/ChatPage').then(m => ({ default: m.ChatPage })));
 const DocsPage = lazy(() => import('../../pages/DocsPage').then(m => ({ default: m.DocsPage })));
+const ApiKeysPage = lazy(() => import('../../pages/ApiKeysPage').then(m => ({ default: m.ApiKeysPage })));
+const PlaceholderPage = lazy(() => import('../../pages/PlaceholderPage').then(m => ({ default: m.PlaceholderPage })));
 
 const withSuspense = (Component: React.ComponentType) => (
   <Suspense fallback={<PageLoader />}>
@@ -53,6 +55,26 @@ export const router = createBrowserRouter([
       {
         path: '/models',
         element: withSuspense(ModelsPage),
+      },
+      {
+        path: '/keys',
+        element: withSuspense(ApiKeysPage),
+      },
+      {
+        path: '/billing',
+        element: withSuspense(() => <PlaceholderPage title="Billing & Invoices" />),
+      },
+      {
+        path: '/affiliate',
+        element: withSuspense(() => <PlaceholderPage title="Affiliate Program" />),
+      },
+      {
+        path: '/settings',
+        element: withSuspense(() => <PlaceholderPage title="Account Settings" />),
+      },
+      {
+        path: '/inspector',
+        element: withSuspense(() => <PlaceholderPage title="Live Router Inspector" />),
       }
     ]
   }

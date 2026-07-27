@@ -49,7 +49,7 @@ export function ApiKeyQuotaManager() {
   };
 
   return (
-    <Card className="w-full p-lg border-hairline bg-surface flex flex-col gap-md my-md">
+    <Card className="w-full p-lg border-hairline bg-surface flex flex-col gap-md">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-md border-b border-hairline-soft pb-md">
         <div className="flex items-center gap-sm">
           <div className="w-8 h-8 rounded-sm bg-ink text-canvas flex items-center justify-center">

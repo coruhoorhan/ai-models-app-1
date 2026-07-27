@@ -7,7 +7,6 @@ import { useDashboardStats, useDashboardChart } from '../features/dashboard/hook
 import { DashboardApiInfoCard } from '../features/dashboard/components/DashboardApiInfoCard';
 import { DashboardQuickLinks } from '../features/dashboard/components/DashboardQuickLinks';
 import { DashboardRouterInspector } from '../features/dashboard/components/DashboardRouterInspector';
-import { ApiKeyQuotaManager } from '../features/dashboard/components/ApiKeyQuotaManager';
 import { DashboardChartCard } from '../features/dashboard/components/DashboardChartCard';
 
 export function DashboardPage() {
@@ -92,9 +91,6 @@ export function DashboardPage() {
 
         {/* Live Router & Code Generator Inspector */}
         <DashboardRouterInspector />
-
-        {/* API Key & Scoped Quota Manager */}
-        <ApiKeyQuotaManager />
 
         <DashboardQuickLinks />
       </div>
