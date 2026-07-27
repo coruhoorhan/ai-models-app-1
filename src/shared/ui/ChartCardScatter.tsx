@@ -44,7 +44,7 @@ export function ChartCardScatter({
         <h3 className="text-body font-semibold text-ink">{title}</h3>
         
         {tabs && activeTab && onTabChange && (
-          <div className="flex bg-surface-sunken p-[4px] rounded-sm border border-hairline">
+          <div className="flex bg-surface-sunken p-xxs rounded-sm border border-hairline">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
@@ -63,7 +63,7 @@ export function ChartCardScatter({
         )}
       </div>
 
-      <div className="flex-1 p-lg min-h-[300px]">
+      <div className="flex-1 p-lg min-h-72">
         <ResponsiveContainer width="100%" height="100%">
           <ScatterChart margin={{ top: 10, right: 10, bottom: 20, left: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--color-hairline)" vertical={false} />

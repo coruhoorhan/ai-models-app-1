@@ -2,6 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { cn } from '../lib/cn';
 import { Button } from './Button';
+import { SkeletonTable } from './SkeletonLoader';
+import { EmptyStateBlock } from './EmptyStateBlock';
 
 export interface ColumnDef<T> {
   key: keyof T | string;
@@ -15,9 +17,19 @@ interface DataTableProps<T> {
   pageSize?: number;
   className?: string;
   hideSearch?: boolean;
+  isLoading?: boolean;
+  emptyState?: React.ReactNode;
 }
 
-export function DataTable<T>({ data, columns, pageSize = 10, className, hideSearch = false }: DataTableProps<T>) {
+export function DataTable<T>({
+  data,
+  columns,
+  pageSize = 10,
+  className,
+  hideSearch = false,
+  isLoading = false,
+  emptyState
+}: DataTableProps<T>) {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -36,18 +48,22 @@ export function DataTable<T>({ data, columns, pageSize = 10, className, hideSear
   const startIndex = (currentPage - 1) * pageSize;
   const paginatedData = filteredData.slice(startIndex, startIndex + pageSize);
 
+  if (isLoading) {
+    return <SkeletonTable className={className} />;
+  }
+
   return (
     <div className={cn('w-full flex flex-col', className)}>
       {/* Table Header Controls */}
       {!hideSearch && (
         <div className="flex items-center justify-between mb-md">
-          <div className="relative w-full max-w-[280px]">
+          <div className="relative w-full max-w-xs">
             <div className="absolute inset-y-0 left-0 pl-sm flex items-center pointer-events-none">
               <Search className="w-4 h-4 text-muted" />
             </div>
             <input
               type="text"
-              className="w-full bg-surface-sunken border border-hairline rounded-sm py-xs pl-[32px] pr-sm text-body-sm text-ink outline-none focus:border-chart-teal transition-colors"
+              className="w-full bg-surface-sunken border border-hairline rounded-sm py-xs pl-xl pr-sm text-body-sm text-ink outline-none focus:border-chart-teal transition-colors"
               placeholder="Search..."
               value={searchTerm}
               onChange={(e) => {
@@ -84,8 +100,8 @@ export function DataTable<T>({ data, columns, pageSize = 10, className, hideSear
               ))
             ) : (
               <tr>
-                <td colSpan={columns.length} className="py-xl text-center text-body-sm text-muted">
-                  No results found.
+                <td colSpan={columns.length} className="bg-canvas">
+                  {emptyState || <EmptyStateBlock message="NO DATA AVAILABLE" />}
                 </td>
               </tr>
             )}

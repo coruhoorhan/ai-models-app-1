@@ -4,7 +4,7 @@ import { SegmentedTabProps } from '../../types';
 
 export function SegmentedTab({ tabs, activeTab, onChange }: SegmentedTabProps) {
   return (
-    <div className="flex bg-surface-sunken p-[4px] rounded-sm border border-hairline-soft">
+    <div className="flex bg-surface-sunken p-xxs rounded-sm border border-hairline-soft">
       {tabs.map((tab) => (
         <button
           key={tab.id}

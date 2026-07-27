@@ -1,21 +1,26 @@
 import React from 'react';
 import { AlertCircle } from 'lucide-react';
-import { ErrorStateBlockProps } from '../../types';
+import { cn } from '../lib/cn';
 import { Button } from './Button';
 
+export interface ErrorStateBlockProps {
+  message?: string;
+  onRetry?: () => void;
+  className?: string;
+}
+
 export function ErrorStateBlock({
-  message,
+  message = "Veri yüklenirken bir hata oluştu.",
   onRetry,
+  className
 }: ErrorStateBlockProps) {
   return (
-    <div className="flex flex-col items-center justify-center p-xl w-full text-center">
-      <AlertCircle className="w-6 h-6 text-error mb-md" />
-      <span className="text-body-sm text-ink mb-lg max-w-md text-center">
-        {message}
-      </span>
+    <div className={cn("flex flex-col items-center justify-center p-xl gap-md", className)}>
+      <AlertCircle className="w-6 h-6 text-error" />
+      <span className="text-body-sm text-ink text-center max-w-sm">{message}</span>
       {onRetry && (
-        <Button variant="secondary" onClick={onRetry}>
-          Try Again
+        <Button variant="secondary" size="sm" onClick={onRetry}>
+          Tekrar Dene
         </Button>
       )}
     </div>
