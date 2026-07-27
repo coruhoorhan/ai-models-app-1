@@ -2,6 +2,7 @@ import React from 'react';
 import { LucideIcon } from 'lucide-react';
 import { cn } from '../lib/cn';
 import { Card } from './Card';
+import { SkeletonLoader } from './SkeletonLoader';
 
 export interface StatCardProps {
   icon?: LucideIcon;
@@ -37,21 +38,21 @@ export function StatCard({
 }: StatCardProps) {
   if (isLoading) {
     return (
-      <Card className={cn('p-[20px] flex flex-col', className)}>
+      <Card className={cn('p-md flex flex-col', className)}>
         <div className="flex items-center gap-xs mb-xs">
-          <div className="w-4 h-4 rounded-xs bg-surface animate-pulse" />
-          <div className="w-[60px] h-[14px] rounded-xs bg-surface animate-pulse" />
+          <SkeletonLoader className="w-4 h-4" />
+          <SkeletonLoader className="w-16 h-4" />
         </div>
-        <div className="w-[100px] h-[32px] rounded-xs bg-surface animate-pulse mb-1 mt-1" />
+        <SkeletonLoader className="w-24 h-8 mb-1 mt-1" />
         {description && (
-          <div className="w-[80px] h-[16px] rounded-xs bg-surface animate-pulse mt-1" />
+          <SkeletonLoader className="w-20 h-4 mt-1" />
         )}
         {secondaryStat && (
           <>
             <div className="h-px w-full bg-hairline my-md" />
             <div className="flex flex-col gap-xs">
-              <div className="w-[60px] h-[14px] rounded-xs bg-surface animate-pulse" />
-              <div className="w-[80px] h-[24px] rounded-xs bg-surface animate-pulse" />
+              <SkeletonLoader className="w-16 h-4" />
+              <SkeletonLoader className="w-20 h-6" />
             </div>
           </>
         )}
@@ -60,7 +61,7 @@ export function StatCard({
   }
 
   return (
-    <Card className={cn('p-[20px]', className)}>
+    <Card className={cn('p-md', className)}>
       <div className="flex flex-col">
         <div className="flex items-center gap-xs mb-xs">
           {Icon && (
