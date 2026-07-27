@@ -1,7 +1,7 @@
 import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
-import { handleChatStream, handleArenaBattle } from "./src/server/llmRoutes";
+import { handleChatStream, handleArenaBattle } from "./llmRoutes";
 
 const app = express();
 const PORT = 3000;

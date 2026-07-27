@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String?
+  avatarUrl String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  apiKeys   ApiKey[]
+  chatLogs  ChatLog[]
+
+  @@map("users")
+}
+
+model ApiKey {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  keyHash   String   @unique // Hashed version of the key for security
+  provider  String   // e.g., 'openai', 'anthropic', 'google'
+  createdAt DateTime @default(now())
+  lastUsed  DateTime?
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("api_keys")
+}
+
+model ChatLog {
+  id        String   @id @default(cuid())
+  userId    String
+  modelId   String
+  provider  String
+  prompt    String
+  response  String
+  tokens    Int      @default(0)
+  duration  Int      @default(0) // ms
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("usage_logs")
+}
+
+model Provider {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  displayName String
+  iconUrl     String?
+  isActive    Boolean  @default(true)
+  models      Model[]
+
+  @@map("providers")
+}
+
+model Model {
+  id          String   @id @default(cuid())
+  providerId  String
+  name        String   @unique
+  displayName String
+  contextSize Int
+  inputPrice  Float    // Per 1M tokens
+  outputPrice Float    // Per 1M tokens
+  isActive    Boolean  @default(true)
+
+  provider    Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+
+  @@index([providerId])
+  @@map("models")
+}
