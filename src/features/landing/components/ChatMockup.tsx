@@ -49,7 +49,7 @@ export function ChatMockup() {
             <span className="text-body-sm font-medium text-ink">allam-2-7b:free</span>
             <Badge variant="free" label="Free" />
           </div>
-          <Button variant="icon-circular" icon={MoreHorizontal} size="sm" className="w-8 h-8 border-transparent hover:bg-surface" />
+          <Button variant="icon-circular" icon={MoreHorizontal} size="sm" className="w-8 h-8 border-transparent hover:bg-surface" aria-label="More options" />
         </div>
         
         <div className="flex-1 p-md flex flex-col gap-sm overflow-y-auto">

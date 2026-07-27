@@ -31,6 +31,7 @@ export function KeyDisplayField({ value, className }: KeyDisplayFieldProps) {
         variant="icon-circular"
         onClick={handleCopy}
         icon={copied ? Check : Copy}
+        aria-label="Copy key to clipboard"
       />
     </div>
   );
