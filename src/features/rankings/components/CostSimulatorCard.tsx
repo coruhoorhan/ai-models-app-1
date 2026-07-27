@@ -32,7 +32,7 @@ export function CostSimulatorCard({ className }: CostSimulatorCardProps) {
         <h3 className="text-body font-semibold text-ink">API Maliyet Simülasyonu</h3>
         
         {/* Segmented Selector for Volume */}
-        <div className="flex bg-surface-sunken p-[4px] rounded-sm border border-hairline-soft">
+        <div className="flex bg-surface-sunken p-xxs rounded-sm border border-hairline-soft">
           {VOLUMES.map((v) => (
             <button
               key={v}
