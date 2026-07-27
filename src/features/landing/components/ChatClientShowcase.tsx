@@ -10,12 +10,12 @@ export function ChatClientShowcase() {
   return (
     <section className="w-full flex flex-col lg:flex-row gap-xl py-xl px-md lg:px-xl max-w-[1440px] mx-auto">
       {/* Left: Interactive Chat Mockup */}
-      <div className="flex-1 flex justify-center lg:justify-end">
+      <div className="flex-1 w-full lg:min-w-[480px] flex justify-center lg:justify-end">
         <ChatMockup />
       </div>
 
       {/* Right: Copy & Features */}
-      <div className="flex-1 flex flex-col items-start justify-center">
+      <div className="flex-1 w-full lg:min-w-[400px] flex flex-col items-start justify-center">
         <div className="flex items-center gap-xs px-sm py-xxs bg-canvas border border-chart-blue text-chart-blue rounded-full mb-md">
           <MessageCircle className="w-3 h-3" />
           <span className="text-label text-chart-blue">BUILT-IN CHAT</span>
@@ -26,7 +26,7 @@ export function ChatClientShowcase() {
           <span className="text-chart-blue block">A chat client too.</span>
         </h2>
         
-        <div className="grid grid-cols-2 gap-md w-full lg:max-w-md mb-xl">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-6 w-full lg:max-w-md mb-xl">
           <div className="flex items-center gap-sm">
             <Zap className="w-5 h-5 text-chart-blue" />
             <span className="text-body font-medium text-ink">No Setup</span>
