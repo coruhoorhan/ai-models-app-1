@@ -113,10 +113,10 @@ export function ChatClientShowcase() {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         transition={{ staggerChildren: 0.15 }}
-        className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-lg w-full max-w-[1200px] mx-auto relative z-10"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg w-full max-w-[1200px] mx-auto relative z-10"
       >
         {/* BIG HERO BENTO */}
-        <GlowCard className="md:col-span-6 lg:col-span-8 min-h-[380px] group bg-gradient-to-br from-surface/80 to-canvas/40">
+        <GlowCard className="md:col-span-2 lg:col-span-2 min-h-[380px] group bg-gradient-to-br from-surface/80 to-canvas/40">
            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-chart-blue to-chart-purple flex items-center justify-center mb-lg shadow-lg">
              <Zap className="w-6 h-6 text-canvas" />
            </div>
@@ -146,7 +146,7 @@ export function ChatClientShowcase() {
         </GlowCard>
 
         {/* MEDIUM BENTO */}
-        <GlowCard className="md:col-span-6 lg:col-span-4 min-h-[380px] group">
+        <GlowCard className="md:col-span-1 lg:col-span-1 min-h-[380px] group">
            <div className="w-12 h-12 rounded-xl bg-surface-sunken border border-hairline flex items-center justify-center mb-lg">
              <Shield className="w-6 h-6 text-chart-green" />
            </div>
@@ -164,7 +164,7 @@ export function ChatClientShowcase() {
         </GlowCard>
 
         {/* SMALL BENTO */}
-        <GlowCard className="md:col-span-6 lg:col-span-5 min-h-[300px]">
+        <GlowCard className="md:col-span-1 lg:col-span-1 min-h-[300px]">
            <div className="w-12 h-12 rounded-xl bg-surface-sunken border border-hairline flex items-center justify-center mb-lg">
              <Users className="w-6 h-6 text-chart-orange" />
            </div>
@@ -191,7 +191,7 @@ export function ChatClientShowcase() {
         </GlowCard>
 
         {/* CALL TO ACTION BENTO */}
-        <GlowCard className="md:col-span-6 lg:col-span-7 min-h-[300px] bg-ink border-transparent group overflow-hidden">
+        <GlowCard className="md:col-span-2 lg:col-span-2 min-h-[300px] bg-ink border-transparent group overflow-hidden">
            {/* Dynamic dark mode background effect */}
            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-50" />
            
