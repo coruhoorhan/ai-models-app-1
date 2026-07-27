@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { Variants } from 'motion/react';
 import { Trophy, Medal, Sparkles } from 'lucide-react';
 import { Card } from '../../../shared/ui/Card';
 import { LaserEffect } from '../../../shared/ui/LaserEffect';
@@ -8,7 +9,7 @@ import { PodiumModel } from './RankingsPodium';
 interface PodiumCardProps {
   model: PodiumModel;
   place: 1 | 2 | 3;
-  itemVariants: any;
+  itemVariants: Variants;
 }
 
 export function PodiumCard({ model, place, itemVariants }: PodiumCardProps) {

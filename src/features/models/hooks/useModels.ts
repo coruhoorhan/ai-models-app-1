@@ -12,6 +12,13 @@ export function useModels(searchQuery = '', provider = 'All', tier = 'All', sort
     let isMounted = true;
     
     async function loadData() {
+      const now = Date.now();
+      const isStale = !cachedModels || (now - lastFetchTime > CACHE_TTL_MS);
+
+      if (!isStale) {
+        return;
+      }
+
       try {
         setIsLoading(true);
         const result = await fetchModels(searchQuery, provider, tier, sort, page);

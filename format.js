@@ -1,0 +1,4 @@
+const fs = require('fs');
+let code = fs.readFileSync('src/features/landing/components/ChatMockup.tsx', 'utf-8');
+code = code.replace(/\{ role: 'user', content: 'Write a function to throttle API requests.' \},\n    \{ role: 'assistant', content: 'Here is a clean implementation of a throttle function in TypeScript:\\n\\nfunction throttle<T extends \(\.\.\.args: unknown\[\]\) => unknown>\(fn: T, limit: number\) \{\\n  let inThrottle: boolean;\\n  return function\(this: unknown, \.\.\.args: Parameters<T>\) \{\\n    if \(!inThrottle\) \{\\n      fn.apply\(this, args\);\\n      inThrottle = true;\\n      setTimeout\(\(\) => inThrottle = false, limit\);\\n    \}\\n  \};\\n\}' \}/g, `{ role: 'user', content: 'Write a throttle function' }, { role: 'assistant', content: 'function throttle() { ... }' }`);
+fs.writeFileSync('src/features/landing/components/ChatMockup.tsx', code);

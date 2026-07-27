@@ -1,39 +1,58 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { DashboardPage } from '../../pages/DashboardPage';
-import { LandingPage } from '../../pages/LandingPage';
-import { UsageLogsPage } from '../../pages/UsageLogsPage';
-import { ModelsPage } from '../../pages/ModelsPage';
-import { RankingsPage } from '../../pages/RankingsPage';
-import { PricingPage } from '../../pages/PricingPage';
+import React, { Suspense, lazy } from 'react';
 import { ProtectedRoute } from './ProtectedRoute';
+import { PageLoader } from '../../shared/ui/PageLoader';
+
+const DashboardPage = lazy(() => import('../../pages/DashboardPage').then(m => ({ default: m.DashboardPage })));
+const LandingPage = lazy(() => import('../../pages/LandingPage').then(m => ({ default: m.LandingPage })));
+const UsageLogsPage = lazy(() => import('../../pages/UsageLogsPage').then(m => ({ default: m.UsageLogsPage })));
+const ModelsPage = lazy(() => import('../../pages/ModelsPage').then(m => ({ default: m.ModelsPage })));
+const RankingsPage = lazy(() => import('../../pages/RankingsPage').then(m => ({ default: m.RankingsPage })));
+const PricingPage = lazy(() => import('../../pages/PricingPage').then(m => ({ default: m.PricingPage })));
+const ChatPage = lazy(() => import('../../pages/ChatPage').then(m => ({ default: m.ChatPage })));
+const DocsPage = lazy(() => import('../../pages/DocsPage').then(m => ({ default: m.DocsPage })));
+
+const withSuspense = (Component: React.ComponentType) => (
+  <Suspense fallback={<PageLoader />}>
+    <Component />
+  </Suspense>
+);
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <LandingPage />,
+    element: withSuspense(LandingPage),
   },
   {
     path: '/rankings',
-    element: <RankingsPage />,
+    element: withSuspense(RankingsPage),
   },
   {
     path: '/pricing',
-    element: <PricingPage />,
+    element: withSuspense(PricingPage),
+  },
+  {
+    path: '/chat',
+    element: withSuspense(ChatPage),
+  },
+  {
+    path: '/docs',
+    element: withSuspense(DocsPage),
   },
   {
     element: <ProtectedRoute />,
     children: [
       {
         path: '/dashboard',
-        element: <DashboardPage />,
+        element: withSuspense(DashboardPage),
       },
       {
         path: '/logs',
-        element: <UsageLogsPage />,
+        element: withSuspense(UsageLogsPage),
       },
       {
         path: '/models',
-        element: <ModelsPage />,
+        element: withSuspense(ModelsPage),
       }
     ]
   }

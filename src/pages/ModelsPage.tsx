@@ -1,14 +1,18 @@
 import React, { useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { TopNav } from '../features/landing/components/TopNav';
-import { DataTable, ColumnDef } from '../shared/ui/DataTable';
-import { Badge } from '../shared/ui/Badge';
+import { DataTable } from '../shared/ui/DataTable';
 import { useModels } from '../features/models/hooks/useModels';
 import { ModelConfig } from '../shared/api/models.api';
-import { ChevronRight, Zap } from 'lucide-react';
+import { ArrowRightLeft } from 'lucide-react';
 import { Footer } from '../shared/ui/Footer';
 import { BackgroundGrid } from '../shared/ui/BackgroundGrid';
 import { ModelsStatsRow } from '../features/models/components/ModelsStatsRow';
 import { ModelsFilterBar } from '../features/models/components/ModelsFilterBar';
+import { ModelDetailDrawer } from '../features/models/components/ModelDetailDrawer';
+import { ModelCompareModal } from '../features/models/components/ModelCompareModal';
+import { Button } from '../shared/ui/Button';
+import { getModelsColumns } from '../features/models/components/ModelsTableColumns';
 
 export function ModelsPage() {
   const [providerFilter, setProviderFilter] = useState('All');
@@ -22,64 +26,16 @@ export function ModelsPage() {
   // ve client tarafı filtreleme/arama işlemlerine gerek kalmıyor.
   const { data, isLoading } = useModels(searchQuery, providerFilter, tierFilter, sortFilter, page);
 
-  const columns = useMemo<ColumnDef<ModelConfig>[]>(() => [
-    {
-      key: 'model',
-      header: 'MODEL',
-      cell: (row) => (
-        <div className="flex flex-col">
-          <div className="flex items-center gap-sm">
-            <span className="font-bold text-ink">{row.name}</span>
-            {row.category.map(c => (
-              <Badge 
-                key={c} 
-                variant="category" 
-                label={c} 
-                categoryColor={
-                  c === 'Chat' ? 'chart-blue' : 
-                  c === 'Coding' ? 'chart-teal' : 
-                  c === 'Vision' ? 'chart-pink' : 'chart-orange'
-                } 
-              />
-            ))}
-          </div>
-          <span className="text-body-sm text-subtle mt-1">{row.provider}</span>
-        </div>
-      )
-    },
-    {
-      key: 'context',
-      header: 'CONTEXT',
-      cell: (row) => <span className="font-mono">{row.context}</span>
-    },
-    {
-      key: 'price',
-      header: 'PRICE',
-      cell: (row) => row.isFree ? <Badge variant="status-live" label="FREE" /> : <span className="font-mono">{row.price}</span>
-    },
-    {
-      key: 'speed',
-      header: 'SPEED',
-      cell: (row) => (
-        <div className="flex items-center gap-xs font-mono">
-          <Zap className="w-3 h-3 text-chart-teal" />
-          <span>{row.speed}</span>
-        </div>
-      )
-    },
-    {
-      key: 'action',
-      header: '',
-      cell: () => <ChevronRight className="w-4 h-4 text-muted hover:text-ink cursor-pointer transition-colors" />
-    }
-  ], []);
+  const columns = useMemo(() => getModelsColumns(setSelectedModel), []);
 
   return (
     <div className="w-full flex flex-col items-center bg-canvas min-h-screen relative overflow-hidden">
       <BackgroundGrid />
+      
       <div className="relative z-10 w-full flex flex-col items-center flex-1">
         <TopNav />
         <main className="w-full flex flex-col flex-1 items-center">
+          
           <div className="w-full relative border-b border-hairline bg-surface/20 backdrop-blur-sm flex justify-center">
             <div className="w-full max-w-[1440px] px-md lg:px-xl py-xl relative z-10 flex flex-col gap-lg">
               <div className="flex flex-col gap-sm">
@@ -133,6 +89,16 @@ export function ModelsPage() {
           <Footer />
         </main>
       </div>
+
+      <ModelDetailDrawer 
+        model={selectedModel} 
+        onClose={() => setSelectedModel(null)} 
+      />
+      <ModelCompareModal
+        models={data}
+        isOpen={isCompareOpen}
+        onClose={() => setIsCompareOpen(false)}
+      />
     </div>
   );
 }

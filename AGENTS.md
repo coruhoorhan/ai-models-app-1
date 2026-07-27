@@ -128,6 +128,13 @@ Bu checklist'i her task sonunda bana **madde madde işaretlenmiş halde** sun �
 - **Renk ve Tema Tutarlılığı:** Yeni modüllerde rastgele renk paletleri veya hardcoded renkler (`bg-blue-500/10` vb.) yerine mutlaka `DESIGN.md`'nin CSS değişkenlerini (`var(--color-ink)`, `var(--color-hairline)`, `var(--color-muted)`, `var(--color-live)` vb.) kullan. Kartlarda her zaman global border yapılarına uyulmalıdır (`Card` bileşenini kullan, `border border-hairline rounded-md`). İhtiyaç halinde sol vurgu sınırlarını (`border-l-4 border-l-chart-orange` gibi, sadece DESIGN.md'nin data/chart accent paletinden) kullan.
 - **Grid ve Divider Kuralı:** DESIGN.md'de tanımlı 4 kolonlu stat satırları, kolonlar arasında `gap` yerine `{colors.hairline}` renginde dikey divider ile ayrılır (dashboard stat card row deseni). Bu deseni bozan grid gap kullanımı yasaktır.
 
+## 14. RESPONSIVE (MOBİL VE TABLET) TASARIM STANDARTLARI (ÇOK KRİTİK)
+- **Mobile-First ZORUNLUDUR:** Sınıfları her zaman en küçük ekrana (mobil) göre yaz. Önce dar alan sınıfları (`flex-col`, `gap-md`, `p-md`, `w-full`, `grid-cols-1`) yazılmalı; masaüstü düzenleri `md:`, `lg:`, `xl:` prefix'leri ile genişletilmelidir (örn: `flex-col md:flex-row`, `grid-cols-1 md:grid-cols-2 lg:grid-cols-4`).
+- **Tablet (md) Kırılımları (Breakpoints):** `md` (768px - Tablet dikey) ekranlarda 3 veya 4 kolonlu grid kullanmak KESİNLİKLE YASAKTIR. Bu, içeriğin ezilmesine neden olur. Tabletlerde grid maksimum 2 kolon (`md:grid-cols-2`) olmalıdır. Sadece `lg` veya `xl` ekranlarda 3 veya 4 kolona çıkılabilir.
+- **İç İçe Geçmeyi Önleme (Flex Wrap & Overflow):** Yan yana dizilen elementlerde (örn. rozetler, buton grupları, etiketler) mutlaka `flex-wrap` kullanılmalıdır. Tablolarda, uzun kod bloklarında veya veri yoğun satırlarda taşıyıcı (container) ZORUNLU olarak `overflow-x-auto` sınıfı ile sarmalanmalıdır.
+- **Padding Ölçeklemesi:** Mobilde asla sayfalar kenarlara sıfır dayanmamalı, aşırı geniş boşluklar da olmamalıdır. Genellikle sayfa dış kapsayıcısı mobilde `px-md py-lg`, büyük ekranda `lg:px-xl lg:py-xl` olmalıdır.
+- **Dinamik Kırılımlar ve Gizleme:** Mobilde ekrana sığmayan karmaşık görünümlü (ör. yan paneller, geniş istatistikler) kısımlar alta düşmeli veya `hidden md:flex` gibi sınıflarla mobil görünümde sadece ikon/daha sade bir şekle dönüştürülmelidir.
+
 ---
 ### 🛠️ İŞ AKIŞI (WORKFLOW) - BİR TALEBİ NASIL İŞLEYECEKSİN?
 Bir özellik (feature) istediğimde şu adımları TAVİZ VERMEDEN izleyeceksin:

@@ -4,7 +4,7 @@ import { Card } from '../../../shared/ui/Card';
 
 export function DashboardQuickLinks() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-md">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-md">
       <Card className="p-md flex items-center gap-sm cursor-pointer hover:bg-surface transition-colors">
         <div className="w-8 h-8 rounded-full bg-surface-sunken flex items-center justify-center">
           <Bell className="w-4 h-4 text-ink" />

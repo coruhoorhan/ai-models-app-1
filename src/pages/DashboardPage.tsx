@@ -9,6 +9,8 @@ import { DashboardChart } from '../features/dashboard/components/DashboardChart'
 import { useDashboardStats } from '../features/dashboard/hooks/useDashboardStats';
 import { DashboardApiInfoCard } from '../features/dashboard/components/DashboardApiInfoCard';
 import { DashboardQuickLinks } from '../features/dashboard/components/DashboardQuickLinks';
+import { DashboardRouterInspector } from '../features/dashboard/components/DashboardRouterInspector';
+import { ApiKeyQuotaManager } from '../features/dashboard/components/ApiKeyQuotaManager';
 
 export function DashboardPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -35,7 +37,7 @@ export function DashboardPage() {
             </div>
             <h1 className="text-heading-md text-ink">Good afternoon, admin</h1>
           </div>
-          <div className="flex items-center gap-sm px-sm py-[6px] border border-hairline rounded-sm bg-surface">
+          <div className="flex items-center gap-sm px-sm py-xs border border-hairline rounded-sm bg-surface">
             <Calendar className="w-4 h-4 text-muted" />
             <span className="text-body-sm text-ink">{new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
           </div>
@@ -89,14 +91,14 @@ export function DashboardPage() {
                 <select 
                   value={currentRange}
                   onChange={(e) => handleRangeChange(e.target.value)}
-                  className="px-sm py-[4px] border border-hairline rounded-sm text-body-sm text-ink bg-surface outline-none cursor-pointer"
+                  className="px-sm py-xxs border border-hairline rounded-sm text-body-sm text-ink bg-surface outline-none cursor-pointer"
                 >
                   <option value="24h">Last 24 hours</option>
                   <option value="7d">Last 7 days</option>
                   <option value="30d">Last 30 days</option>
                   <option value="all">All time</option>
                 </select>
-                <Button variant="icon-circular" icon={RefreshCw} />
+                <Button variant="icon-circular" icon={RefreshCw} aria-label="Refresh dashboard data" />
               </div>
             </div>
             
@@ -135,6 +137,12 @@ export function DashboardPage() {
 
           <DashboardApiInfoCard />
         </div>
+
+        {/* Live Router & Code Generator Inspector */}
+        <DashboardRouterInspector />
+
+        {/* API Key & Scoped Quota Manager */}
+        <ApiKeyQuotaManager />
 
         <DashboardQuickLinks />
       </div>

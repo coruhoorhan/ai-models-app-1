@@ -45,7 +45,7 @@ export function ModelsFilterBar({
         </div>
         <input
           type="text"
-          className="w-full bg-surface-sunken border border-hairline rounded-sm py-[6px] pl-[32px] pr-sm text-body-sm text-ink outline-none focus:border-chart-teal transition-colors"
+          className="w-full bg-surface-sunken border border-hairline rounded-sm py-xs pl-[32px] pr-sm text-body-sm text-ink outline-none focus:border-chart-teal transition-colors"
           placeholder="Search models..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -53,7 +53,7 @@ export function ModelsFilterBar({
       </div>
       <div className="flex items-center gap-sm w-full md:w-auto">
         <select 
-          className="bg-surface-sunken border border-hairline rounded-sm py-[6px] px-sm text-body-sm text-ink outline-none"
+          className="bg-surface-sunken border border-hairline rounded-sm py-xs px-sm text-body-sm text-ink outline-none"
           value={providerFilter}
           onChange={(e) => setProviderFilter(e.target.value)}
         >
@@ -63,7 +63,7 @@ export function ModelsFilterBar({
           ))}
         </select>
         <select 
-          className="bg-surface-sunken border border-hairline rounded-sm py-[6px] px-sm text-body-sm text-ink outline-none"
+          className="bg-surface-sunken border border-hairline rounded-sm py-xs px-sm text-body-sm text-ink outline-none"
           value={tierFilter}
           onChange={(e) => setTierFilter(e.target.value)}
         >

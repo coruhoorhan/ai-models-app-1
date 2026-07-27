@@ -13,6 +13,7 @@ import { useRankings, RankingData } from '../features/rankings/hooks/useRankings
 import { Card } from '../shared/ui/Card';
 import { RankingsTable, RankingEntry } from '../features/rankings/components/RankingsTable';
 import { RankingsPodium } from '../features/rankings/components/RankingsPodium';
+import { ArenaBattleSimulator } from '../features/rankings/components/ArenaBattleSimulator';
 
 export function RankingsPage() {
   const { rankings, highlights, isLoading } = useRankings();
@@ -93,7 +94,10 @@ export function RankingsPage() {
             <RankingsPodium topModels={topModels} />
           )}
 
-          <div className="w-full flex flex-col md:flex-row items-start gap-xl">
+          {/* Interactive Arena Battle Simulator */}
+          <ArenaBattleSimulator />
+
+          <div className="w-full flex flex-col lg:flex-row items-start gap-xl">
             {/* Left Column: Data Table */}
             <div className="w-full md:w-2/3">
               {isLoading && tableData.length === 0 ? (
@@ -104,7 +108,7 @@ export function RankingsPage() {
             </div>
 
             {/* Right Column: Cards Stack */}
-            <div className="w-full md:w-1/3 flex flex-col gap-lg sticky top-[100px]">
+            <div className="w-full lg:w-1/3 flex flex-col gap-lg sticky top-[100px]">
               <ChartCardScatter 
                 title="Intelligence Hub 2030"
                 subtitle="AKILLI ANALİZ & KIYAS"
@@ -139,7 +143,7 @@ export function RankingsPage() {
 
         {/* Bottom Section: Methodology */}
         <div className="w-full border-t border-hairline bg-surface flex justify-center mt-xl">
-          <div className="w-full max-w-[1440px] px-md lg:px-xl py-xl flex flex-col md:flex-row gap-xl justify-between">
+          <div className="w-full max-w-[1440px] px-md lg:px-xl py-xl flex flex-col lg:flex-row gap-xl justify-between">
             <MethodologyTile 
               icon={BarChart2}
               title="QA Kör Arena Testleri"
