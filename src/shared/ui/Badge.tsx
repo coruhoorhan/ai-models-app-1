@@ -5,7 +5,7 @@ export interface BadgeProps {
   variant: 'status-live' | 'free' | 'category' | 'beta' | 'error' | 'new';
   label: string;
   showDot?: boolean; 
-  categoryColor?: 'chart-green' | 'chart-pink' | 'chart-blue' | 'chart-orange' | 'chart-teal'; 
+  categoryColor?: 'chart-green' | 'chart-pink' | 'chart-blue' | 'chart-orange' | 'chart-teal' | 'chart-purple';
   className?: string;
 }
 
@@ -40,7 +40,8 @@ export function Badge({ variant, label, showDot, categoryColor, className }: Bad
             categoryColor === 'chart-pink' && 'text-chart-pink',
             categoryColor === 'chart-blue' && 'text-chart-blue',
             categoryColor === 'chart-orange' && 'text-chart-orange',
-            categoryColor === 'chart-teal' && 'text-chart-teal'
+            categoryColor === 'chart-teal' && 'text-chart-teal',
+            categoryColor === 'chart-purple' && 'text-chart-purple'
           )}
         >
           {label}
