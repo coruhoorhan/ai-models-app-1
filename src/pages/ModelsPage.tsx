@@ -50,12 +50,21 @@ export function ModelsPage() {
   const [isCompareOpen, setIsCompareOpen] = useState(false);
 
   const filteredData = useMemo(() => {
+    const lowerSearchQuery = searchQuery.toLowerCase();
+    const isAllProviders = providerFilter === 'All';
+    const isAllTiers = tierFilter === 'All';
+    const isTierFree = tierFilter === 'Free';
+
     return data.filter(model => {
-      const matchSearch = model.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          model.provider.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchProvider = providerFilter === 'All' || model.provider === providerFilter;
-      const matchTier = tierFilter === 'All' || (tierFilter === 'Free' ? model.isFree : !model.isFree);
-      return matchSearch && matchProvider && matchTier;
+      // Hızlı kontroller (cheap checks)
+      if (!isAllProviders && model.provider !== providerFilter) return false;
+      if (!isAllTiers && model.isFree !== isTierFree) return false;
+
+      // Daha yavaş olan string kontrolü, eğer query boşsa direkt true dön.
+      if (!lowerSearchQuery) return true;
+
+      return model.name.toLowerCase().includes(lowerSearchQuery) ||
+             model.provider.toLowerCase().includes(lowerSearchQuery);
     });
   }, [data, searchQuery, providerFilter, tierFilter]);
 
