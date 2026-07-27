@@ -1,51 +1,59 @@
 import React, { useState } from 'react';
-import { Plus, Check, Copy, ShieldAlert } from 'lucide-react';
+import { Copy, Check, ShieldAlert, Plus } from 'lucide-react';
 import { Button } from '../../../shared/ui/Button';
 
-interface ApiKeyCreateFormProps {
+export interface ApiKeyCreateFormProps {
   onKeyCreated: (name: string, limit: number, rpm: number) => void;
   createdKeySecret: string | null;
 }
 
 export function ApiKeyCreateForm({ onKeyCreated, createdKeySecret }: ApiKeyCreateFormProps) {
   const [newKeyName, setNewKeyName] = useState('');
-  const [newKeyLimit, setNewKeyLimit] = useState(100);
-  const [newKeyRpm, setNewKeyRpm] = useState(500);
+  const [newKeyLimit, setNewKeyLimit] = useState(250);
+  const [newKeyRpm, setNewKeyRpm] = useState(1200);
   const [copiedKey, setCopiedKey] = useState(false);
 
   const handleCreateKey = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newKeyName.trim()) return;
+    if (!newKeyName) return;
     onKeyCreated(newKeyName, newKeyLimit, newKeyRpm);
     setNewKeyName('');
+    setCopiedKey(false);
   };
 
   const handleCopySecret = () => {
-    if (!createdKeySecret) return;
-    navigator.clipboard.writeText(createdKeySecret);
-    setCopiedKey(true);
-    setTimeout(() => setCopiedKey(false), 2000);
+    if (createdKeySecret) {
+      navigator.clipboard.writeText(createdKeySecret);
+      setCopiedKey(true);
+      setTimeout(() => setCopiedKey(false), 2000);
+    }
   };
 
   return (
-    <form onSubmit={handleCreateKey} className="lg:col-span-5 bg-canvas p-md border border-hairline rounded-sm flex flex-col gap-sm">
-      <span className="text-label text-subtle">GENERATE SCOPED KEY</span>
-      <div className="flex flex-col gap-xs">
-        <label className="text-body-sm text-ink font-medium">Key Label / Name</label>
+    <form onSubmit={handleCreateKey} className="flex flex-col gap-lg h-full">
+      
+      <div className="flex flex-col gap-xs border-b border-hairline pb-xs mb-sm">
+        <span className="text-label text-subtle">NEW CREDENTIAL</span>
+      </div>
+
+      <div className="flex flex-col gap-sm">
+        <label className="text-body-sm text-ink font-bold">Key Label / Name</label>
         <input
           type="text"
           required
           placeholder="e.g. Mobile App Backend"
           value={newKeyName}
           onChange={(e) => setNewKeyName(e.target.value)}
-          className="bg-surface border border-hairline rounded-sm p-sm text-body-sm text-ink outline-none focus:border-ink font-sans"
+          className="bg-canvas border border-hairline rounded-sm px-md h-[40px] text-body-sm text-ink outline-none focus:border-ink transition-colors"
         />
       </div>
 
-      <div className="flex flex-col gap-xs">
+      <div className="flex flex-col gap-sm">
         <div className="flex justify-between items-center">
-          <label className="text-body-sm text-ink font-medium">Monthly Spend Cap ($)</label>
-          <span className="text-body-sm font-mono text-ink font-bold">${newKeyLimit}</span>
+          <label className="text-body-sm text-ink font-bold">Monthly Spend Cap ($)</label>
+          <span className="text-mono-inline text-ink font-bold bg-surface-sunken px-sm py-[2px] rounded-xs border border-hairline">
+            ${newKeyLimit}
+          </span>
         </div>
         <input
           type="range"
@@ -56,10 +64,12 @@ export function ApiKeyCreateForm({ onKeyCreated, createdKeySecret }: ApiKeyCreat
         />
       </div>
 
-      <div className="flex flex-col gap-xs">
+      <div className="flex flex-col gap-sm">
         <div className="flex justify-between items-center">
-          <label className="text-body-sm text-ink font-medium">Rate Limit (RPM)</label>
-          <span className="text-body-sm font-mono text-ink font-bold">{newKeyRpm} Req/min</span>
+          <label className="text-body-sm text-ink font-bold">Rate Limit (RPM)</label>
+          <span className="text-mono-inline text-ink font-bold bg-surface-sunken px-sm py-[2px] rounded-xs border border-hairline">
+            {newKeyRpm} RPM
+          </span>
         </div>
         <input
           type="range"
@@ -70,28 +80,36 @@ export function ApiKeyCreateForm({ onKeyCreated, createdKeySecret }: ApiKeyCreat
         />
       </div>
 
-      <Button type="submit" variant="primary" icon={Plus} className="w-full mt-xs">
-        Generate New Key
-      </Button>
+      <div className="pt-sm border-t border-hairline mt-auto">
+        <Button 
+          type="submit" 
+          variant="primary" 
+          icon={Plus} 
+          className="w-full"
+        >
+          GENERATE KEY
+        </Button>
+      </div>
 
       {createdKeySecret && (
-        <div className="p-sm bg-surface-sunken border border-chart-teal rounded-sm mt-xs animate-in fade-in zoom-in duration-200">
-          <div className="flex items-center gap-xs mb-xs text-chart-teal">
+        <div className="p-sm bg-surface-sunken border border-hairline rounded-sm flex flex-col gap-sm mt-md">
+          <div className="flex items-center gap-xs text-chart-teal">
             <ShieldAlert className="w-4 h-4" />
-            <span className="text-body-sm font-bold">Copy your secret key</span>
+            <span className="text-body-sm font-bold">Secret Key Generated</span>
           </div>
-          <p className="text-body-sm text-muted mb-sm">This key will only be shown once. Please store it securely.</p>
-          <div className="flex items-center gap-xs">
-            <div className="flex-1 bg-surface border border-hairline rounded-sm p-xs text-mono-inline text-ink overflow-x-auto truncate">
+          <p className="text-body-sm text-subtle">This key will only be shown once. Please copy and store it securely.</p>
+          <div className="flex items-center gap-sm">
+            <div className="flex-1 bg-canvas border border-hairline rounded-sm p-sm text-mono-inline text-ink overflow-x-auto truncate">
               {createdKeySecret}
             </div>
-            <button
+            <Button
               type="button"
+              variant="secondary"
               onClick={handleCopySecret}
-              className="p-xs bg-ink text-canvas rounded-sm hover:opacity-80 transition-opacity flex items-center justify-center shrink-0"
+              icon={copiedKey ? Check : Copy}
             >
-              {copiedKey ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-            </button>
+              {copiedKey ? 'Copied' : 'Copy'}
+            </Button>
           </div>
         </div>
       )}

@@ -49,25 +49,45 @@ export function ApiKeyQuotaManager() {
   };
 
   return (
-    <Card className="w-full p-lg border-hairline bg-surface flex flex-col gap-md">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-md border-b border-hairline-soft pb-md">
-        <div className="flex items-center gap-sm">
-          <div className="w-8 h-8 rounded-sm bg-ink text-canvas flex items-center justify-center">
-            <Key className="w-4 h-4" />
+    <Card className="w-full p-lg flex flex-col gap-xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-md border-b border-hairline pb-md">
+        <div className="flex items-center gap-md">
+          <div className="w-10 h-10 rounded-sm border border-hairline bg-canvas text-ink flex items-center justify-center transition-transform hover:scale-105 duration-300">
+            <Key className="w-5 h-5" />
           </div>
-          <div className="flex flex-col">
-            <div className="flex items-center gap-xs">
-              <h3 className="text-body font-bold text-ink">API Key & Quota Management</h3>
-              <BadgeCategory variant="status-live" label="Live Control" />
-            </div>
+          <div className="flex flex-col gap-xs">
+            <h3 className="text-heading-sm text-ink">API Key & Quota Management</h3>
             <p className="text-body-sm text-subtle">Create scoped keys, set monthly spending limits, and configure rate caps.</p>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-md">
-        <ApiKeyCreateForm onKeyCreated={handleKeyCreated} createdKeySecret={createdKeySecret} />
-        <ApiKeyList keys={keys} />
+      {/* Quick Stats Dashboard */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-md border-b border-hairline pb-md">
+        <div className="flex flex-col gap-xs p-md bg-canvas border border-hairline rounded-sm transition-colors hover:border-ink/30 duration-300">
+          <span className="text-label text-subtle flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-live" />
+            ACTIVE KEYS
+          </span>
+          <span className="text-heading-md text-ink">{keys.filter(k => k.status === 'active').length}</span>
+        </div>
+        <div className="flex flex-col gap-xs p-md bg-canvas border border-hairline rounded-sm transition-colors hover:border-ink/30 duration-300">
+          <span className="text-label text-subtle">TOTAL USAGE (MONTH)</span>
+          <span className="text-heading-md text-ink">${keys.reduce((acc, k) => acc + k.spent, 0).toFixed(2)}</span>
+        </div>
+        <div className="flex flex-col gap-xs p-md bg-canvas border border-hairline rounded-sm transition-colors hover:border-ink/30 duration-300">
+          <span className="text-label text-subtle">TOTAL ALLOCATED CAP</span>
+          <span className="text-heading-md text-ink">${keys.reduce((acc, k) => acc + k.monthlyLimit, 0).toFixed(2)}</span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-xl pt-md">
+        <div className="lg:col-span-5">
+          <ApiKeyCreateForm onKeyCreated={handleKeyCreated} createdKeySecret={createdKeySecret} />
+        </div>
+        <div className="lg:col-span-7">
+          <ApiKeyList keys={keys} />
+        </div>
       </div>
     </Card>
   );

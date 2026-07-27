@@ -22,9 +22,10 @@ export function DataTable<T>({ data, columns, pageSize = 10, className, hideSear
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredData = useMemo(() => {
-    if (!searchTerm) return data;
+    const safeData = Array.isArray(data) ? data : [];
+    if (!searchTerm) return safeData;
     const lowerSearch = searchTerm.toLowerCase();
-    return data.filter((item) => {
+    return safeData.filter((item) => {
       // Basic text search across object values
       return Object.values(item as Record<string, unknown>).some(
         (val) => typeof val === 'string' && val.toLowerCase().includes(lowerSearch)

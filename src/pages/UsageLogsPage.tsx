@@ -70,13 +70,15 @@ export function UsageLogsPage() {
 
   return (
     <DashboardLayout>
-      <div className="w-full p-md 2xl:p-lg flex flex-col gap-lg">
+      <div className="w-full flex flex-col items-start">
+        <div className="w-full max-w-[1200px] flex flex-col p-md lg:p-xl gap-xl">
         <div>
           <h1 className="text-heading-md text-ink">Usage Logs</h1>
           <p className="text-body-sm text-muted">View detailed request logs and usage.</p>
         </div>
         
         <DataTable data={mockLogs} columns={columns} pageSize={15} />
+        </div>
       </div>
     </DashboardLayout>
   );

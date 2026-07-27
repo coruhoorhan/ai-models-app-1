@@ -49,6 +49,7 @@ Where consumer AI brands lean into big colorful hero art, UnoRouter leans into *
 
 ## Layout & Responsive
 
+- **Flexbox Constraints (Text Squishing Prevention):** Whenever building a `flex-row justify-between` layout that pairs a flexible text/content block with a fixed-width element (like an input or button group), you MUST explicitly assign `flex-1` to the text/content container and `shrink-0` to the fixed-width element. This prevents the browser from collapsing the text container and forcing words to wrap into a vertical column on smaller screens.
 - **Max-Width Standard:** All public pages (Landing, Models, Docs, Rankings, Pricing, Chat) must have their main content containers constrained to `max-w-[1440px]` and centered via `mx-auto`. This prevents content from stretching on ultrawide monitors and keeps the vertical alignment stable across page transitions.
 - **Mobile-First Approach:** Always write mobile utility classes first (e.g., `flex-col`, `px-md py-lg`, `w-full`). Desktop layouts must be added via `md:` and `lg:` prefixes.
 - **Tablet (md) Breakpoints:** On `md` (768px) screens, grid containers MUST NOT exceed 2 columns (`md:grid-cols-2`). 3 or 4 column grids are strictly reserved for `lg` (1024px) or `xl` breakpoints.
