@@ -7,16 +7,17 @@ import { ChatMockup } from './ChatMockup';
 export function ChatClientShowcase() {
   const navigate = useNavigate();
   return (
-    <section className="w-full grid grid-cols-1 lg:grid-cols-2 gap-xl py-xl px-md lg:px-xl max-w-[1440px] mx-auto items-center">
+    <section className="w-full max-w-[1440px] mx-auto py-xl px-md lg:px-xl">
+      <div className="w-full flex flex-col lg:flex-row gap-xl items-center">
       {/* Left: Interactive Chat Mockup */}
-      <div className="w-full min-w-0 flex justify-center lg:justify-end">
+      <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
         <div className="w-full max-w-2xl lg:max-w-xl">
           <ChatMockup />
         </div>
       </div>
 
       {/* Right: Copy & Features */}
-      <div className="w-full min-w-0 flex flex-col items-center lg:items-start text-center lg:text-left">
+      <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
         <div className="flex items-center gap-xs px-sm py-xxs bg-canvas border border-chart-blue text-chart-blue rounded-full mb-md">
           <MessageCircle className="w-3 h-3" />
           <span className="text-label text-chart-blue">BUILT-IN CHAT</span>
@@ -54,6 +55,7 @@ export function ChatClientShowcase() {
             EXPLORE MODELS
           </Button>
         </div>
+      </div>
       </div>
     </section>
   );
