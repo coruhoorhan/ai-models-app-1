@@ -1,99 +1,113 @@
 import React from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { DataTable, ColumnDef } from '../../../shared/ui/DataTable';
+import { Badge } from '../../../shared/ui/Badge';
 import { BadgeCategory } from '../../../shared/ui/BadgeCategory';
-import { Button } from '../../../shared/ui/Button';
-import { cn } from '../../../shared/lib/cn';
-
-export interface RankingEntry {
-  id: string;
-  rank: number;
-  name: string;
-  developer: string;
-  context: string;
-  score: number;
-  speed: number;
-  releaseTag?: string;
-}
-
-const COLUMNS: ColumnDef<RankingEntry>[] = [
-  {
-    key: 'rank',
-    header: 'SIRA',
-    cell: (row) => (
-      <span className={cn(
-        "font-mono font-bold text-body",
-        row.rank === 1 ? "text-chart-orange" : row.rank <= 3 ? "text-live" : "text-ink"
-      )}>
-        #{row.rank}
-      </span>
-    )
-  },
-  {
-    key: 'name',
-    header: 'MODEL & GELİŞTİRİCİ',
-    cell: (row) => (
-      <div className="flex flex-col">
-        <div className="flex items-center gap-xs">
-          <span className="text-body font-medium text-ink">{row.name}</span>
-          {row.releaseTag && (
-            <BadgeCategory variant="outline" label={row.releaseTag} />
-          )}
-        </div>
-        <span className="text-caption text-subtle">
-          {row.developer} <span className="text-hairline mx-1">•</span> {row.context}
-        </span>
-      </div>
-    )
-  },
-  {
-    key: 'chart',
-    header: 'PERFORMANS',
-    cell: (row) => (
-      <div className="w-[80px] h-[24px] flex items-center">
-        <div className="w-full h-[4px] bg-surface-sunken rounded-full overflow-hidden">
-          <div 
-            className={cn("h-full", row.rank === 1 ? "bg-chart-orange" : row.rank <= 3 ? "bg-live" : "bg-chart-teal")}
-            style={{ width: `${(row.score / 1300) * 100}%` }}
-          />
-        </div>
-      </div>
-    )
-  },
-  {
-    key: 'score',
-    header: 'SKOR / VİZ',
-    cell: (row) => (
-      <div className="flex flex-col">
-        <span className="font-mono text-body font-bold text-ink">{row.score}</span>
-        <span className="font-mono text-caption text-subtle">{row.speed} tok/s</span>
-      </div>
-    )
-  },
-  {
-    key: 'actions',
-    header: '',
-    cell: () => (
-      <div className="w-4 h-4 rounded-xs border border-hairline bg-canvas flex-shrink-0 cursor-pointer hover:border-ink transition-colors focus-ring" tabIndex={0} role="button" aria-label="Select model" />
-    )
-  }
-];
+import { ErrorStateBlock } from '../../../shared/ui/ErrorStateBlock';
+import { ModelRanking, SortOption } from '../types';
+import { ArrowUp, ArrowDown } from 'lucide-react';
 
 interface RankingsTableProps {
-  data: RankingEntry[];
+  data: ModelRanking[];
+  isLoading: boolean;
+  isError: any;
 }
 
-export function RankingsTable({ data }: RankingsTableProps) {
+export function RankingsTable({ data, isLoading, isError }: RankingsTableProps) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentSort = (searchParams.get('sort') as SortOption) || 'elo_desc';
+
+  const handleSort = (field: 'elo' | 'price') => {
+    setSearchParams((prev) => {
+      const isAsc = currentSort === `${field}_asc`;
+      prev.set('sort', `${field}_${isAsc ? 'desc' : 'asc'}`);
+      return prev;
+    });
+  };
+
+  const getSortIcon = (field: 'elo' | 'price') => {
+    if (currentSort === `${field}_asc`) return <ArrowUp className="w-3 h-3 ml-1" />;
+    if (currentSort === `${field}_desc`) return <ArrowDown className="w-3 h-3 ml-1" />;
+    return <ArrowDown className="w-3 h-3 ml-1 opacity-0 group-hover:opacity-50 transition-opacity" />;
+  };
+
+  if (isError) {
+    return <ErrorStateBlock message="Failed to load rankings. Please try again later." />;
+  }
+
+  const columns: ColumnDef<ModelRanking>[] = [
+    {
+      key: 'rank',
+      header: <span className="text-subtle">#</span>,
+      cell: (_row) => (
+        <span className="text-subtle font-mono text-body-sm">-</span>
+      )
+    },
+    {
+      key: 'name',
+      header: 'Model',
+      cell: (row) => (
+        <div className="flex flex-col">
+          <span className="text-body-md font-medium text-ink">{row.name}</span>
+          <span className="text-caption text-subtle">{row.provider}</span>
+        </div>
+      )
+    },
+    {
+      key: 'category',
+      header: 'Category',
+      cell: (row) => <BadgeCategory label={row.category.toUpperCase()} variant="secondary" />
+    },
+    {
+      key: 'eloScore',
+      header: (
+        <button 
+          onClick={() => handleSort('elo')}
+          className="flex items-center text-label hover:text-ink group transition-colors focus-ring outline-none"
+        >
+          ELO RATING
+          {getSortIcon('elo')}
+        </button>
+      ),
+      cell: (row) => (
+        <Badge variant="status-live" label={row.eloScore.toString()} className="font-mono font-bold tracking-tight" />
+      )
+    },
+    {
+      key: 'parameters',
+      header: 'Params',
+      cell: (row) => (
+        <span className="font-mono text-body-sm text-subtle">
+          {row.parameters || 'N/A'}
+        </span>
+      )
+    },
+    {
+      key: 'price',
+      header: (
+        <button 
+          onClick={() => handleSort('price')}
+          className="flex items-center text-label hover:text-ink group transition-colors focus-ring outline-none"
+        >
+          PRICE (1M TOKENS)
+          {getSortIcon('price')}
+        </button>
+      ),
+      cell: (row) => (
+        <div className="flex flex-col font-mono text-caption text-subtle">
+          <span>In: ${row.inputPrice.toFixed(2)}</span>
+          <span>Out: ${row.outputPrice.toFixed(2)}</span>
+        </div>
+      )
+    }
+  ];
+
   return (
-    <div className="w-full flex flex-col gap-md">
-      <DataTable 
-        data={data} 
-        columns={COLUMNS} 
-        pageSize={11}
-        hideSearch={false}
-      />
-      <div className="w-full flex justify-center mt-sm">
-        <Button variant="tertiary" className="w-full lg:w-auto">Load More</Button>
-      </div>
-    </div>
+    <DataTable 
+      data={data} 
+      columns={columns} 
+      isLoading={isLoading}
+      pageSize={15}
+    />
   );
 }

@@ -8,23 +8,13 @@ import { ChartCardScatter } from '../features/rankings/components/ChartCardScatt
 import { HighlightListItem } from '../features/rankings/components/HighlightListItem';
 import { CostSimulatorCard } from '../features/rankings/components/CostSimulatorCard';
 import { Card } from '../shared/ui/Card';
-import { RankingsTable, RankingEntry } from '../features/rankings/components/RankingsTable';
+import { RankingsTable } from '../features/rankings/components/RankingsTable';
 import { RankingsPodium } from '../features/rankings/components/RankingsPodium';
 import { ArenaBattleSimulator } from '../features/rankings/components/ArenaBattleSimulator';
-
-const MOCK_DATA: RankingEntry[] = [
-  { id: '1', rank: 1, name: 'GPT-4o (2024-08-06)', developer: 'OpenAI', context: '128k Context', score: 1287, speed: 300, releaseTag: '1-Tier' },
-  { id: '2', rank: 2, name: 'Claude 3.5 Sonnet', developer: 'Anthropic', context: '200k Context', score: 1279, speed: 49 },
-  { id: '3', rank: 3, name: 'Gemini 1.5 Pro (002)', developer: 'Google', context: '1M Context', score: 1261, speed: 44 },
-  { id: '4', rank: 4, name: 'Llama 3.1 405B Instruct', developer: 'Meta', context: '128k Context', score: 1258, speed: 28, releaseTag: 'New' },
-  { id: '5', rank: 5, name: 'GPT-4 Turbo', developer: 'OpenAI', context: '128k Context', score: 1253, speed: 45 },
-  { id: '6', rank: 6, name: 'Claude 3 Opus', developer: 'Anthropic', context: '200k Context', score: 1248, speed: 35 },
-  { id: '7', rank: 7, name: 'Mistral Large 2', developer: 'Mistral', context: '128k Context', score: 1240, speed: 65 },
-  { id: '8', rank: 8, name: 'Gemini 1.5 Flash', developer: 'Google', context: '1M Context', score: 1225, speed: 180 },
-  { id: '9', rank: 9, name: 'Llama 3 70B Instruct', developer: 'Meta', context: '8k Context', score: 1210, speed: 110 },
-  { id: '10', rank: 10, name: 'Mixtral 8x22B', developer: 'Mistral', context: '64k Context', score: 1205, speed: 90 },
-  { id: '11', rank: 11, name: 'Command R+', developer: 'Cohere', context: '128k Context', score: 1198, speed: 40 },
-];
+import { useRankings } from '../features/rankings/hooks/useRankings';
+import { RankingsFilterBar } from '../features/rankings/components/RankingsFilterBar';
+import { useSearchParams } from 'react-router-dom';
+import { CategoryOption, SortOption } from '../features/rankings/types';
 
 const MOCK_SCATTER_DATA = [
   { id: '1', name: 'GPT-4o', x: 5, y: 300, color: 'var(--color-chart-teal)' },
@@ -35,7 +25,19 @@ const MOCK_SCATTER_DATA = [
 ];
 
 export function RankingsPage() {
-  const top3 = MOCK_DATA.slice(0, 3);
+  const [searchParams] = useSearchParams();
+  const category = (searchParams.get('category') as CategoryOption) || 'all';
+  const sort = (searchParams.get('sort') as SortOption) || 'elo_desc';
+  
+  const { rankings, isLoading, isError } = useRankings(category, sort);
+
+  const top3 = rankings.slice(0, 3).map((r, i) => ({
+    id: r.id,
+    rank: i + 1,
+    name: r.name,
+    developer: r.provider,
+    score: r.eloScore
+  }));
 
   return (
     <div className="w-full flex flex-col items-center bg-canvas min-h-screen relative overflow-hidden">
@@ -64,6 +66,9 @@ export function RankingsPage() {
         {/* Content Section */}
         <div className="w-full max-w-[1440px] px-md lg:px-xl py-xl flex flex-col items-start gap-xl flex-1">
           
+          {/* Filter Bar */}
+          <RankingsFilterBar />
+
           {/* Podium */}
           <RankingsPodium topModels={top3} />
 
@@ -73,7 +78,7 @@ export function RankingsPage() {
           <div className="w-full flex flex-col lg:flex-row items-start gap-xl">
             {/* Left Column: Data Table */}
             <div className="w-full lg:w-2/3 overflow-x-auto">
-              <RankingsTable data={MOCK_DATA} />
+              <RankingsTable data={rankings} isLoading={isLoading} isError={isError} />
             </div>
 
             {/* Right Column: Cards Stack */}
