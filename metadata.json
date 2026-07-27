@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "description": "",
+  "name": "UnoRouter AI Studio",
+  "description": "LLM Arena Benchmark, Chat Studio with Live Streaming Gemini API Integration, and Model Performance Analytics",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

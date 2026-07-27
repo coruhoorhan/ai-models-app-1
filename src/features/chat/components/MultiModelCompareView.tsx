@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Send, Zap, Clock, Sparkles, CheckCircle2 } from 'lucide-react';
-import { ChatMessage } from '../types';
+import { Send, Zap, Sparkles } from 'lucide-react';
 import { Badge } from '../../../shared/ui/Badge';
 import { Button } from '../../../shared/ui/Button';
+import { streamChatCompletion } from '../../../shared/api/llmStream.api';
 
 interface MultiModelCompareViewProps {
   modelA: { id: string; name: string };
@@ -17,7 +17,7 @@ export function MultiModelCompareView({ modelA, modelB }: MultiModelCompareViewP
   const [metricsA, setMetricsA] = useState<{ ttft: number; speed: number; tokens: number } | null>(null);
   const [metricsB, setMetricsB] = useState<{ ttft: number; speed: number; tokens: number } | null>(null);
 
-  const handleRunDualStreaming = () => {
+  const handleRunDualStreaming = async () => {
     if (!prompt.trim() || isStreaming) return;
     setIsStreaming(true);
     setResponseA('');
@@ -25,28 +25,51 @@ export function MultiModelCompareView({ modelA, modelB }: MultiModelCompareViewP
     setMetricsA(null);
     setMetricsB(null);
 
-    const fullA = `${modelA.name} Response:\n\n1. B-Tree Indexes:\n- Supports equality (=) and range queries (<, <=, >, >=).\n- Maintains sorted order for ORDER BY operations.\n\n2. Hash Indexes:\n- Supports fast O(1) equality comparisons only.\n- Does NOT support range queries or sorting.\n\nExample:\nCREATE INDEX idx_user_id ON users USING btree(user_id);`;
-    const fullB = `${modelB.name} Response:\n\nKey Differences:\n- B-Tree: Default in PostgreSQL. Handles multi-column and range scans.\n- Hash: Ideal for strict key-value lookups, smaller index footprint.\n\nPerformance:\nHash lookups are ~5-10% faster for exact string matches but lack range capability.`;
+    let textA = '';
+    let textB = '';
 
-    const startTime = Date.now();
-    let indexA = 0;
-    let indexB = 0;
+    const streamA = streamChatCompletion({
+      messages: [{ role: 'user', content: prompt }],
+      model: modelA.id,
+      onChunk: (chunk) => {
+        if (chunk.text) {
+          textA += chunk.text;
+          setResponseA(textA);
+          setMetricsA({
+            ttft: chunk.ttftMs ?? 0,
+            speed: chunk.tps ?? 0,
+            tokens: chunk.tokens ?? Math.ceil(textA.length / 4)
+          });
+        }
+      },
+      onDone: (done) => {
+        setMetricsA(prev => prev ? { ...prev, ttft: done.ttftMs ?? prev.ttft, speed: done.tps ?? prev.speed, tokens: done.totalTokens ?? prev.tokens } : null);
+      },
+      onError: (err) => setResponseA(`⚠️ ${err}`)
+    });
 
-    const interval = setInterval(() => {
-      indexA += 4;
-      indexB += 3;
+    const streamB = streamChatCompletion({
+      messages: [{ role: 'user', content: prompt }],
+      model: modelB.id === modelA.id ? 'gemini-1.5-pro' : modelB.id,
+      onChunk: (chunk) => {
+        if (chunk.text) {
+          textB += chunk.text;
+          setResponseB(textB);
+          setMetricsB({
+            ttft: chunk.ttftMs ?? 0,
+            speed: chunk.tps ?? 0,
+            tokens: chunk.tokens ?? Math.ceil(textB.length / 4)
+          });
+        }
+      },
+      onDone: (done) => {
+        setMetricsB(prev => prev ? { ...prev, ttft: done.ttftMs ?? prev.ttft, speed: done.tps ?? prev.speed, tokens: done.totalTokens ?? prev.tokens } : null);
+      },
+      onError: (err) => setResponseB(`⚠️ ${err}`)
+    });
 
-      if (indexA <= fullA.length) setResponseA(fullA.slice(0, indexA));
-      if (indexB <= fullB.length) setResponseB(fullB.slice(0, indexB));
-
-      if (indexA >= fullA.length && indexB >= fullB.length) {
-        clearInterval(interval);
-        setIsStreaming(false);
-        const elapsed = Date.now() - startTime;
-        setMetricsA({ ttft: 110, speed: 135, tokens: 94 });
-        setMetricsB({ ttft: 145, speed: 112, tokens: 88 });
-      }
-    }, 30);
+    await Promise.all([streamA, streamB]);
+    setIsStreaming(false);
   };
 
   return (

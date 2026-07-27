@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { ChatMessage, ChatParameters } from '../types';
-import { ChatMessageItem } from './ChatMessageItem';
 import { ChatParametersSidebar } from './ChatParametersSidebar';
 import { PromptLibraryModal } from './PromptLibraryModal';
 import { MultiModelCompareView } from './MultiModelCompareView';
@@ -8,15 +7,16 @@ import { ChatToolbar } from './ChatToolbar';
 import { ChatMessagesList } from './ChatMessagesList';
 import { ChatInputArea } from './ChatInputArea';
 import { availableModels } from '../constants';
+import { streamChatCompletion } from '../../../shared/api/llmStream.api';
 
 export function ChatWorkspace() {
   const [messages, setMessages] = useState<ChatMessage[]>([{
-    id: '1', role: 'assistant', modelName: 'anthropic/claude-3.5-sonnet', timestamp: 'Just now',
-    content: 'Welcome to the UnoRouter Chat Studio workspace! Select any model from OpenRouter, test system prompts, or switch to Multi-Model Dual Streaming to compare model outputs side-by-side.'
+    id: '1', role: 'assistant', modelName: 'google/gemini-2.0-flash', timestamp: 'Just now',
+    content: 'Welcome to UnoRouter Chat Studio! Live API stream enabled via Google Gemini SDK. Test system instructions, temperature, top-P tuning, or switch to Multi-Model Dual Streaming.'
   }]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [selectedModel, setSelectedModel] = useState({ id: 'anthropic/claude-3.5-sonnet', name: 'Claude 3.5 Sonnet' });
+  const [selectedModel, setSelectedModel] = useState({ id: 'google/gemini-2.0-flash', name: 'Gemini 2.0 Flash' });
   const [secondaryModel, setSecondaryModel] = useState({ id: 'openai/gpt-4o', name: 'GPT-4o' });
   const [isMultiModel, setIsMultiModel] = useState(false);
   const [showParamsSidebar, setShowParamsSidebar] = useState(true);
@@ -29,33 +29,69 @@ export function ChatWorkspace() {
     autoFallback: true, fallbackModelId: 'openai/gpt-4o'
   });
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim() || isTyping) return;
-    const userMessage: ChatMessage = { id: Date.now().toString(), role: 'user', content: input, timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) };
-    setMessages(prev => [...prev, userMessage]);
-    const currentPrompt = input;
+    const userMsgText = input.trim();
+    const userMessage: ChatMessage = {
+      id: Date.now().toString(),
+      role: 'user',
+      content: userMsgText,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+
+    const assistantMsgId = (Date.now() + 1).toString();
+    const initialAssistantMsg: ChatMessage = {
+      id: assistantMsgId,
+      role: 'assistant',
+      content: '',
+      modelId: selectedModel.id,
+      modelName: selectedModel.name,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+
+    const newHistory = [...messages, userMessage];
+    setMessages([...newHistory, initialAssistantMsg]);
     setInput('');
     setIsTyping(true);
 
-    setTimeout(() => {
-      let replyContent = `Router processed via ${selectedModel.name}.\n\nHere is a structured analysis:\n\n1. **Execution**: Evaluated with system instruction "${params.systemPrompt.slice(0, 40)}...".\n2. **Optimization**: Zero proxy latency added by UnoRouter Edge Node (12ms TTFT).\n3. **Fallback**: Auto-fallback chain armed with ${params.fallbackModelId}.`;
+    let accumulatedText = '';
 
-      if (currentPrompt.toLowerCase().includes('sql') || currentPrompt.toLowerCase().includes('index')) {
-        replyContent = `To optimize PostgreSQL queries:\n\n\`\`\`sql\nCREATE INDEX CONCURRENTLY idx_orders_user_status \nON orders (user_id, status) \nINCLUDE (created_at);\n\`\`\`\n\n- **Composite Order**: High cardinality column (\`user_id\`) placed first.\n- **Covering Index**: Included \`created_at\` to avoid table heap lookup.`;
-      } else if (currentPrompt.toLowerCase().includes('throttle') || currentPrompt.toLowerCase().includes('code')) {
-        replyContent = `TypeScript Throttle Implementation:\n\n\`\`\`typescript\nexport function throttle<T extends (...args: unknown[]) => void>(fn: T, limit: number): T {\n  let lastCall = 0;\n  return function (...args: Parameters<T>) {\n    const now = Date.now();\n    if (now - lastCall >= limit) {\n      lastCall = now;\n      fn(...args);\n    }\n  } as T;\n}\n\`\`\``;
+    await streamChatCompletion({
+      messages: newHistory.map(m => ({ role: m.role, content: m.content })),
+      model: selectedModel.id,
+      systemPrompt: params.systemPrompt,
+      temperature: params.temperature,
+      topP: params.topP,
+      maxTokens: params.maxTokens,
+      onChunk: (chunk) => {
+        if (chunk.text) {
+          accumulatedText += chunk.text;
+          setMessages(prev => prev.map(m => m.id === assistantMsgId ? {
+            ...m,
+            content: accumulatedText,
+            latencyMs: chunk.ttftMs ?? m.latencyMs,
+            tokensPerSec: chunk.tps ?? m.tokensPerSec,
+            tokensUsed: chunk.tokens ?? m.tokensUsed
+          } : m));
+        }
+      },
+      onDone: (doneData) => {
+        setMessages(prev => prev.map(m => m.id === assistantMsgId ? {
+          ...m,
+          latencyMs: doneData.ttftMs ?? m.latencyMs,
+          tokensPerSec: doneData.tps ?? m.tokensPerSec,
+          tokensUsed: doneData.totalTokens ?? m.tokensUsed
+        } : m));
+        setIsTyping(false);
+      },
+      onError: (errMsg) => {
+        setMessages(prev => prev.map(m => m.id === assistantMsgId ? {
+          ...m,
+          content: `⚠️ API Error: ${errMsg}`
+        } : m));
+        setIsTyping(false);
       }
-
-      const botMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(), role: 'assistant', content: replyContent,
-        modelId: selectedModel.id, modelName: selectedModel.name,
-        tokensUsed: Math.floor(Math.random() * 100) + 120, latencyMs: Math.floor(Math.random() * 80) + 90, tokensPerSec: Math.floor(Math.random() * 40) + 110,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-      
-      setMessages(prev => [...prev, botMessage]);
-      setIsTyping(false);
-    }, 700);
+    });
   };
 
   const handleExportJSON = () => {
