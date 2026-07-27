@@ -71,6 +71,9 @@ model Model {
   contextSize Int
   inputPrice  Float    // Per 1M tokens
   outputPrice Float    // Per 1M tokens
+  eloScore    Int      @default(1000)
+  category    String   @default("llm") // llm, image, audio
+  parameters  String   @default("Unknown")
   isActive    Boolean  @default(true)
 
   provider    Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
