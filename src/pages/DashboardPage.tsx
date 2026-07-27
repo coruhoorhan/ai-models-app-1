@@ -6,7 +6,7 @@ import { StatCard } from '../shared/ui/StatCard';
 import { Card } from '../shared/ui/Card';
 import { Button } from '../shared/ui/Button';
 import { DashboardChart } from '../features/dashboard/components/DashboardChart';
-import { useDashboardStats, useDashboardChart } from '../features/dashboard/hooks/useDashboardData';
+import { useDashboardStats } from '../features/dashboard/hooks/useDashboardStats';
 import { DashboardApiInfoCard } from '../features/dashboard/components/DashboardApiInfoCard';
 import { DashboardQuickLinks } from '../features/dashboard/components/DashboardQuickLinks';
 import { DashboardRouterInspector } from '../features/dashboard/components/DashboardRouterInspector';
@@ -16,12 +16,14 @@ export function DashboardPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentRange = searchParams.get('range') || '7d';
 
-  const { data: statsData, isLoading: isStatsLoading } = useDashboardStats();
-  const { data: chartData, isLoading: isChartLoading } = useDashboardChart(currentRange);
+  const { stats, chartData, isLoading } = useDashboardStats();
 
   const handleRangeChange = (range: string) => {
     setSearchParams({ range });
   };
+
+  const formatCurrency = (val: number | undefined) => val !== undefined ? `$${val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '...';
+  const formatNumber = (val: number | undefined) => val !== undefined ? val.toLocaleString() : '...';
 
   return (
     <DashboardLayout>
@@ -37,7 +39,7 @@ export function DashboardPage() {
           </div>
           <div className="flex items-center gap-sm px-sm py-xs border border-hairline rounded-sm bg-surface">
             <Calendar className="w-4 h-4 text-muted" />
-            <span className="text-body-sm text-ink">Apr 23, 2024</span>
+            <span className="text-body-sm text-ink">{new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
           </div>
         </div>
 
@@ -47,33 +49,33 @@ export function DashboardPage() {
             icon={Wallet}
             iconColor="chart-green"
             label="CURRENT BALANCE"
-            value={isStatsLoading ? '...' : statsData?.balance || '0'}
-            className="border-b lg:border-b-0 md:border-r border-hairline rounded-none border-t-0 border-l-0"
-            secondaryStat={{ label: 'CONSUMPTION', value: isStatsLoading ? '...' : statsData?.consumption || '0' }}
+            value={formatCurrency(stats?.balance)}
+            className="border-b md:border-b-0 md:border-r border-hairline rounded-none border-t-0 border-l-0"
+            secondaryStat={{ label: 'CONSUMPTION', value: formatCurrency(stats?.consumption) }}
           />
           <StatCard
             icon={Send}
             iconColor="chart-blue"
             label="NUMBER OF REQUESTS"
-            value={isStatsLoading ? '...' : statsData?.requests || '0'}
+            value={formatNumber(stats?.requestsCount)}
             className="border-b lg:border-b-0 lg:border-r border-hairline rounded-none border-t-0 border-l-0 md:border-r-0"
-            secondaryStat={{ label: 'STATISTICAL COUNT', value: isStatsLoading ? '...' : statsData?.statisticalCount || '0' }}
+            secondaryStat={{ label: 'STATISTICAL QUOTA', value: formatNumber(stats?.requestsQuota) }}
           />
           <StatCard
             icon={DollarSign}
             iconColor="error"
-            label="STATISTICAL QUOTA"
-            value={isStatsLoading ? '...' : statsData?.quota || '0'}
+            label="STATISTICAL TOKENS"
+            value={formatNumber(stats?.tokensCount)}
             className="border-b md:border-b-0 md:border-r border-hairline rounded-none border-t-0 border-l-0"
-            secondaryStat={{ label: 'STATISTICAL TOKENS', value: isStatsLoading ? '...' : statsData?.tokens || '0' }}
+            secondaryStat={{ label: 'STATISTICAL QUOTA', value: formatNumber(stats?.tokensQuota) }}
           />
           <StatCard
             icon={Gauge}
             iconColor="chart-green"
             label="AVERAGE RPM"
-            value={isStatsLoading ? '...' : statsData?.averageRpm || '0'}
+            value={formatNumber(stats?.avgRpm)}
             className="rounded-none border-t-0 border-l-0 border-r-0 border-b-0"
-            secondaryStat={{ label: 'AVERAGE TPM', value: isStatsLoading ? '...' : statsData?.averageTpm || '0' }}
+            secondaryStat={{ label: 'AVERAGE TPM', value: formatNumber(stats?.avgTpm) }}
           />
         </div>
 
@@ -101,16 +103,16 @@ export function DashboardPage() {
             </div>
             
             <div className="flex flex-wrap gap-md mb-md">
-              <div className="text-ink border-b-2 border-ink pb-[10px] text-body-sm px-sm font-medium">Consumption Distribution</div>
-              <div className="text-muted pb-[10px] text-body-sm px-sm">Consumption Trend</div>
-              <div className="text-muted pb-[10px] text-body-sm px-sm">Calls Distribution</div>
-              <div className="text-muted pb-[10px] text-body-sm px-sm">Calls Ranking</div>
+              <div className="text-ink border-b-2 border-ink pb-[10px] text-body-sm px-sm font-medium cursor-pointer">Consumption Distribution</div>
+              <div className="text-muted pb-[10px] text-body-sm px-sm cursor-pointer hover:text-ink">Consumption Trend</div>
+              <div className="text-muted pb-[10px] text-body-sm px-sm cursor-pointer hover:text-ink">Calls Distribution</div>
+              <div className="text-muted pb-[10px] text-body-sm px-sm cursor-pointer hover:text-ink">Calls Ranking</div>
             </div>
 
-            <div className="text-label text-subtle mb-md">TOTAL: $142.50</div>
+            <div className="text-label text-subtle mb-md">TOTAL: {formatCurrency(stats?.consumption)}</div>
             
             <div className="flex-1 bg-canvas flex items-center justify-center">
-              {isChartLoading ? (
+              {isLoading ? (
                 <div className="text-body-sm text-subtle">Loading chart data...</div>
               ) : (
                 <DashboardChart data={chartData} />

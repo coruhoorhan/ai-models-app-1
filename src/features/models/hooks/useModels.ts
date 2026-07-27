@@ -2,13 +2,10 @@ import { useState, useEffect } from 'react';
 import { fetchModels, ModelConfig } from '../../../shared/api/models.api';
 import { logError } from '../../../shared/lib/logError';
 
-let cachedModels: ModelConfig[] | null = null;
-let lastFetchTime = 0;
-const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
-
-export function useModels() {
-  const [data, setData] = useState<ModelConfig[]>(cachedModels || []);
-  const [isLoading, setIsLoading] = useState(!cachedModels);
+export function useModels(searchQuery = '', provider = 'All', tier = 'All', sort = 'Newest', page = 1) {
+  const [data, setData] = useState<ModelConfig[]>([]);
+  const [meta, setMeta] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
@@ -23,24 +20,30 @@ export function useModels() {
       }
 
       try {
-        if (!cachedModels) setIsLoading(true);
-        const models = await fetchModels();
-        
-        cachedModels = models;
-        lastFetchTime = Date.now();
-
-        if (isMounted) setData(models);
+        setIsLoading(true);
+        const result = await fetchModels(searchQuery, provider, tier, sort, page);
+        if (isMounted) {
+          setData(result.data);
+          setMeta(result.meta);
+        }
       } catch (err) {
         if (isMounted) setError(err instanceof Error ? err : new Error('Unknown error'));
-        logError(err);
+        logError(err, { feature: 'Models', action: 'fetchModels' });
       } finally {
         if (isMounted) setIsLoading(false);
       }
     }
     
-    loadData();
-    return () => { isMounted = false; };
-  }, []);
+    // Basit debounce işlemi
+    const timeoutId = setTimeout(() => {
+      loadData();
+    }, 300);
 
-  return { data, isLoading, error };
+    return () => {
+      isMounted = false;
+      clearTimeout(timeoutId);
+    };
+  }, [searchQuery, provider, tier, sort, page]);
+
+  return { data, meta, isLoading, error };
 }
