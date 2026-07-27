@@ -23,13 +23,13 @@ export function ThreeSteps() {
         <Card className="p-xl flex flex-col">
           <h3 className="text-heading-sm text-ink mb-md">Sign up</h3>
           <div className="flex flex-col gap-sm mt-auto">
-            <Button variant="secondary" icon={Github}>
+            <Button variant="secondary" icon={Github} className="justify-start">
               Continue with GitHub
             </Button>
-            <Button variant="secondary" icon={MessageSquare}>
+            <Button variant="secondary" icon={MessageSquare} className="justify-start">
               Continue with Discord
             </Button>
-            <Button variant="secondary" icon={Mail}>
+            <Button variant="secondary" icon={Mail} className="justify-start">
               Continue with Email
             </Button>
           </div>
@@ -69,8 +69,8 @@ export function ThreeSteps() {
             Create an API key and drop it into any OpenAI-compatible client.
           </p>
           <div className="mt-auto flex flex-col gap-sm">
-            <KeyDisplayField value="sk-unorouter-8f92j..." />
-            <span className="text-body-sm text-muted">Fully OpenAI compatible</span>
+            <KeyDisplayField label="API KEY" value="sk-unorouter-8f92j..." isSecret />
+            <span className="text-body-sm text-muted mt-2 block">Fully OpenAI compatible</span>
           </div>
         </Card>
       </div>

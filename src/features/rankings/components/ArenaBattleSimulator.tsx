@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Swords, RotateCcw, Trophy } from 'lucide-react';
 import { Card } from '../../../shared/ui/Card';
 import { Button } from '../../../shared/ui/Button';
-import { Badge } from '../../../shared/ui/Badge';
+import { BadgeCategory } from '../../../shared/ui/BadgeCategory';
 import { ModelArenaCard } from './ModelArenaCard';
 
 export function ArenaBattleSimulator() {
@@ -32,9 +32,11 @@ export function ArenaBattleSimulator() {
     
     let indexA = 0;
     let indexB = 0;
+
     const interval = setInterval(() => {
       indexA += 4;
       indexB += 3;
+
       if (indexA <= fullA.length) setOutputA(fullA.slice(0, indexA));
       if (indexB <= fullB.length) setOutputB(fullB.slice(0, indexB));
       
@@ -51,7 +53,7 @@ export function ArenaBattleSimulator() {
   };
 
   return (
-    <Card className="w-full p-xl border-hairline bg-surface/50 flex flex-col gap-lg my-md">
+    <Card className="w-full p-xl border-hairline bg-surface flex flex-col gap-lg my-md">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-md border-b border-hairline pb-md">
         <div className="flex items-center gap-sm">
           <div className="p-sm rounded-sm bg-ink text-canvas">
@@ -60,7 +62,7 @@ export function ArenaBattleSimulator() {
           <div>
             <div className="flex items-center gap-xs">
               <h3 className="text-heading-sm text-ink">Blind Arena Battle Simulator</h3>
-              <Badge variant="status-live" label="Interactive" />
+              <BadgeCategory variant="status-live" label="Interactive" />
             </div>
             <p className="text-body-sm text-muted">Test 2 anonymous models side-by-side and vote on response quality.</p>
           </div>
@@ -71,7 +73,7 @@ export function ArenaBattleSimulator() {
             <button
               key={idx}
               onClick={() => setPrompt(p)}
-              className="text-label font-medium px-sm py-xs rounded-full border border-hairline bg-canvas hover:bg-surface-sunken text-ink transition-colors truncate max-w-[180px]"
+              className="text-label font-medium px-sm py-xs rounded-full border border-hairline bg-canvas hover:bg-surface-sunken text-ink transition-fast truncate max-w-[180px] focus-ring"
             >
               Prompt #{idx + 1}
             </button>
@@ -79,14 +81,13 @@ export function ArenaBattleSimulator() {
         </div>
       </div>
 
-      {/* Input & Action */}
       <div className="flex flex-col sm:flex-row items-stretch gap-sm">
         <input
           type="text"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           placeholder="Enter prompt to pit models against each other..."
-          className="flex-1 bg-canvas border border-hairline rounded-sm px-md py-sm text-body-sm text-ink outline-none focus:border-ink"
+          className="flex-1 bg-canvas border border-hairline rounded-sm px-md py-sm text-body-sm text-ink outline-none transition-fast focus-ring"
         />
         <Button 
           variant="primary" 
@@ -99,7 +100,6 @@ export function ArenaBattleSimulator() {
         </Button>
       </div>
 
-      {/* Outputs Side-by-Side */}
       {(outputA || outputB || isBattling) && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-md animate-in fade-in duration-200">
           <ModelArenaCard
@@ -127,16 +127,15 @@ export function ArenaBattleSimulator() {
         </div>
       )}
 
-      {/* Reveal Banner */}
       {isRevealed && (
-        <div className="p-md rounded-sm bg-live/10 border border-live/30 flex items-center justify-between gap-md animate-in slide-in-from-bottom duration-200">
+        <div className="p-md rounded-sm bg-live-bg border border-live/30 flex items-center justify-between gap-md animate-in slide-in-from-bottom duration-200">
           <div className="flex items-center gap-sm">
             <Trophy className="w-5 h-5 text-live shrink-0" />
             <div>
-              <span className="text-body-sm font-bold text-ink">
+              <span className="text-body font-bold text-ink">
                 Identity Revealed! You voted: {userVote === 'A' ? 'Model A (Claude 3.5 Sonnet)' : userVote === 'B' ? 'Model B (GPT-4o)' : 'Tie'}
               </span>
-              <p className="text-body-sm text-muted">Your vote was aggregated into our global blind arena Elo ratings.</p>
+              <p className="text-body-sm text-subtle mt-1">Your vote was aggregated into our global blind arena Elo ratings.</p>
             </div>
           </div>
           <Button variant="secondary" icon={RotateCcw} onClick={handleStartBattle}>

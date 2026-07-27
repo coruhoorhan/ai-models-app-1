@@ -31,12 +31,12 @@ export function FeatureCard({
   className
 }: FeatureCardProps) {
   return (
-    <Card className={cn('p-lg flex flex-col items-start', className)}>
+    <Card className={cn('p-lg flex flex-col items-start transition-fast hover:bg-surface-sunken', className)}>
       <div className="flex items-center gap-sm mb-sm">
         <Icon className={cn('w-6 h-6', colorMap[accentColor])} />
         <span className={cn('text-heading-sm', colorMap[accentColor])}>{title}</span>
       </div>
-      <p className="text-body text-muted flex-grow mb-lg">
+      <p className="text-body-sm text-subtle flex-grow mb-lg leading-relaxed">
         {description}
       </p>
       

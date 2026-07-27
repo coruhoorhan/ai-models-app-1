@@ -26,6 +26,7 @@ export function BackgroundGrid() {
         transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
         className="absolute -inset-[100px] bg-[linear-gradient(to_right,rgba(17,17,17,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(17,17,17,0.08)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.08)_1px,transparent_1px)] bg-[size:48px_48px]" 
       />
+      
       {/* Mouse Tracking Retro Interactive Dither Glow */}
       <motion.div
         className="fixed w-[450px] h-[450px] rounded-full blur-[90px] opacity-25 pointer-events-none -translate-x-1/2 -translate-y-1/2 z-0"
@@ -43,4 +44,5 @@ export function BackgroundGrid() {
     </div>
   );
 }
+
 

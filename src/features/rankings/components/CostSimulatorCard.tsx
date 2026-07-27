@@ -27,42 +27,44 @@ export function CostSimulatorCard({ className }: CostSimulatorCardProps) {
     volume === '100M' ? 100 : 1000;
 
   return (
-    <Card className={cn("w-full flex flex-col p-lg gap-md", className)}>
-      <div className="flex flex-col gap-xs">
-        <span className="text-label text-ink">AYLIK TOKEN HACMİ: {volume} TOKEN</span>
-        <h3 className="text-heading-sm text-ink">API Maliyet Simülasyonu</h3>
+    <Card className={cn("w-full flex flex-col gap-md", className)}>
+      <div className="flex items-center justify-between p-lg border-b border-hairline">
+        <h3 className="text-body font-semibold text-ink">API Maliyet Simülasyonu</h3>
+        
+        {/* Segmented Selector for Volume */}
+        <div className="flex bg-surface-sunken p-[4px] rounded-sm border border-hairline-soft">
+          {VOLUMES.map((v) => (
+            <button
+              key={v}
+              onClick={() => setVolume(v)}
+              className={cn(
+                'px-sm py-xs text-caption font-medium rounded-xs transition-fast focus-ring',
+                volume === v 
+                  ? 'bg-canvas text-ink shadow-sm' 
+                  : 'text-subtle hover:text-ink'
+              )}
+            >
+              {v}
+            </button>
+          ))}
+        </div>
       </div>
-
-      <div className="flex w-full bg-surface-sunken p-1 rounded-sm border border-hairline">
-        {VOLUMES.map((v) => (
-          <button
-            key={v}
-            onClick={() => setVolume(v)}
-            className={cn(
-              "flex-1 text-body-sm font-medium py-1.5 rounded-sm transition-colors text-center",
-              volume === v ? "bg-canvas border border-hairline shadow-sm text-ink" : "text-muted hover:text-ink"
-            )}
-          >
-            {v}
-          </button>
-        ))}
-      </div>
-
-      <div className="flex flex-col mt-2">
+      
+      <div className="flex flex-col p-lg pt-0">
+        <span className="text-label text-ink mb-md block">AYLIK TOKEN HACMİ: {volume} TOKEN</span>
         {MOCK_MODELS.map((model) => (
           <HighlightListItem
             key={model.name}
             modelName={model.name}
             developerInfo={model.developer}
-            price={`$${(model.basePricePerM * volumeMultiplier).toFixed(2)} /ay`}
-            className="py-sm"
+            price={`$${(model.basePricePerM * volumeMultiplier).toFixed(2)}`}
           />
         ))}
+        
+        <Button variant="tertiary" icon={Share} className="w-full mt-lg justify-center">
+          Paylaş
+        </Button>
       </div>
-
-      <Button variant="tertiary" icon={Share} className="w-full mt-sm justify-center">
-        Paylaş
-      </Button>
     </Card>
   );
 }

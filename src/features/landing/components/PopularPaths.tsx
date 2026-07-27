@@ -10,9 +10,12 @@ export function PopularPaths() {
   const [activeGuide, setActiveGuide] = useState<{ title: string; code: string; desc: string } | null>(null);
   const [copied, setCopied] = useState(false);
 
-  const models = [
-    'gpt-4o', 'claude-3-opus', 'gemini-1.5-pro', 'meta-llama-3-70b',
-    'mistral-large', 'cohere-command-r-plus', 'grok-1.5', 'qwen-2.5-72b'
+  const mockTickerItems = [
+    { label: 'TPS', value: '842', trend: 'up' as const },
+    { label: 'GPT-4O', value: '45ms', trend: 'down' as const },
+    { label: 'CLAUDE-3.5', value: '112ms', trend: 'neutral' as const },
+    { label: 'GEMINI-1.5', value: '38ms', trend: 'down' as const },
+    { label: 'LLAMA-3.1', value: '15ms', trend: 'down' as const },
   ];
 
   const guides = {
@@ -90,18 +93,19 @@ export function PopularPaths() {
       </div>
 
       <div className="mt-lg">
-        <TickerBar tps={842} models={models} />
+        <TickerBar items={mockTickerItems} />
       </div>
 
       {/* Guide Modal Popover */}
       {activeGuide && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-md bg-ink/40 backdrop-blur-xs">
+        <div className="fixed inset-0 z-index-modal flex items-center justify-center p-md bg-ink/40 backdrop-blur-xs">
           <div className="bg-canvas border border-hairline rounded-lg w-full max-w-[540px] p-xl shadow-xl flex flex-col gap-md relative">
             <div className="flex items-center justify-between border-b border-hairline pb-md">
               <h3 className="text-heading-sm text-ink">{activeGuide.title}</h3>
               <button 
                 onClick={() => setActiveGuide(null)}
-                className="w-8 h-8 rounded-sm hover:bg-surface flex items-center justify-center text-muted hover:text-ink"
+                className="w-8 h-8 rounded-sm hover:bg-surface flex items-center justify-center text-muted hover:text-ink focus-ring transition-fast"
+                aria-label="Close guide"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -113,7 +117,7 @@ export function PopularPaths() {
               <pre className="whitespace-pre">{activeGuide.code}</pre>
               <button
                 onClick={() => handleCopy(activeGuide.code)}
-                className="absolute top-2 right-2 p-xs bg-surface border border-hairline rounded-sm hover:bg-surface-sunken text-muted hover:text-ink flex items-center gap-xs text-label"
+                className="absolute top-2 right-2 p-xs bg-surface border border-hairline rounded-sm hover:bg-surface-sunken text-muted hover:text-ink flex items-center gap-xs text-label focus-ring transition-fast"
               >
                 {copied ? <Check className="w-3.5 h-3.5 text-live" /> : <Copy className="w-3.5 h-3.5" />}
                 {copied ? 'Copied!' : 'Copy'}
@@ -134,4 +138,3 @@ export function PopularPaths() {
     </section>
   );
 }
-

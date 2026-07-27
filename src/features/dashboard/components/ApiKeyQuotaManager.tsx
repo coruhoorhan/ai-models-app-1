@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Key } from 'lucide-react';
 import { Card } from '../../../shared/ui/Card';
-import { Badge } from '../../../shared/ui/Badge';
+import { BadgeCategory } from '../../../shared/ui/BadgeCategory';
 import { ApiKeyCreateForm } from './ApiKeyCreateForm';
 import { ApiKeyList } from './ApiKeyList';
 
@@ -30,10 +30,7 @@ export function ApiKeyQuotaManager() {
   const [createdKeySecret, setCreatedKeySecret] = useState<string | null>(null);
 
   const handleKeyCreated = (name: string, limit: number, rpm: number) => {
-    const array = new Uint8Array(10);
-    crypto.getRandomValues(array);
-    const randomHex = Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
-    const rawSecret = `sk-or-v1-${randomHex}`;
+    const rawSecret = `sk-or-v1-${Math.random().toString(36).substring(2, 12)}${Math.random().toString(36).substring(2, 12)}`;
     const masked = `${rawSecret.slice(0, 12)}...${rawSecret.slice(-4)}`;
     
     const newKey: ApiKeyItem = {
@@ -53,17 +50,17 @@ export function ApiKeyQuotaManager() {
 
   return (
     <Card className="w-full p-lg border-hairline bg-surface flex flex-col gap-md my-md">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-md border-b border-hairline pb-md">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-md border-b border-hairline-soft pb-md">
         <div className="flex items-center gap-sm">
-          <div className="p-xs rounded-sm bg-ink text-canvas">
+          <div className="w-8 h-8 rounded-sm bg-ink text-canvas flex items-center justify-center">
             <Key className="w-4 h-4" />
           </div>
-          <div>
+          <div className="flex flex-col">
             <div className="flex items-center gap-xs">
               <h3 className="text-body font-bold text-ink">API Key & Quota Management</h3>
-              <Badge variant="status-live" label="Live Control" />
+              <BadgeCategory variant="status-live" label="Live Control" />
             </div>
-            <p className="text-body-sm text-muted">Create scoped keys, set monthly spending limits, and configure rate caps.</p>
+            <p className="text-body-sm text-subtle">Create scoped keys, set monthly spending limits, and configure rate caps.</p>
           </div>
         </div>
       </div>

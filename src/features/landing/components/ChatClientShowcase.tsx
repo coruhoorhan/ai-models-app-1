@@ -6,16 +6,17 @@ import { ChatMockup } from './ChatMockup';
 
 export function ChatClientShowcase() {
   const navigate = useNavigate();
-
   return (
     <section className="w-full grid grid-cols-1 lg:grid-cols-2 gap-xl py-xl px-md lg:px-xl max-w-[1440px] mx-auto items-center">
       {/* Left: Interactive Chat Mockup */}
-      <div className="w-full flex justify-center lg:justify-end">
-        <ChatMockup />
+      <div className="w-full min-w-0 flex justify-center lg:justify-end">
+        <div className="w-full max-w-2xl lg:max-w-xl">
+          <ChatMockup />
+        </div>
       </div>
 
       {/* Right: Copy & Features */}
-      <div className="w-full flex flex-col items-start justify-center">
+      <div className="w-full min-w-0 flex flex-col items-center lg:items-start text-center lg:text-left">
         <div className="flex items-center gap-xs px-sm py-xxs bg-canvas border border-chart-blue text-chart-blue rounded-full mb-md">
           <MessageCircle className="w-3 h-3" />
           <span className="text-label text-chart-blue">BUILT-IN CHAT</span>
@@ -26,21 +27,21 @@ export function ChatClientShowcase() {
           <span className="text-chart-blue block">A chat client too.</span>
         </h2>
         
-        <div className="grid grid-cols-2 gap-x-8 gap-y-6 w-full lg:max-w-md mb-xl">
-          <div className="flex items-center gap-sm">
-            <Zap className="w-5 h-5 text-chart-blue" />
+        <div className="grid grid-cols-2 gap-md w-full max-w-md mb-xl">
+          <div className="flex items-center justify-center lg:justify-start gap-sm">
+            <Zap className="w-5 h-5 shrink-0 text-chart-blue" />
             <span className="text-body font-medium text-ink">No Setup</span>
           </div>
-          <div className="flex items-center gap-sm">
-            <Users className="w-5 h-5 text-chart-green" />
+          <div className="flex items-center justify-center lg:justify-start gap-sm">
+            <Users className="w-5 h-5 shrink-0 text-chart-green" />
             <span className="text-body font-medium text-ink">Characters</span>
           </div>
-          <div className="flex items-center gap-sm">
-            <Lock className="w-5 h-5 text-chart-blue" />
-            <span className="text-body font-medium text-ink">Private & BYOK</span>
+          <div className="flex items-center justify-center lg:justify-start gap-sm">
+            <Lock className="w-5 h-5 shrink-0 text-chart-blue" />
+            <span className="text-body font-medium text-ink">Private &amp; BYOK</span>
           </div>
-          <div className="flex items-center gap-sm">
-            <Sparkles className="w-5 h-5 text-chart-pink" />
+          <div className="flex items-center justify-center lg:justify-start gap-sm">
+            <Sparkles className="w-5 h-5 shrink-0 text-chart-pink" />
             <span className="text-body font-medium text-ink">Character Chat</span>
           </div>
         </div>

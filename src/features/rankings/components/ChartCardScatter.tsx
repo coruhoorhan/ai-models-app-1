@@ -41,8 +41,8 @@ export function ChartCardScatter({ title, subtitle, isLive, data, className }: C
         <button
           onClick={() => setActiveTab('scatter')}
           className={cn(
-            "flex-1 text-body-sm font-medium py-1.5 rounded-sm transition-colors text-center",
-            activeTab === 'scatter' ? "bg-canvas border border-hairline shadow-sm text-ink" : "text-muted hover:text-ink"
+            "flex-1 text-body-sm font-medium py-1.5 rounded-sm transition-fast text-center focus-ring",
+            activeTab === 'scatter' ? "bg-canvas border border-hairline shadow-sm text-ink" : "text-subtle hover:text-ink"
           )}
         >
           Dağılım
@@ -50,8 +50,8 @@ export function ChartCardScatter({ title, subtitle, isLive, data, className }: C
         <button
           onClick={() => setActiveTab('radar')}
           className={cn(
-            "flex-1 text-body-sm font-medium py-1.5 rounded-sm transition-colors text-center",
-            activeTab === 'radar' ? "bg-canvas border border-hairline shadow-sm text-ink" : "text-muted hover:text-ink"
+            "flex-1 text-body-sm font-medium py-1.5 rounded-sm transition-fast text-center focus-ring",
+            activeTab === 'radar' ? "bg-canvas border border-hairline shadow-sm text-ink" : "text-subtle hover:text-ink"
           )}
         >
           Top 8 Radar
@@ -67,18 +67,18 @@ export function ChartCardScatter({ title, subtitle, isLive, data, className }: C
                 type="number" 
                 dataKey="x" 
                 name="Fiyat" 
-                axisLine={false} 
-                tickLine={false} 
-                tick={{ fontSize: 11, fill: 'var(--color-muted)' }} 
-                scale="log" 
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 11, fill: 'var(--color-muted)' }}
+                scale="log"
                 domain={['auto', 'auto']}
               />
               <YAxis 
                 type="number" 
                 dataKey="y" 
                 name="Hız" 
-                axisLine={false} 
-                tickLine={false} 
+                axisLine={false}
+                tickLine={false}
                 tick={{ fontSize: 11, fill: 'var(--color-muted)' }} 
               />
               <Tooltip 

@@ -2,10 +2,13 @@ import { useState, useEffect } from 'react';
 import { fetchModels, ModelConfig } from '../../../shared/api/models.api';
 import { logError } from '../../../shared/lib/logError';
 
-export function useModels(searchQuery = '', provider = 'All', tier = 'All', sort = 'Newest', page = 1) {
-  const [data, setData] = useState<ModelConfig[]>([]);
-  const [meta, setMeta] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
+let cachedModels: ModelConfig[] | null = null;
+let lastFetchTime = 0;
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
+export function useModels() {
+  const [data, setData] = useState<ModelConfig[]>(cachedModels || []);
+  const [isLoading, setIsLoading] = useState(!cachedModels);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
@@ -20,30 +23,24 @@ export function useModels(searchQuery = '', provider = 'All', tier = 'All', sort
       }
 
       try {
-        setIsLoading(true);
-        const result = await fetchModels(searchQuery, provider, tier, sort, page);
-        if (isMounted) {
-          setData(result.data);
-          setMeta(result.meta);
-        }
+        if (!cachedModels) setIsLoading(true);
+        const models = await fetchModels();
+        
+        cachedModels = models;
+        lastFetchTime = Date.now();
+
+        if (isMounted) setData(models);
       } catch (err) {
         if (isMounted) setError(err instanceof Error ? err : new Error('Unknown error'));
-        logError(err, { feature: 'Models', action: 'fetchModels' });
+        logError(err);
       } finally {
         if (isMounted) setIsLoading(false);
       }
     }
     
-    // Basit debounce işlemi
-    const timeoutId = setTimeout(() => {
-      loadData();
-    }, 300);
+    loadData();
+    return () => { isMounted = false; };
+  }, []);
 
-    return () => {
-      isMounted = false;
-      clearTimeout(timeoutId);
-    };
-  }, [searchQuery, provider, tier, sort, page]);
-
-  return { data, meta, isLoading, error };
+  return { data, isLoading, error };
 }
