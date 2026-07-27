@@ -1,6 +1,6 @@
 import React from 'react';
 import { DataTable, ColumnDef } from '../../../shared/ui/DataTable';
-import { Badge } from '../../../shared/ui/Badge';
+import { BadgeCategory } from '../../../shared/ui/BadgeCategory';
 import { Button } from '../../../shared/ui/Button';
 import { cn } from '../../../shared/lib/cn';
 
@@ -21,8 +21,8 @@ const COLUMNS: ColumnDef<RankingEntry>[] = [
     header: 'SIRA',
     cell: (row) => (
       <span className={cn(
-        "font-mono font-bold",
-        row.rank === 1 ? "text-chart-orange text-body-lg-bold" : row.rank <= 3 ? "text-live text-body-md-bold" : "text-ink"
+        "font-mono font-bold text-body",
+        row.rank === 1 ? "text-chart-orange" : row.rank <= 3 ? "text-live" : "text-ink"
       )}>
         #{row.rank}
       </span>
@@ -32,14 +32,14 @@ const COLUMNS: ColumnDef<RankingEntry>[] = [
     key: 'name',
     header: 'MODEL & GELİŞTİRİCİ',
     cell: (row) => (
-      <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-2">
-          <span className="text-body-md-bold text-ink">{row.name}</span>
+      <div className="flex flex-col">
+        <div className="flex items-center gap-xs">
+          <span className="text-body font-medium text-ink">{row.name}</span>
           {row.releaseTag && (
-            <Badge variant="new" label={row.releaseTag} className="h-5" />
+            <BadgeCategory variant="outline" label={row.releaseTag} />
           )}
         </div>
-        <span className="text-body-sm text-muted">
+        <span className="text-caption text-subtle">
           {row.developer} <span className="text-hairline mx-1">•</span> {row.context}
         </span>
       </div>
@@ -50,7 +50,7 @@ const COLUMNS: ColumnDef<RankingEntry>[] = [
     header: 'PERFORMANS',
     cell: (row) => (
       <div className="w-[80px] h-[24px] flex items-center">
-        <div className="w-full h-1.5 bg-surface-sunken rounded-full overflow-hidden">
+        <div className="w-full h-[4px] bg-surface-sunken rounded-full overflow-hidden">
           <div 
             className={cn("h-full", row.rank === 1 ? "bg-chart-orange" : row.rank <= 3 ? "bg-live" : "bg-chart-teal")}
             style={{ width: `${(row.score / 1300) * 100}%` }}
@@ -63,9 +63,9 @@ const COLUMNS: ColumnDef<RankingEntry>[] = [
     key: 'score',
     header: 'SKOR / VİZ',
     cell: (row) => (
-      <div className="flex flex-col gap-1">
-        <span className="font-mono text-body-md-bold text-ink">{row.score}</span>
-        <span className="font-mono text-caption text-muted">{row.speed} tok/s</span>
+      <div className="flex flex-col">
+        <span className="font-mono text-body font-bold text-ink">{row.score}</span>
+        <span className="font-mono text-caption text-subtle">{row.speed} tok/s</span>
       </div>
     )
   },
@@ -73,7 +73,7 @@ const COLUMNS: ColumnDef<RankingEntry>[] = [
     key: 'actions',
     header: '',
     cell: () => (
-      <div className="w-5 h-5 rounded-sm border border-hairline bg-canvas flex-shrink-0 cursor-pointer hover:border-chart-teal transition-colors" />
+      <div className="w-4 h-4 rounded-xs border border-hairline bg-canvas flex-shrink-0 cursor-pointer hover:border-ink transition-colors focus-ring" tabIndex={0} role="button" aria-label="Select model" />
     )
   }
 ];

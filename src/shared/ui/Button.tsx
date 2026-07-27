@@ -3,41 +3,39 @@ import { LucideIcon } from 'lucide-react';
 import { cn } from '../lib/cn';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant: 'primary' | 'secondary' | 'tertiary' | 'icon-circular';
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'icon-circular';
   icon?: LucideIcon;
   iconPosition?: 'leading' | 'trailing';
   size?: 'default' | 'sm';
 }
 
 export function Button({
-  variant,
+  variant = 'primary',
   icon: Icon,
   iconPosition = 'leading',
   size = 'default',
   children,
   className,
-  type = 'button',
   ...props
 }: ButtonProps) {
   const isCircular = variant === 'icon-circular';
   
   return (
     <button
-      type={type}
+      {...props}
       className={cn(
-        'inline-flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2',
+        'inline-flex items-center justify-center transition-fast focus-ring',
         !isCircular && 'text-button',
         !isCircular && size === 'default' && 'h-[40px] px-lg rounded-sm',
         !isCircular && size === 'sm' && 'h-[36px] px-md rounded-sm',
         isCircular && 'w-[36px] h-[36px] rounded-full',
-        variant === 'primary' && 'bg-ink text-canvas hover:bg-[#2A2A2A]',
+        variant === 'primary' && 'bg-ink text-canvas hover:bg-opacity-80',
         variant === 'secondary' && 'bg-transparent text-ink border border-ink hover:bg-surface',
         variant === 'tertiary' && 'bg-canvas text-ink border border-hairline hover:bg-surface',
         variant === 'icon-circular' && 'bg-canvas border border-hairline text-ink hover:bg-surface',
         props.disabled && 'opacity-50 cursor-not-allowed',
         className
       )}
-      {...props}
     >
       {Icon && iconPosition === 'leading' && (
         <Icon className={cn(isCircular ? 'w-4 h-4' : 'w-4 h-4 mr-xs')} />

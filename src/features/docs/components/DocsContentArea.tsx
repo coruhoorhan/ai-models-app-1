@@ -1,5 +1,5 @@
 import React from 'react';
-import { DocArticle } from '../types';
+import { DocArticle } from '../../../types';
 import { DocsCodeBlock } from './DocsCodeBlock';
 import { DocsApiExplorer } from './DocsApiExplorer';
 import { DocsStatusCodeWidget } from './DocsStatusCodeWidget';

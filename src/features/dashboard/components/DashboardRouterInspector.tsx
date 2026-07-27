@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Play, Layers } from 'lucide-react';
 import { Card } from '../../../shared/ui/Card';
 import { Button } from '../../../shared/ui/Button';
-import { Badge } from '../../../shared/ui/Badge';
+import { BadgeCategory } from '../../../shared/ui/BadgeCategory';
 import { RouterConfigPanel } from './RouterConfigPanel';
 import { IntegrationCodePanel } from './IntegrationCodePanel';
 
@@ -35,26 +35,26 @@ export function DashboardRouterInspector() {
 
   return (
     <Card className="w-full p-lg border-hairline bg-surface flex flex-col gap-md">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-md border-b border-hairline pb-md">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-md border-b border-hairline-soft pb-md">
         <div className="flex items-center gap-sm">
-          <div className="p-xs rounded-sm bg-ink text-canvas">
+          <div className="w-8 h-8 rounded-sm bg-ink text-canvas flex items-center justify-center">
             <Layers className="w-4 h-4" />
           </div>
-          <div>
+          <div className="flex flex-col">
             <div className="flex items-center gap-xs">
               <h3 className="text-body font-bold text-ink">Smart Router & Code Generator</h3>
-              <Badge variant="status-live" label="Live Inspector" />
+              <BadgeCategory variant="status-live" label="Live Inspector" />
             </div>
-            <p className="text-body-sm text-muted">Configure fallback chains and generate ready-to-paste SDK code.</p>
+            <p className="text-body-sm text-subtle">Configure fallback chains and generate ready-to-paste SDK code.</p>
           </div>
         </div>
-
+        
         <Button 
           variant="secondary" 
           icon={Play} 
           disabled={isTesting}
           onClick={handleRunRouteTest}
-          className="text-body-sm shrink-0"
+          className="shrink-0"
         >
           {isTesting ? 'Simulating Route...' : 'Simulate Route Request'}
         </Button>

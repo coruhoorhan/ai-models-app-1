@@ -28,11 +28,11 @@ export function ModelArenaCard({
 }: ModelArenaCardProps) {
   return (
     <div className={cn(
-      "p-md rounded-sm border flex flex-col justify-between min-h-[160px]",
-      isRevealed && isSelected ? 'border-live bg-live/5' : 'border-hairline bg-canvas'
+      "p-md rounded-sm border flex flex-col justify-between min-h-[160px] transition-fast",
+      isRevealed && isSelected ? 'border-live bg-live-bg' : 'border-hairline bg-canvas'
     )}>
       <div>
-        <div className="flex items-center justify-between mb-xs pb-xs border-b border-hairline">
+        <div className="flex items-center justify-between mb-xs pb-xs border-b border-hairline-soft">
           <span className="text-label text-subtle font-mono">
             {isRevealed ? labelRevealed : labelUnrevealed}
           </span>
@@ -40,13 +40,13 @@ export function ModelArenaCard({
             <Zap className="w-3 h-3" /> {speed}
           </span>
         </div>
-        <pre className="text-body-sm font-mono text-ink whitespace-pre-wrap">{output}</pre>
+        <pre className="text-mono-inline text-ink whitespace-pre-wrap">{output}</pre>
       </div>
       
       {!isRevealed && !isBattling && output && (
         <Button 
           variant="secondary" 
-          className="mt-md w-full justify-center text-body-sm"
+          className="mt-md w-full justify-center"
           onClick={onVote}
         >
           Vote {labelUnrevealed.split(' ')[0]} {labelUnrevealed.split(' ')[1]} as Winner

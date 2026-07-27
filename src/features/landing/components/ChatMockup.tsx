@@ -37,19 +37,19 @@ export function ChatMockup() {
   };
 
   return (
-    <div className="w-full lg:max-w-xl bg-canvas border border-hairline rounded-lg overflow-hidden flex min-h-[460px] shadow-sm">
+    <div className="w-full bg-canvas border border-hairline rounded-lg overflow-hidden flex min-h-[460px] shadow-sm">
       <ChatMockupSidebar onReset={() => setMessages([
         { role: 'user', content: 'Write a throttle function' },
         { role: 'assistant', content: 'Here is a clean implementation...' }
       ])} />
 
-      <div className="flex-1 flex flex-col bg-canvas">
+      <div className="flex-1 flex flex-col bg-canvas min-w-0">
         <div className="h-14 border-b border-hairline bg-surface/50 flex items-center justify-between px-md">
           <div className="flex items-center gap-sm">
             <span className="text-body-sm font-medium text-ink">allam-2-7b:free</span>
             <Badge variant="free" label="Free" />
           </div>
-          <Button variant="icon-circular" icon={MoreHorizontal} size="sm" className="w-8 h-8 border-transparent hover:bg-surface" aria-label="More options" />
+          <Button variant="icon-circular" icon={MoreHorizontal} size="sm" className="w-8 h-8 border-transparent hover:bg-surface" />
         </div>
         
         <div className="flex-1 p-md flex flex-col gap-sm overflow-y-auto">

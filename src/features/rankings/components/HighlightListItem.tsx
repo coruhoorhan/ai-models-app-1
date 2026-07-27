@@ -11,16 +11,16 @@ interface HighlightListItemProps {
 
 export function HighlightListItem({ modelName, developerInfo, delta, price, className }: HighlightListItemProps) {
   return (
-    <div className={cn("w-full flex items-center justify-between py-md border-b border-hairline last:border-0", className)}>
-      <div className="flex flex-col gap-xs">
-        <span className="text-body-md-bold text-ink">{modelName}</span>
-        <span className="text-body-sm text-muted">{developerInfo}</span>
+    <div className={cn("w-full flex items-center justify-between py-sm border-b border-hairline-soft last:border-0 hover:bg-surface-sunken transition-fast", className)}>
+      <div className="flex flex-col">
+        <span className="text-body-sm text-ink">{modelName}</span>
+        <span className="text-caption text-subtle">{developerInfo}</span>
       </div>
-      <div className="flex flex-col items-end gap-xs">
+      <div className="flex items-center gap-md">
         {delta !== undefined && (
           <span
             className={cn(
-              "text-caption-bold rounded-xs px-2 py-xxs",
+              "px-xs py-[2px] rounded-xs text-caption-bold",
               delta >= 0
                 ? "bg-live-bg text-live"
                 : "bg-error/10 text-error"
@@ -30,7 +30,7 @@ export function HighlightListItem({ modelName, developerInfo, delta, price, clas
           </span>
         )}
         {price && (
-          <span className="text-body-sm text-muted font-mono">{price}</span>
+          <span className="text-mono-inline text-muted min-w-[80px] text-right">{price}</span>
         )}
       </div>
     </div>

@@ -9,6 +9,7 @@
   
   /* Colors: Borders & Surfaces */
   --color-hairline: #E5E7EB;
+  --color-hairline-soft: #F3F4F6;
   --color-surface: #FAFAFA;
   --color-surface-sunken: #F3F4F6;
   
@@ -43,13 +44,26 @@
   /* Typography */
   --font-sans: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+
+  /* Z-Index */
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-modal: 300;
+  --z-overlay: 400;
+  --z-toast: 500;
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.0, 0.0, 0.2, 1); /* ease-out equivalent */
+  --transition-base: 200ms cubic-bezier(0.4, 0.0, 0.2, 1); /* ease-in-out equivalent */
 }
 
 .dark {
   --color-ink: #F5F5F5;
   --color-canvas: #0A0A0A;
   --color-hairline: #262626;
+  --color-hairline-soft: #1A1A1A;
   --color-surface: #141414;
-  --color-surface-sunken: #111111; 
+  --color-surface-sunken: #111111;
   --color-live-bg: #064E3B;
+  --color-label: #A1A1AA;
 }

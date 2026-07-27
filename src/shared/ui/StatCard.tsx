@@ -11,6 +11,7 @@ export interface StatCardProps {
   description?: string;   
   secondaryStat?: { label: string; value: string | number }; 
   className?: string;
+  isLoading?: boolean;
 }
 
 const colorMap = {
@@ -31,8 +32,33 @@ export function StatCard({
   value,
   description,
   secondaryStat,
-  className
+  className,
+  isLoading
 }: StatCardProps) {
+  if (isLoading) {
+    return (
+      <Card className={cn('p-[20px] flex flex-col', className)}>
+        <div className="flex items-center gap-xs mb-xs">
+          <div className="w-4 h-4 rounded-xs bg-surface animate-pulse" />
+          <div className="w-[60px] h-[14px] rounded-xs bg-surface animate-pulse" />
+        </div>
+        <div className="w-[100px] h-[32px] rounded-xs bg-surface animate-pulse mb-1 mt-1" />
+        {description && (
+          <div className="w-[80px] h-[16px] rounded-xs bg-surface animate-pulse mt-1" />
+        )}
+        {secondaryStat && (
+          <>
+            <div className="h-px w-full bg-hairline my-md" />
+            <div className="flex flex-col gap-xs">
+              <div className="w-[60px] h-[14px] rounded-xs bg-surface animate-pulse" />
+              <div className="w-[80px] h-[24px] rounded-xs bg-surface animate-pulse" />
+            </div>
+          </>
+        )}
+      </Card>
+    );
+  }
+
   return (
     <Card className={cn('p-[20px]', className)}>
       <div className="flex flex-col">

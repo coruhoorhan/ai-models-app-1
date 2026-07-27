@@ -11,7 +11,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
       onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-      className={cn("flex items-center justify-center w-8 h-8 rounded-full text-muted hover:text-ink transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink", className)}
+      className={cn("flex items-center justify-center w-8 h-8 rounded-full text-muted hover:text-ink transition-fast cursor-pointer focus-ring", className)}
       aria-label="Toggle theme"
     >
       <div className="relative w-5 h-5 flex items-center justify-center">

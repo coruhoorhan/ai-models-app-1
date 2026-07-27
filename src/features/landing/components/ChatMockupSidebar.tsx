@@ -8,12 +8,12 @@ interface ChatMockupSidebarProps {
 
 export function ChatMockupSidebar({ onReset }: ChatMockupSidebarProps) {
   return (
-    <div className="hidden sm:flex w-48 border-r border-hairline bg-surface flex-col">
-      <div className="p-md border-b border-hairline flex items-center gap-sm">
-        <div className="w-6 h-6 bg-ink rounded-sm flex items-center justify-center">
+    <div className="hidden sm:flex w-44 shrink-0 border-r border-hairline bg-surface flex-col">
+      <div className="p-md border-b border-hairline flex items-center gap-sm min-w-0">
+        <div className="w-6 h-6 bg-ink rounded-sm flex items-center justify-center shrink-0">
           <Sparkles className="w-3 h-3 text-canvas" />
         </div>
-        <span className="text-body font-bold text-ink tracking-tight">Chat Sandbox</span>
+        <span className="text-body-sm font-bold text-ink tracking-tight truncate">Chat Sandbox</span>
       </div>
       <div className="p-sm">
         <Button 

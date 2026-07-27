@@ -15,16 +15,49 @@ import { Button } from '../shared/ui/Button';
 import { getModelsColumns } from '../features/models/components/ModelsTableColumns';
 
 export function ModelsPage() {
-  const [providerFilter, setProviderFilter] = useState('All');
-  const [tierFilter, setTierFilter] = useState('All');
-  const [sortFilter, setSortFilter] = useState('Newest');
-  const [searchQuery, setSearchQuery] = useState('');
-  // API supports pagination, for now we will just request page 1.
-  const [page] = useState(1);
+  const { data, isLoading } = useModels();
+  const [searchParams, setSearchParams] = useSearchParams();
+  
+  const providerFilter = searchParams.get('provider') || 'All';
+  const tierFilter = searchParams.get('tier') || 'All';
+  const searchQuery = searchParams.get('q') || '';
+  
+  const setProviderFilter = (val: string) => {
+    setSearchParams(prev => {
+      if (val && val !== 'All') prev.set('provider', val);
+      else prev.delete('provider');
+      return prev;
+    }, { replace: true });
+  };
+  
+  const setTierFilter = (val: string) => {
+    setSearchParams(prev => {
+      if (val && val !== 'All') prev.set('tier', val);
+      else prev.delete('tier');
+      return prev;
+    }, { replace: true });
+  };
+  
+  const setSearchQuery = (val: string) => {
+    setSearchParams(prev => {
+      if (val) prev.set('q', val);
+      else prev.delete('q');
+      return prev;
+    }, { replace: true });
+  };
 
-  // useModels hooku artık parametreleri doğrudan alıp API'ye iletiyor
-  // ve client tarafı filtreleme/arama işlemlerine gerek kalmıyor.
-  const { data, isLoading } = useModels(searchQuery, providerFilter, tierFilter, sortFilter, page);
+  const [selectedModel, setSelectedModel] = useState<ModelConfig | null>(null);
+  const [isCompareOpen, setIsCompareOpen] = useState(false);
+
+  const filteredData = useMemo(() => {
+    return data.filter(model => {
+      const matchSearch = model.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          model.provider.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchProvider = providerFilter === 'All' || model.provider === providerFilter;
+      const matchTier = tierFilter === 'All' || (tierFilter === 'Free' ? model.isFree : !model.isFree);
+      return matchSearch && matchProvider && matchTier;
+    });
+  }, [data, searchQuery, providerFilter, tierFilter]);
 
   const columns = useMemo(() => getModelsColumns(setSelectedModel), []);
 
@@ -54,16 +87,26 @@ export function ModelsPage() {
           </div>
 
           <div className="w-full max-w-[1440px] px-md lg:px-xl py-xl flex flex-col gap-lg flex-1">
-            <ModelsFilterBar 
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-              providerFilter={providerFilter}
-              setProviderFilter={setProviderFilter}
-              tierFilter={tierFilter}
-              setTierFilter={setTierFilter}
-              sortFilter={sortFilter}
-              setSortFilter={setSortFilter}
-            />
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-md">
+              <div className="flex-1">
+                <ModelsFilterBar 
+                  searchQuery={searchQuery}
+                  setSearchQuery={setSearchQuery}
+                  providerFilter={providerFilter}
+                  setProviderFilter={setProviderFilter}
+                  tierFilter={tierFilter}
+                  setTierFilter={setTierFilter}
+                />
+              </div>
+              <Button 
+                variant="secondary" 
+                icon={ArrowRightLeft}
+                onClick={() => setIsCompareOpen(true)}
+                className="shrink-0"
+              >
+                Compare Matrix
+              </Button>
+            </div>
 
             {isLoading ? (
               <div className="w-full flex flex-col gap-2">
@@ -73,13 +116,13 @@ export function ModelsPage() {
                 <div className="h-12 bg-surface-sunken rounded-sm animate-pulse" />
                 <div className="h-12 bg-surface-sunken rounded-sm animate-pulse" />
               </div>
-            ) : data.length === 0 ? (
+            ) : filteredData.length === 0 ? (
               <div className="py-xl text-center border border-hairline rounded-sm bg-surface">
                 <p className="text-body text-muted">No models match your filters</p>
               </div>
             ) : (
               <DataTable 
-                data={data}
+                data={filteredData} 
                 columns={columns} 
                 pageSize={20} 
                 hideSearch={true}

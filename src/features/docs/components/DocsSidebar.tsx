@@ -1,6 +1,6 @@
 import React from 'react';
 import { Zap, Shield, Lock, Search, BookOpen } from 'lucide-react';
-import { DocCategory } from '../types';
+import { DocCategory } from '../../../types';
 
 interface DocsSidebarProps {
   categories: DocCategory[];

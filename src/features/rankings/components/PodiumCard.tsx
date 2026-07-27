@@ -31,24 +31,30 @@ export function PodiumCard({ model, place, itemVariants }: PodiumCardProps) {
               transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
               className="absolute -top-1 -right-2"
             >
-              <Sparkles className="w-4 h-4 text-chart-yellow" />
+              {/* Note: Sparkles replaced with Trophy for simpler icon set if Sparkles isn't available, assuming it is */}
+              <Sparkles className="w-4 h-4 text-[#FDE047]" /> 
             </motion.div>
           </motion.div>
+          
           <span className="text-label text-chart-orange bg-chart-orange/10 px-2 py-0.5 rounded-sm border border-chart-orange/20 flex items-center gap-1">
             <div className="w-1.5 h-1.5 rounded-full bg-chart-orange animate-pulse" />
             #1 WINNER
           </span>
         </div>
+
         <motion.div 
           whileHover={{ y: -8, scale: 1.02 }}
-          className="w-full relative"
+          className="w-full relative cursor-pointer"
+          tabIndex={0}
+          role="button"
+          aria-label={`View details for ${model.name}`}
         >
           <motion.div 
             animate={{ 
               backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
             }}
             transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
-            className="absolute -inset-0.5 bg-gradient-to-r from-chart-orange via-chart-yellow to-chart-orange rounded-md blur opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"
+            className="absolute -inset-0.5 bg-gradient-to-r from-chart-orange via-[#FDE047] to-chart-orange rounded-md blur opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"
             style={{ backgroundSize: "200% 200%" }}
           />
           <Card className="w-full flex flex-col items-center justify-center gap-xs border-chart-orange border bg-canvas shadow-xl p-xl text-center pb-xxl relative overflow-hidden group">
@@ -63,7 +69,8 @@ export function PodiumCard({ model, place, itemVariants }: PodiumCardProps) {
             >
               {model.name}
             </motion.span>
-            <span className="text-body-sm text-muted relative z-10">{model.developer}</span>
+            <span className="text-body-sm text-subtle relative z-10">{model.developer}</span>
+
             <div className="mt-auto flex items-baseline gap-1 bg-chart-orange/10 px-md py-sm rounded-sm mt-md relative z-10 border border-chart-orange/20 backdrop-blur-sm">
               <span className="text-heading-md text-chart-orange">{model.score}</span>
             </div>
@@ -90,11 +97,13 @@ export function PodiumCard({ model, place, itemVariants }: PodiumCardProps) {
           #{place} RANK
         </span>
       </div>
-      <motion.div whileHover={{ y: -5 }} className="w-full">
-        <Card className="w-full flex flex-col items-center justify-center gap-xs border-hairline bg-surface p-xl text-center pb-xxl relative overflow-hidden group transition-colors hover:border-chart-teal/50">
+
+      <motion.div whileHover={{ y: -5 }} className="w-full cursor-pointer focus-ring rounded-md" tabIndex={0} role="button" aria-label={`View details for ${model.name}`}>
+        <Card className="w-full flex flex-col items-center justify-center gap-xs border-hairline bg-surface p-xl text-center pb-xxl relative overflow-hidden group transition-fast hover:border-chart-teal/50">
           <div className="absolute inset-0 bg-gradient-to-t from-chart-teal/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          <span className="text-body-lg-bold text-ink relative z-10">{model.name}</span>
-          <span className="text-body-sm text-muted relative z-10">{model.developer}</span>
+          <span className="text-body font-bold text-ink relative z-10">{model.name}</span>
+          <span className="text-body-sm text-subtle relative z-10">{model.developer}</span>
+          
           <div className="mt-auto flex items-baseline gap-1 pt-md relative z-10">
             <span className="text-heading-sm text-ink">{model.score}</span>
           </div>

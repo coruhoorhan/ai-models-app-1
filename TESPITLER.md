@@ -33,7 +33,6 @@ Tüm temel geliştirmeler ve tasarım standartı hizalamaları tamamlandı.
 - **[DESIGN - YENİ]:** Özel `/chat` rotasında çalışan `ChatStudio` (`features/chat/components/ChatWorkspace.tsx`) stüdyosu eklendi. Çift model paralel canlı streaming arena kıyaslaması, 1-tıkla hazır mühendislik prompt şablon kütüphanesi, sistem talimatı ön ayarları, sıcaklık/max token ayarları ve JSON/Markdown dışa aktarma yetenekleri sunuldu.
 - **[DESIGN - YENİ]:** Kamusal `/docs` rotasında yayınlanan `DocsPage` (`src/pages/DocsPage.tsx`) modülü eklendi. `BackgroundGrid` ızgara katmanı, `TopNav`, `Footer`, `max-w-[1440px]` hizalaması, katmanlı doküman gezinti sidebar'ı (`DocsSidebar`), TypeScript/Python/cURL sekmeli kod bloğu (`DocsCodeBlock`) ve canlı `/v1/chat/completions` API test simülatörü (`DocsApiExplorer`) entegre edildi.
 
-
 ### 2. Max-Width ve Dikey Hizalama Standardı
 - **[DESIGN - DÜZELTME]:** `AGENTS.md` Kural 13 uyarınca tüm kamuya açık sayfalardaki header, içerik ve footer bölümleri `max-w-[1440px]` ve `px-md lg:px-xl py-xl` padding standartlarına eşitlendi. Sayfalar arası geçişte dikey hiza kırılması engellendi.
 
