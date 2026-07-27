@@ -8,14 +8,14 @@ export function ChatClientShowcase() {
   const navigate = useNavigate();
 
   return (
-    <section className="w-full flex flex-col lg:flex-row gap-xl py-xl px-md lg:px-xl max-w-[1440px] mx-auto">
+    <section className="w-full grid grid-cols-1 lg:grid-cols-2 gap-xl py-xl px-md lg:px-xl max-w-[1440px] mx-auto items-center">
       {/* Left: Interactive Chat Mockup */}
-      <div className="flex-1 w-full lg:min-w-[480px] flex justify-center lg:justify-end">
+      <div className="w-full flex justify-center lg:justify-end">
         <ChatMockup />
       </div>
 
       {/* Right: Copy & Features */}
-      <div className="flex-1 w-full lg:min-w-[400px] flex flex-col items-start justify-center">
+      <div className="w-full flex flex-col items-start justify-center">
         <div className="flex items-center gap-xs px-sm py-xxs bg-canvas border border-chart-blue text-chart-blue rounded-full mb-md">
           <MessageCircle className="w-3 h-3" />
           <span className="text-label text-chart-blue">BUILT-IN CHAT</span>
