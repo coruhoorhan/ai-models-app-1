@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { Sparkles, Bot, Shield, Zap, Users, ArrowRight, MessageSquare, Terminal } from 'lucide-react';
 import { Button } from '../../../shared/ui/Button';
 import { useNavigate } from 'react-router-dom';
