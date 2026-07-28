@@ -4,6 +4,7 @@ import { createServer as createViteServer } from "vite";
 import { handleChatStream, handleArenaBattle } from "./llmRoutes";
 import { dashboardRoutes } from "./dashboardRoutes";
 import { rankingRoutes } from "./rankingRoutes";
+import { modelsRoutes } from "./modelsRoutes";
 
 const app = express();
 const PORT = 3000;
@@ -18,6 +19,7 @@ app.get("/api/health", (_req, res) => {
 
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/rankings", rankingRoutes);
+app.use("/api/models", modelsRoutes);
 
 app.post("/api/chat/stream", handleChatStream);
 app.post("/api/arena/battle", handleArenaBattle);
