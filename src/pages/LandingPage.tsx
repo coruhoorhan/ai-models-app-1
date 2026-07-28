@@ -3,7 +3,6 @@ import { TopNav } from '../features/landing/components/TopNav';
 import { HeroSection } from '../features/landing/components/HeroSection';
 import { PopularPaths } from '../features/landing/components/PopularPaths';
 import { ThreeSteps } from '../features/landing/components/ThreeSteps';
-import { ChatClientShowcase } from '../features/landing/components/ChatClientShowcase';
 import { ModelBenchmarkComparison } from '../features/landing/components/ModelBenchmarkComparison';
 import { GlobalEdgeLatencyMap } from '../features/landing/components/GlobalEdgeLatencyMap';
 import { Footer } from '../shared/ui/Footer';
@@ -20,7 +19,6 @@ export function LandingPage() {
           <PopularPaths />
           <ModelBenchmarkComparison />
           <ThreeSteps />
-          <ChatClientShowcase />
           <GlobalEdgeLatencyMap />
         </div>
         <Footer />
