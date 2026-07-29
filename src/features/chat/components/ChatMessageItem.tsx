@@ -7,7 +7,8 @@ interface ChatMessageItemProps {
   message: ChatMessage;
 }
 
-export function ChatMessageItem({ message }: ChatMessageItemProps) {
+// ⚡ Bolt: Memoized to prevent re-rendering all historical messages during active token streaming in ChatWorkspace
+export const ChatMessageItem = React.memo(function ChatMessageItem({ message }: ChatMessageItemProps) {
   const [copied, setCopied] = useState(false);
   const isUser = message.role === 'user';
 
@@ -79,4 +80,4 @@ export function ChatMessageItem({ message }: ChatMessageItemProps) {
       </div>
     </div>
   );
-}
+});
