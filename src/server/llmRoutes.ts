@@ -73,7 +73,8 @@ export async function handleChatStream(req: Request, res: Response): Promise<voi
     res.write(`data: ${JSON.stringify({ done: true, ttftMs: finalTtft, tps: finalTps, totalTokens: totalTokenEstimate })}\n\n`);
     res.end();
   } catch (error: unknown) {
-    const errMsg = error instanceof Error ? error.message : "Stream generation failed";
+    console.error("[handleChatStream Error]:", error);
+    const errMsg = "An error occurred during stream generation.";
     res.write(`data: ${JSON.stringify({ error: errMsg })}\n\n`);
     res.end();
   }
@@ -120,7 +121,8 @@ export async function handleArenaBattle(req: Request, res: Response): Promise<vo
 
       return { text: textResult, ttft, tps, tokens, totalTimeMs: Date.now() - start };
     } catch (e: unknown) {
-      const err = e instanceof Error ? e.message : "Error";
+      console.error("[runModel Error]:", e);
+      const err = "An error occurred during model execution.";
       return { text: `Error generating response: ${err}`, ttft: 0, tps: 0, tokens: 0, totalTimeMs: Date.now() - start };
     }
   };
@@ -129,7 +131,8 @@ export async function handleArenaBattle(req: Request, res: Response): Promise<vo
     const [resultA, resultB] = await Promise.all([runModel(engineA), runModel(engineB)]);
     res.json({ resultA, resultB });
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Arena execution failed";
+    console.error("[handleArenaBattle Error]:", error);
+    const message = "An error occurred during arena execution.";
     res.status(500).json({ error: message });
   }
 }
