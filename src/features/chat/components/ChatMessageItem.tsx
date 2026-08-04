@@ -7,7 +7,9 @@ interface ChatMessageItemProps {
   message: ChatMessage;
 }
 
-export function ChatMessageItem({ message }: ChatMessageItemProps) {
+// ⚡ Bolt: Wrapped with React.memo to prevent expensive re-renders of the entire
+// message list during rapid active LLM token streaming.
+export const ChatMessageItem = React.memo(function ChatMessageItem({ message }: ChatMessageItemProps) {
   const [copied, setCopied] = useState(false);
   const isUser = message.role === 'user';
 
@@ -79,4 +81,4 @@ export function ChatMessageItem({ message }: ChatMessageItemProps) {
       </div>
     </div>
   );
-}
+});

@@ -1,0 +1,3 @@
+## 2025-03-01 - List Rendering Performance with Active LLM Streaming
+**Learning:** During active LLM token streaming in chat interfaces, parent state (message list) updates rapidly. Without `React.memo` on the individual list items (`ChatMessageItem`), React will needlessly re-render the entire history of messages for every new token received, causing severe main-thread lag and janky scrolling.
+**Action:** Always wrap list item components that depend on stable data with `React.memo()` when the parent component is subject to high-frequency state updates (like WebSockets, live typing, or token streaming).
