@@ -7,7 +7,10 @@ interface ChatMessageItemProps {
   message: ChatMessage;
 }
 
-export function ChatMessageItem({ message }: ChatMessageItemProps) {
+// ⚡ Bolt: Wrap with React.memo to prevent expensive re-renders of the entire
+// chat history during active LLM token streaming. This ensures smooth scrolling
+// and interactions as only the streaming token's component needs to update.
+export const ChatMessageItem = React.memo(function ChatMessageItem({ message }: ChatMessageItemProps) {
   const [copied, setCopied] = useState(false);
   const isUser = message.role === 'user';
 
@@ -79,4 +82,4 @@ export function ChatMessageItem({ message }: ChatMessageItemProps) {
       </div>
     </div>
   );
-}
+});
