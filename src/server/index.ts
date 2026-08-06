@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import helmet from "helmet";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import { handleChatStream, handleArenaBattle } from "./llmRoutes";
@@ -9,6 +10,11 @@ import { modelsRoutes } from "./modelsRoutes";
 
 const app = express();
 const PORT = 3000;
+
+// Set security HTTP headers
+app.use(helmet({
+  contentSecurityPolicy: false, // Disabled for now to avoid breaking Vite SPA
+}));
 
 app.use(express.json());
 
