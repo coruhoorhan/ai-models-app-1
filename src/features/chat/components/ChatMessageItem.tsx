@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { memo, useState } from 'react';
 import { Copy, Check, Sparkles, User, Zap, Clock } from 'lucide-react';
 import { ChatMessage } from '../types';
 import { Badge } from '../../../shared/ui/Badge';
@@ -7,7 +7,10 @@ interface ChatMessageItemProps {
   message: ChatMessage;
 }
 
-export function ChatMessageItem({ message }: ChatMessageItemProps) {
+// ⚡ Bolt Optimization:
+// Wrapped in memo() to prevent re-rendering all previous messages in the list
+// when the parent component rapidly updates state during active LLM token streaming.
+export const ChatMessageItem = memo(function ChatMessageItem({ message }: ChatMessageItemProps) {
   const [copied, setCopied] = useState(false);
   const isUser = message.role === 'user';
 
@@ -79,4 +82,4 @@ export function ChatMessageItem({ message }: ChatMessageItemProps) {
       </div>
     </div>
   );
-}
+});
