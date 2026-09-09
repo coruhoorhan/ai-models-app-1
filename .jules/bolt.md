@@ -1,0 +1,3 @@
+## 2025-02-28 - Optimize LLM Chat Message Rendering
+**Learning:** During active LLM token streaming in chat interfaces, parent state updates happen very rapidly (on every chunk). The `ChatMessageItem` component was not wrapped in `React.memo`, leading to expensive, redundant re-renders of all previous messages in the list upon each new chunk.
+**Action:** Always wrap list items in `React.memo` (e.g., `export const Item = React.memo(...)`) for chat histories or other lists where the parent is subject to high-frequency streaming state updates and the list items themselves rarely change reference.
