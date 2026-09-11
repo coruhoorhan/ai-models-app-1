@@ -12,7 +12,8 @@ export function NotificationBell() {
       onMouseLeave={() => setIsHovered(false)}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
-      className="relative flex items-center justify-center w-8 h-8 rounded-full text-muted hover:text-ink transition-colors cursor-pointer"
+      className="relative flex items-center justify-center w-8 h-8 rounded-full text-muted hover:text-ink transition-colors cursor-pointer focus-ring"
+      aria-label="Notifications"
     >
       <div className="relative w-5 h-5 flex items-center justify-center shrink-0">
         <AnimatePresence mode="popLayout" initial={false}>
