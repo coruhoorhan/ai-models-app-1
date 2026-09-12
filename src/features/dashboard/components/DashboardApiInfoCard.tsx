@@ -25,7 +25,7 @@ export function DashboardApiInfoCard() {
         <div className="flex items-center bg-surface border border-hairline rounded-sm px-sm h-[36px] overflow-hidden relative">
           <span className="font-mono text-body-sm text-ink truncate w-full select-all">sk-unorouter-********************</span>
           <div className="absolute right-xs top-1/2 -translate-y-1/2 flex items-center bg-surface pl-xs">
-             <button className="text-subtle hover:text-ink transition-fast p-1 rounded-xs focus-ring">
+             <button className="text-subtle hover:text-ink transition-fast p-1 rounded-xs focus-ring" aria-label="Copy API Key" title="Copy API Key">
                <Copy className="w-3.5 h-3.5" />
              </button>
           </div>
