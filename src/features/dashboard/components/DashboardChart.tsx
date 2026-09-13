@@ -1,7 +1,11 @@
+import React, { memo } from 'react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { ChartDataPoint } from '../../../shared/api/dashboard.api';
 
-export function DashboardChart({ data }: { data: ChartDataPoint[] }) {
+// ⚡ Bolt Optimization:
+// Wrapped in memo() to prevent expensive re-rendering of Recharts components
+// when the parent updates but the chart data remains referentially equal.
+export const DashboardChart = memo(function DashboardChart({ data }: { data: ChartDataPoint[] }) {
   if (!data || data.length === 0) {
     return <div className="text-body-sm text-subtle">No data available</div>;
   }
@@ -61,4 +65,4 @@ export function DashboardChart({ data }: { data: ChartDataPoint[] }) {
       </ResponsiveContainer>
     </div>
   );
-}
+})

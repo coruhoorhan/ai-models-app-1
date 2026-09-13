@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { motion } from 'motion/react';
 import { Variants } from 'motion/react';
 import { Trophy, Medal, Sparkles } from 'lucide-react';
@@ -12,7 +12,10 @@ interface PodiumCardProps {
   itemVariants: Variants;
 }
 
-export function PodiumCard({ model, place, itemVariants }: PodiumCardProps) {
+// ⚡ Bolt Optimization:
+// Wrapped in memo() to prevent unnecessary re-rendering of complex Framer Motion
+// animation trees when sibling components update, reducing CPU overhead during interactions.
+export const PodiumCard = memo(function PodiumCard({ model, place, itemVariants }: PodiumCardProps) {
   if (place === 1) {
     return (
       <motion.div variants={itemVariants} className="flex-1 w-full flex flex-col items-center gap-sm order-1 md:order-2 z-10 relative md:-top-xl">
@@ -111,4 +114,4 @@ export function PodiumCard({ model, place, itemVariants }: PodiumCardProps) {
       </motion.div>
     </motion.div>
   );
-}
+})
