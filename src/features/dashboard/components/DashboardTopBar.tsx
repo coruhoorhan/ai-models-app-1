@@ -11,10 +11,10 @@ export function DashboardTopBar({ onMenuClick }: { onMenuClick?: () => void }) {
       </div>
 
       <div className="flex items-center gap-md">
-        <button className="text-muted hover:text-ink transition-fast focus-ring rounded-sm">
+        <button aria-label="Notifications" className="text-muted hover:text-ink transition-fast focus-ring rounded-sm">
           <Bell className="w-5 h-5" />
         </button>
-        <button className="text-muted hover:text-ink transition-fast focus-ring rounded-sm">
+        <button aria-label="Change Language" className="text-muted hover:text-ink transition-fast focus-ring rounded-sm">
           <Globe className="w-5 h-5" />
         </button>
         <ThemeToggle />

@@ -1,0 +1,3 @@
+## 2025-01-20 - Critical Focus States and Screen Reader Accessibility
+**Learning:** Interactive elements that only consist of icons or are visible only on hover (e.g., copy buttons, notification/close icons) frequently lack ARIA labels and 'focus-visible' classes. When they remain hidden or have `opacity-0` on hover, they cannot be properly focused via keyboard. Screen reader users cannot discern what these buttons do, and keyboard-only users (using Tab) cannot see where their focus has moved.
+**Action:** Always add an `aria-label` to icon-only buttons. For elements with opacity changes on hover, ensure visibility with `focus:opacity-100`, and always include a default focus indicator like `focus-ring` to every interactive `button` structure in the project.

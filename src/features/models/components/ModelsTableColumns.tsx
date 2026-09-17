@@ -57,8 +57,9 @@ export const getModelsColumns = (setSelectedModel: (model: ModelConfig) => void)
     header: '',
     cell: (row) => (
       <button 
+        aria-label="View Model Details"
         onClick={() => setSelectedModel(row)}
-        className="p-xs hover:bg-surface rounded-sm transition-colors"
+        className="p-xs hover:bg-surface rounded-sm transition-colors focus-ring"
       >
         <ChevronRight className="w-4 h-4 text-muted hover:text-ink" />
       </button>
