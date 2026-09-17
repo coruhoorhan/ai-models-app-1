@@ -63,8 +63,9 @@ export function ApiKeyList({ keys }: ApiKeyListProps) {
                     {k.keyMasked}
                   </span>
                   <button 
+                    aria-label="Copy Key ID"
                     onClick={() => handleCopy(k.id, k.keyMasked)}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 text-subtle hover:text-ink rounded-xs hover:bg-surface-sunken"
+                    className="opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity duration-200 p-1 text-subtle hover:text-ink rounded-xs hover:bg-surface-sunken focus-ring"
                     title="Copy Key ID"
                   >
                     {copiedId === k.id ? <Check className="w-3.5 h-3.5 text-chart-teal" /> : <Copy className="w-3.5 h-3.5" />}

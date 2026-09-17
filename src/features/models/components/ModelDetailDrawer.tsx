@@ -40,8 +40,9 @@ export function ModelDetailDrawer({ model, onClose }: ModelDetailDrawerProps) {
               </div>
             </div>
             <button 
+              aria-label="Close"
               onClick={onClose}
-              className="w-8 h-8 rounded-sm hover:bg-surface flex items-center justify-center text-muted hover:text-ink"
+              className="w-8 h-8 rounded-sm hover:bg-surface flex items-center justify-center text-muted hover:text-ink focus-ring"
             >
               <X className="w-5 h-5" />
             </button>
