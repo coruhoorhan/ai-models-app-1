@@ -9,7 +9,7 @@ function getAiClient() {
 
 function resolveGeminiModel(modelId?: string): string {
   if (!modelId) return "gemini-2.0-flash";
-  const lower = modelId.toLowerCase();
+  const lower = String(modelId).toLowerCase();
   if (lower.includes("pro") || lower.includes("r1") || lower.includes("gpt-4") || lower.includes("claude")) {
     return "gemini-1.5-pro";
   }
