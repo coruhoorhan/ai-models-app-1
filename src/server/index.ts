@@ -10,6 +10,15 @@ import { modelsRoutes } from "./modelsRoutes";
 const app = express();
 const PORT = 3000;
 
+// Security Enhancements
+app.disable("x-powered-by"); // Prevent leaking technology stack
+app.use((_req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff"); // Prevent MIME type sniffing
+  res.setHeader("X-Frame-Options", "DENY"); // Prevent Clickjacking
+  res.setHeader("X-XSS-Protection", "1; mode=block"); // Enable basic XSS protection in some older browsers
+  next();
+});
+
 app.use(express.json());
 
 // API Endpoints
